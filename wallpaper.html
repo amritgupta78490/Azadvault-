@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wallpaper Preview - Azad Vault</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --theme-maroon: #8B0000; 
+            --theme-maroon-dark: #4A0000;
+            --curve-large: 24px;
+            --curve-small: 10px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+
+        /* Dark background similar to your popup overlay */
+        body { 
+            background-color: #1e2029; /* Dark slate background */
+            color: white; 
+            overflow-x: hidden; 
+        }
+
+        /* HEADER STYLES */
+        .page-header { 
+            padding: 20px 5%; 
+            display: flex; 
+            align-items: center; 
+            position: sticky; 
+            top: 0; 
+            z-index: 101; 
+            background-color: #1e2029; /* Match body */
+        }
+        
+        .btn-back { 
+            background: rgba(255,255,255,0.15); 
+            color: white; 
+            border: 1px solid rgba(255,255,255,0.2); 
+            padding: 8px 18px; 
+            border-radius: 50px; 
+            cursor: pointer; 
+            margin-right: 20px; 
+            font-size: 15px;
+            font-weight: 500; 
+            transition: 0.3s; 
+            display: flex; 
+            align-items: center; 
+            gap: 8px; 
+        }
+        
+        .btn-back:hover { 
+            background: rgba(255,255,255,0.25); 
+            transform: translateX(-3px); 
+        }
+
+        #dynamic-preview-title { 
+            color: white; 
+            font-weight: 500; 
+            font-size: 18px; 
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* PREVIEW WRAPPER (The White Card) */
+        .container { padding: 0 5%; max-width: 800px; margin: 0 auto; }
+        
+        .preview-wrapper { 
+            margin: 20px auto 40px; 
+            background: white; 
+            padding: 25px; 
+            border-radius: var(--curve-large); 
+            box-shadow: 0 25px 50px rgba(0,0,0,0.25); 
+            text-align: center; 
+        }
+        
+        .preview-wrapper img { 
+            max-width: 100%; 
+            max-height: 65vh; 
+            object-fit: contain; 
+            border-radius: var(--curve-small); 
+            margin-bottom: 25px; 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1); 
+        }
+        
+        .button-group { 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            gap: 14px; 
+        }
+
+        /* BUTTONS */
+        .btn-download { 
+            background: var(--theme-maroon); 
+            color: white; 
+            border: none; 
+            padding: 14px 28px; 
+            border-radius: 50px; 
+            cursor: pointer; 
+            font-size: 16px; 
+            font-weight: 600; 
+            transition: all 0.3s ease; 
+            display: inline-flex; 
+            align-items: center; 
+            justify-content: center; 
+            gap: 8px; 
+            width: 100%; 
+            max-width: 320px; 
+            box-shadow: 0 6px 15px rgba(139,0,0,0.25); 
+        }
+        
+        .btn-download:hover { 
+            background: var(--theme-maroon-dark); 
+            transform: translateY(-2px); 
+            box-shadow: 0 8px 20px rgba(139,0,0,0.35); 
+        }
+
+        .btn-share { 
+            background: white; 
+            color: var(--theme-maroon); 
+            border: 2px solid var(--theme-maroon); 
+            padding: 12px 28px; 
+            border-radius: 50px; 
+            cursor: pointer; 
+            font-size: 15px; 
+            font-weight: 600; 
+            transition: all 0.3s ease; 
+            display: inline-flex; 
+            align-items: center; 
+            justify-content: center; 
+            gap: 8px; 
+            width: 100%; 
+            max-width: 320px; 
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05); 
+        }
+        
+        .btn-share:hover { 
+            background: #fef2f2; 
+            transform: translateY(-2px); 
+            box-shadow: 0 6px 15px rgba(139,0,0,0.15); 
+        }
+
+        /* MOBILE ADJUSTMENTS */
+        @media (max-width: 768px) {
+            .page-header { padding: 15px 5%; }
+            .preview-wrapper { padding: 15px; margin: 10px auto 30px; }
+            .preview-wrapper img { max-height: 55vh; margin-bottom: 20px; }
+            #dynamic-preview-title { font-size: 16px; }
+            .btn-back { padding: 6px 14px; font-size: 14px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="page-header">
+        <button class="btn-back" onclick="goBack()">
+            <i class="fas fa-arrow-left"></i> Back
+        </button>
+        <h2 id="dynamic-preview-title">Loading...</h2>
+    </div>
+    
+    <div class="container">
+        <div class="preview-wrapper">
+            <img id="dynamic-preview-img" src="" alt="Preview Image" style="display: none;">
+            <div class="button-group">
+                <button id="dynamic-download-btn" class="btn-download">
+                    Download Image
+                </button>
+                <button id="dynamic-share-btn" class="btn-share" style="display: none;">
+                    <i class="fas fa-share-alt"></i> Share Image
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 1. Get URL Parameters (Main page will pass data through URL)
+        const urlParams = new URLSearchParams(window.location.search);
+        const imageUrl = urlParams.get('url');
+        const imageTitle = urlParams.get('title') || 'Wallpaper';
+
+        // 2. Setup the Page Content
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('dynamic-preview-title').innerText = imageTitle;
+            
+            if(imageUrl) {
+                const imgElement = document.getElementById('dynamic-preview-img');
+                imgElement.src = imageUrl;
+                imgElement.style.display = 'inline-block';
+                
+                document.getElementById('dynamic-download-btn').onclick = function() { 
+                    downloadImage(imageUrl, imageTitle); 
+                };
+            } else {
+                document.getElementById('dynamic-preview-title').innerText = "Image Not Found";
+                document.getElementById('dynamic-download-btn').style.display = "none";
+            }
+        });
+
+        // 3. Back Button Functionality
+        function goBack() {
+            // Checks if there's history, otherwise goes to main page fallback
+            if (window.history.length > 1) {
+                window.history.back();
+            } else {
+                window.location.href = 'index.html'; // Fallback to your main page
+            }
+        }
+
+        // 4. Download Function logic (Same as your original)
+        async function downloadImage(url, title) {
+            try {
+                const btn = document.getElementById('dynamic-download-btn');
+                const shareBtn = document.getElementById('dynamic-share-btn');
+                const originalText = btn.innerHTML;
+                
+                btn.innerHTML = "⏳ Downloading...";
+                
+                const response = await fetch(url);
+                const blob = await response.blob();
+                const objectUrl = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = objectUrl;
+                a.download = title ? `${title}.png` : "download.png";
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                window.URL.revokeObjectURL(objectUrl);
+
+                btn.innerHTML = "✅ Downloaded!";
+                
+                // Show Share button
+                shareBtn.style.display = 'inline-flex';
+                shareBtn.onclick = function() { shareImageLink(url, title); };
+
+                setTimeout(() => btn.innerHTML = originalText, 3000); 
+            } catch (error) {
+                console.error("Error:", error);
+                window.open(url, '_blank'); 
+            }
+        }
+
+        // 5. Share Function logic (Same as your original)
+        async function shareImageLink(url, title) {
+            if (navigator.share) {
+                try {
+                    const response = await fetch(url);
+                    const blob = await response.blob();
+                    const file = new File([blob], title ? `${title}.png` : 'shared-image.png', { type: blob.type });
+
+                    if (navigator.canShare && navigator.canShare({ files: [file] })) {
+                        await navigator.share({
+                            title: title,
+                            text: `Check out this amazing design from Azad Vault: ${title}`,
+                            files: [file]
+                        });
+                    } else {
+                        await navigator.share({
+                            title: title,
+                            text: `Check out this amazing design from Azad Vault: ${title}`,
+                            url: url
+                        });
+                    }
+                } catch (error) {
+                    console.log('Error sharing:', error);
+                }
+            } else {
+                alert('Share feature is not supported on this device/browser. You can manually copy the link.');
+            }
+        }
+    </script>
+</body>
+</html>
