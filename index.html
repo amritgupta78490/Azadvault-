@@ -24,11 +24,9 @@
 
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
-        const storage = getStorage(app);
 
         window.allDesignsData = [];
 
-        // Load Main Designs (Optimized for performance)
         async function loadDesigns() {
             const mainGrid = document.getElementById('main-grid');
             if (!mainGrid) return;
@@ -47,12 +45,11 @@
                     const keywords = Array.isArray(data.keywords) ? data.keywords.join(" ") : String(data.keywords || "");
                     const category = String(data.category || "other").toLowerCase();
                     const imageUrl = data.imageUrl || "";
-                    const creatorName = data.creatorName ? String(data.creatorName).toLowerCase() : "";
 
                     if (!imageUrl) return; 
 
                     gridHTML += `
-                        <div class="item-card search-item" data-category="${category}" data-keywords="${keywords}" data-creator="${creatorName}" style="animation-delay: ${animationDelay}s" onclick="openImagePreview('${imageUrl}', '${safeTitle}')">
+                        <div class="item-card search-item" data-category="${category}" data-keywords="${keywords}" style="animation-delay: ${animationDelay}s" onclick="openImagePreview('${imageUrl}', '${safeTitle}')">
                             <img src="${imageUrl}" alt="${safeTitle}" loading="lazy">
                             <div class="card-overlay">
                                 <h3>${safeTitle}</h3>
@@ -110,23 +107,18 @@
     <style>
         :root {
             --bg-color: #F4F6F9;
-            --primary-color: #1A73E8; 
             --text-dark: #1A1A24;
             --text-muted: #64748B;
             --theme-maroon: #8B0000;
             --theme-maroon-dark: #4A0000;
-            --curve-large: 24px;
             --curve-medium: 16px;
-            --curve-small: 10px;
             --shadow-soft: 0 4px 20px rgba(0,0,0,0.06);
-            --shadow-hover: 0 12px 30px rgba(0,0,0,0.12);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
         body { background-color: var(--bg-color); color: var(--text-dark); overflow-x: hidden; scroll-behavior: smooth; }
 
         @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes popIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
         
         header {
             position: sticky; top: 0; z-index: 100; padding: 25px 5% 35px;
@@ -136,25 +128,16 @@
             box-shadow: 0 10px 30px rgba(139, 0, 0, 0.25);
         }
 
-        .text-logo {
-            font-family: 'Playfair Display', serif; font-size: 52px; font-weight: 800; 
-            text-align: center; color: #fff; letter-spacing: -1px;
-            filter: drop-shadow(0px 4px 8px rgba(0,0,0,0.3));
-        }
+        .text-logo { font-family: 'Playfair Display', serif; font-size: 52px; font-weight: 800; text-align: center; color: #fff; }
         
         .header-search {
             display: flex; align-items: center; background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
             border-radius: 50px; padding: 14px 24px; width: 100%; max-width: 580px;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.15); transition: all 0.3s ease;
         }
-
-        .header-search:focus-within { transform: translateY(-3px); background: #ffffff; }
-        .header-search input { border: none; outline: none; width: 100%; background: transparent; margin-left: 12px; font-size: 15px; color: #333; }
+        .header-search input { border: none; outline: none; width: 100%; background: transparent; margin-left: 12px; font-size: 15px; }
 
         .creator-section { padding: 25px 5% 10px 5%; }
         .creator-scroll { display: flex; gap: 20px; overflow-x: auto; padding-bottom: 15px; scrollbar-width: none; }
-        .creator-scroll::-webkit-scrollbar { display: none; }
         .creator-item { display: flex; flex-direction: column; align-items: center; cursor: pointer; min-width: 80px; }
         .story-ring {
             width: 76px; height: 76px; border-radius: 50%;
@@ -162,13 +145,6 @@
             padding: 3px; display: flex; justify-content: center; align-items: center; margin-bottom: 8px;
         }
         .story-ring img { width: 100%; height: 100%; border-radius: 50%; border: 2.5px solid var(--bg-color); object-fit: cover; }
-
-        .creator-profile-banner {
-            display:none; background: white; margin: 15px auto; width: 90%; max-width: 450px;
-            padding: 20px; border-radius: var(--curve-large); align-items: center; gap: 18px; position: relative;
-        }
-        .creator-profile-banner img { width: 75px; height: 75px; border-radius: 50%; object-fit: cover; }
-        .btn-follow { background: linear-gradient(135deg, #f09433, #dc2743, #bc1888); color: #fff; border: none; padding: 10px 20px; border-radius: 50px; font-weight: 600; cursor: pointer; }
 
         .category-nav { display: flex; justify-content: center; gap: 12px; padding: 10px 5% 25px; overflow-x: auto; scrollbar-width: none; }
         .cat-pill { padding: 10px 22px; background: white; border-radius: 50px; color: var(--text-muted); font-weight: 500; cursor: pointer; transition: 0.3s; }
@@ -188,10 +164,7 @@
 
         footer { text-align: center; padding: 40px 20px; color: var(--text-muted); font-size: 14px; }
 
-        @media (max-width: 768px) {
-            .text-logo { font-size: 40px; }
-            .masonry-grid { column-count: 2; column-gap: 15px; }
-        }
+        @media (max-width: 768px) { .text-logo { font-size: 40px; } .masonry-grid { column-count: 2; column-gap: 15px; } }
     </style>
 </head>
 <body>
@@ -206,15 +179,6 @@
 
     <div class="creator-section">
         <div class="creator-scroll" id="creator-grid"></div>
-    </div>
-
-    <div id="creator-profile-banner" class="creator-profile-banner">
-        <button onclick="closeCreatorProfile()" style="position:absolute; right:15px; top:15px; border:none; background:none; cursor:pointer;">×</button>
-        <img id="cp-img" src="" alt="Creator">
-        <div class="cp-info">
-            <h2 id="cp-name">Creator Name</h2>
-            <button id="cp-follow-btn" class="btn-follow">Follow on Instagram</button>
-        </div>
     </div>
 
     <div class="category-nav" id="category-nav">
@@ -233,39 +197,18 @@
     </footer>
 
     <script>
-        // --- NEW PAGE NAVIGATION LOGIC --- //
         function openImagePreview(imageUrl, title) {
-            // Popup खोलने के बजाय अब यह 'wallpaper.html' पर redirect करेगा
-            // URL में इमेज का लिंक और टाइटल भेज रहे हैं
             const encodedUrl = encodeURIComponent(imageUrl);
             const encodedTitle = encodeURIComponent(title);
             window.location.href = `wallpaper.html?url=${encodedUrl}&title=${encodedTitle}`;
         }
 
-        let currentCreator = null;
-
+        // REDIRECT TO CREATOR PAGE
         function openCreatorProfile(name, dpUrl, instaLink) {
-            currentCreator = name.toLowerCase(); 
-            document.getElementById('cp-name').innerText = name + "'s Uploads";
-            document.getElementById('cp-img').src = dpUrl;
-            document.getElementById('cp-follow-btn').onclick = () => window.open(instaLink, '_blank');
-            document.getElementById('creator-profile-banner').style.display = 'flex';
-            document.getElementById('category-nav').style.display = 'none';
-            filterByCreator();
-        }
-
-        function closeCreatorProfile() {
-            document.getElementById('creator-profile-banner').style.display = 'none';
-            document.getElementById('category-nav').style.display = 'flex';
-            currentCreator = null;
-            filterGrid('all', document.querySelector('.cat-pill'));
-        }
-
-        function filterByCreator() {
-            let items = document.querySelectorAll('.search-item');
-            items.forEach(item => {
-                item.style.display = (item.getAttribute('data-creator') === currentCreator) ? 'block' : 'none';
-            });
+            const encodedName = encodeURIComponent(name);
+            const encodedDp = encodeURIComponent(dpUrl);
+            const encodedInsta = encodeURIComponent(instaLink);
+            window.location.href = `creator.html?name=${encodedName}&dp=${encodedDp}&insta=${encodedInsta}`;
         }
 
         function filterGrid(keyword, btnElement) {
