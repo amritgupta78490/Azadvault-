@@ -165,6 +165,48 @@
         footer { text-align: center; padding: 40px 20px; color: var(--text-muted); font-size: 14px; }
 
         @media (max-width: 768px) { .text-logo { font-size: 40px; } .masonry-grid { column-count: 2; column-gap: 15px; } }
+        .popup {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.6);
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+}
+
+.popup-box {
+    background: white;
+    padding: 25px;
+    border-radius: 16px;
+    max-width: 420px;
+    width: 90%;
+    text-align: center;
+    position: relative;
+    animation: fadeUp 0.4s ease;
+}
+
+.popup-box h2 {
+    color: #8B0000;
+    margin-bottom: 10px;
+}
+
+.popup-box p {
+    font-size: 14px;
+    color: #444;
+    margin-bottom: 10px;
+}
+
+.close-btn {
+    position: absolute;
+    right: 15px;
+    top: 10px;
+    font-size: 24px;
+    cursor: pointer;
+}
     </style>
 </head>
 <body>
@@ -191,11 +233,40 @@
         <div class="no-results" id="no-results-msg" style="display:none; text-align:center; padding:50px;">No designs found.</div>
         <div class="masonry-grid" id="main-grid"></div>
     </div>
+<footer>
+  <p>
+    &copy; 2026 Azad Vault | 
+    <a href="#" onclick="openAbout()">About Us</a>
+  </p>
+</footer>
+<div id="aboutPopup" class="popup">
+    <div class="popup-box">
+        <span class="close-btn" onclick="closeAbout()">&times;</span>
 
-    <footer>
-        <p>&copy; 2026 Azad Vault</p>
-    </footer>
+        <h2>About Azad Vault</h2>
 
+        <p>
+            Welcome to <b>Azad Vault</b>. This platform is designed to provide simple and useful tools like a Biodata Maker and high-quality wallpapers for users.
+        </p>
+
+        <p>
+            My name is <b>Amrit Kumar Gupta</b>. I am a <b>15-year-old student and beginner developer</b>. Along with my studies, I created this website to learn and build something useful for people.
+        </p>
+
+        <p>
+            Azad Vault focuses on simplicity, speed, and ease of use. All tools are designed to work directly on your device without storing your personal data.
+        </p>
+
+        <p>
+            I am continuously working to improve this platform and add better features in the future.
+        </p>
+
+        <p>
+            Thank you for visiting and supporting ❤️
+        </p>
+
+    </div>
+</div>
     <script>
         function openImagePreview(imageUrl, title) {
             const encodedUrl = encodeURIComponent(imageUrl);
@@ -232,6 +303,15 @@
         });
 
         function openBiodataPage() { window.location.href = "biodata.html"; }
+        
+function openAbout() {
+    document.getElementById("aboutPopup").style.display = "flex";
+}
+
+function closeAbout() {
+    document.getElementById("aboutPopup").style.display = "none";
+}
+
     </script>
 </body>
 </html>
