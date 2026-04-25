@@ -22,12 +22,10 @@
 
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
-
-        // URL Parameters read karna
-        const urlParams = new URLSearchParams(window.location.search);
-        const creatorName = urlParams.get('name') || "Creator";
-        const dpUrl = urlParams.get('dp') || "https://ui-avatars.com/api/?name=Creator";
-        const instaLink = urlParams.get('insta') || "#";
+// URL: /creator/aiarteuphoria
+const pathParts = window.location.pathname.split("/");
+const creatorName = pathParts[pathParts.length - 1] || "Creator";
+        
 
         // Setup UI
         document.getElementById('cp-name').innerText = creatorName + "'s Uploads";
