@@ -1,1 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Creator Vault - Azad Vault</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@800&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+        import { getFirestore, collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+        
+        const firebaseConfig = {
+            apiKey: "AIzaSyAhjIHv-buPd9HK3Uf52VLxwwJFIZe1H5Y",
+            authDomain: "amritone-4bdcd.firebaseapp.com",
+            projectId: "amritone-4bdcd",
+            storageBucket: "amritone-4bdcd.firebasestorage.app",
+            messagingSenderId: "500948842891",
+            appId: "1:500948842891:web:36eb457b02445fa3d4978e",
+            measurementId: "G-ZSJ73XSSNQ"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+// URL: /creator/
+        const urlParams = new URLSearchParams(window.location.search);
+const creatorName = urlParams.get('name') || "Creator";
+const dpUrl = urlParams.get('dp') || "https://ui-avatars.com/api/?name=Creator";
+const instaLink = urlParams.get('insta') || "#";
+
+        // Setup UI
+        document.getElementById('cp-name').innerText = creatorName + "'s Uploads";
+        document.getElementById('cp-img').src = dpUrl;
+        document.getElementById('cp-follow-btn').onclick = () => window.open(instaLink, '_blank');
+        document.title = `${creatorName} - Azad Vault`;
+
+        async function loadCreatorDesigns() {
+            const mainGrid = document.getElementById('main-grid');
+            const targetCreator = creatorName.toLowerCase();
+
+            try {
+                const q = query(collection(db, "designs"), orderBy("createdAt", "desc"));
+                const querySnapshot = await getDocs(q);
+                let gridHTML = ""; 
+                let count = 0;
+
+                querySnapshot.forEach((doc) => {
+                    const data = doc.data();
+                    const postCreator = data.creatorName ? String(data.creatorName).toLowerCase() : "";
+                    
+                    // Sirf target creator ke designs filter karna
+                    if (postCreator === targetCreator) {
+                        const safeTitle = data.title ? String(data.title).replace(/'/g, "\\'") : 'Design';
+                        const imageUrl = data.imageUrl || "";
+
+                        if (imageUrl) {
+                            gridHTML += `
+                                <div class="item-card" onclick="openImagePreview('${imageUrl}', '${safeTitle}')">
+                                    <img src="${imageUrl}" alt="${safeTitle}" loading="lazy">
+                                    <div class="card-overlay">
+                                        <h3>${safeTitle}</h3>
+                                    </div>
+                                </div>
+                            `;
+                            count++;
+                        }
+                    }
+                });
+                
+                if (count > 0) {
+                    mainGrid.innerHTML = gridHTML; 
+                } else {
+                    mainGrid.innerHTML = `<p style="text-align:center; width:100%; color:#64748B;">No designs uploaded by ${creatorName} yet.</p>`;
+                }
+            } catch (error) {
+                console.error("Error fetching designs: ", error);
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', loadCreatorDesigns);
+    </script>
+
+    <style>
+        :root {
+            --bg-color: #F4F6F9;
+            --text-dark: #1A1A24;
+            --theme-maroon: #8B0000;
+            --theme-maroon-dark: #4A0000;
+            --curve-large: 24px;
+            --curve-medium: 16px;
+            --shadow-soft: 0 4px 20px rgba(0,0,0,0.06);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+        body { background-color: var(--bg-color); color: var(--text-dark); }
+
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Simple Header for Back Navigation */
+        header {
+            padding: 15px 5%;
+            background: linear-gradient(135deg, var(--theme-maroon) 0%, var(--theme-maroon-dark) 100%);
+            display: flex; align-items: center;
+            border-bottom-left-radius: 20px; border-bottom-right-radius: 20px;
+        }
+
+        .back-btn {
+            color: white; text-decoration: none; font-weight: 600; font-size: 16px;
+            display: flex; align-items: center; gap: 8px;
+        }
+
+        /* Banner Design */
+        .creator-profile-banner {
+            background: white; margin: 30px auto; width: 90%; max-width: 500px;
+            padding: 25px; border-radius: var(--curve-large); 
+            display: flex; align-items: center; gap: 20px; box-shadow: var(--shadow-soft);
+        }
+        .creator-profile-banner img { width: 85px; height: 85px; border-radius: 50%; object-fit: cover; }
+        .cp-info h2 { font-size: 20px; margin-bottom: 10px; }
+        .btn-follow { background: linear-gradient(135deg, #f09433, #dc2743, #bc1888); color: #fff; border: none; padding: 10px 20px; border-radius: 50px; font-weight: 600; cursor: pointer; }
+
+        /* Grid Design */
+        .container { padding: 0 5%; max-width: 1600px; margin: auto; }
+        .masonry-grid { column-count: 1; column-gap: 20px; padding: 10px 0 30px; }
+        @media (min-width: 600px) { .masonry-grid { column-count: 2; } }
+        @media (min-width: 900px) { .masonry-grid { column-count: 3; } }
+        @media (min-width: 1200px) { .masonry-grid { column-count: 4; } }
+
+        .item-card { background: white; border-radius: var(--curve-medium); overflow: hidden; margin-bottom: 20px; break-inside: avoid; position: relative; cursor: pointer; animation: fadeUp 0.6s ease forwards; box-shadow: var(--shadow-soft); transition: 0.3s; }
+        .item-card:hover { transform: translateY(-8px); }
+        .item-card img { width: 100%; display: block; }
+        .card-overlay { position: absolute; bottom: 0; left: 0; width: 100%; padding: 30px 15px 15px; background: linear-gradient(to top, rgba(0,0,0,0.85), transparent); color: white; opacity: 0; transition: 0.3s; }
+        .item-card:hover .card-overlay { opacity: 1; }
+
+        @media (max-width: 768px) { .masonry-grid { column-count: 2; column-gap: 15px; } }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="index.html" class="back-btn">
+            ← Back to Home
+        </a>
+    </header>
+
+    <div class="creator-profile-banner">
+        <img id="cp-img" src="" alt="Creator">
+        <div class="cp-info">
+            <h2 id="cp-name">Loading...</h2>
+            <button id="cp-follow-btn" class="btn-follow">
+    <i class="fab fa-instagram"></i> Follow on Instagram
+            </button>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="masonry-grid" id="main-grid"></div>
+    </div>
+
+    <script>
+        // Redirect to wallpaper details
+        function openImagePreview(imageUrl, title) {
+            const encodedUrl = encodeURIComponent(imageUrl);
+            const encodedTitle = encodeURIComponent(title);
+            window.location.href = `wallpaper.html?url=${encodedUrl}&title=${encodedTitle}`;
+        }
+    </script>
+</body>
+</html>
 
