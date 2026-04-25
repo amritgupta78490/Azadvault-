@@ -6,78 +6,107 @@
     <title>Creator Vault - Azad Vault</title>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@800&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-        import { getFirestore, collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
-        
-        const firebaseConfig = {
-            apiKey: "AIzaSyAhjIHv-buPd9HK3Uf52VLxwwJFIZe1H5Y",
-            authDomain: "amritone-4bdcd.firebaseapp.com",
-            projectId: "amritone-4bdcd",
-            storageBucket: "amritone-4bdcd.firebasestorage.app",
-            messagingSenderId: "500948842891",
-            appId: "1:500948842891:web:36eb457b02445fa3d4978e",
-            measurementId: "G-ZSJ73XSSNQ"
-        };
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+import { getFirestore, collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
-// URL: /creator/aiarteuphoria
-const pathParts = window.location.pathname.split("/");
-const creatorName = pathParts[pathParts.length - 1] || "Creator";
-        
+// 🔥 Firebase Config
+const firebaseConfig = {
+    apiKey: "AIzaSyAhjIHv-buPd9HK3Uf52VLxwwJFIZe1H5Y",
+    authDomain: "amritone-4bdcd.firebaseapp.com",
+    projectId: "amritone-4bdcd",
+    storageBucket: "amritone-4bdcd.firebasestorage.app",
+    messagingSenderId: "500948842891",
+    appId: "1:500948842891:web:36eb457b02445fa3d4978e"
+};
 
-        // Setup UI
-        document.getElementById('cp-name').innerText = creatorName + "'s Uploads";
-        document.getElementById('cp-img').src = dpUrl;
-        document.getElementById('cp-follow-btn').onclick = () => window.open(instaLink, '_blank');
-        document.title = `${creatorName} - Azad Vault`;
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
 
-        async function loadCreatorDesigns() {
-            const mainGrid = document.getElementById('main-grid');
-            const targetCreator = creatorName.toLowerCase();
+// ✅ GitHub Pages ke liye HASH method
+const creatorName = window.location.hash.replace("#", "").toLowerCase() || "creator";
 
-            try {
-                const q = query(collection(db, "designs"), orderBy("createdAt", "desc"));
-                const querySnapshot = await getDocs(q);
-                let gridHTML = ""; 
-                let count = 0;
+// ✅ Page load hone ke baad sab run karo
+window.addEventListener("DOMContentLoaded", () => {
+    document.getElementById("cp-name").innerText = creatorName + "'s Uploads";
+    document.title = creatorName + " - Azad Vault";
 
-                querySnapshot.forEach((doc) => {
-                    const data = doc.data();
-                    const postCreator = data.creatorName ? String(data.creatorName).toLowerCase() : "";
-                    
-                    // Sirf target creator ke designs filter karna
-                    if (postCreator === targetCreator) {
-                        const safeTitle = data.title ? String(data.title).replace(/'/g, "\\'") : 'Design';
-                        const imageUrl = data.imageUrl || "";
+    loadCreatorProfile();
+    loadCreatorDesigns();
+});
 
-                        if (imageUrl) {
-                            gridHTML += `
-                                <div class="item-card" onclick="openImagePreview('${imageUrl}', '${safeTitle}')">
-                                    <img src="${imageUrl}" alt="${safeTitle}" loading="lazy">
-                                    <div class="card-overlay">
-                                        <h3>${safeTitle}</h3>
-                                    </div>
-                                </div>
-                            `;
-                            count++;
-                        }
-                    }
-                });
-                
-                if (count > 0) {
-                    mainGrid.innerHTML = gridHTML; 
-                } else {
-                    mainGrid.innerHTML = `<p style="text-align:center; width:100%; color:#64748B;">No designs uploaded by ${creatorName} yet.</p>`;
-                }
-            } catch (error) {
-                console.error("Error fetching designs: ", error);
+// ✅ Creator Profile Load (dp + insta)
+async function loadCreatorProfile() {
+    try {
+        const snapshot = await getDocs(collection(db, "creators"));
+        let found = false;
+
+        snapshot.forEach(doc => {
+            const data = doc.data();
+
+            if (data.name && data.name.toLowerCase() === creatorName) {
+                document.getElementById("cp-img").src = data.dp || "";
+                document.getElementById("cp-follow-btn").onclick = () => {
+                    window.open(data.insta || "#", "_blank");
+                };
+                found = true;
             }
+        });
+
+        // ❌ agar creator nahi mila
+        if (!found) {
+            document.getElementById("cp-name").innerText = "Creator Not Found";
         }
 
-        window.addEventListener('DOMContentLoaded', loadCreatorDesigns);
-    </script>
+    } catch (error) {
+        console.error("Profile error:", error);
+    }
+}
+
+// ✅ Designs Load
+async function loadCreatorDesigns() {
+    const mainGrid = document.getElementById("main-grid");
+
+    try {
+        const q = query(collection(db, "designs"), orderBy("createdAt", "desc"));
+        const snapshot = await getDocs(q);
+
+        let html = "";
+        let count = 0;
+
+        snapshot.forEach(doc => {
+            const data = doc.data();
+            const postCreator = data.creatorName ? data.creatorName.toLowerCase() : "";
+
+            if (postCreator === creatorName) {
+                const title = data.title || "Design";
+                const image = data.imageUrl || "";
+
+                if (image) {
+                    html += `
+                        <div class="item-card" onclick="openImagePreview('${image}', '${title}')">
+                            <img src="${image}" loading="lazy">
+                            <div class="card-overlay">
+                                <h3>${title}</h3>
+                            </div>
+                        </div>
+                    `;
+                    count++;
+                }
+            }
+        });
+
+        if (count > 0) {
+            mainGrid.innerHTML = html;
+        } else {
+            mainGrid.innerHTML = `<p style="text-align:center;">No designs uploaded</p>`;
+        }
+
+    } catch (error) {
+        console.error("Design error:", error);
+    }
+}
+</script>
 
     <style>
         :root {
