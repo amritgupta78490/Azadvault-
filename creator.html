@@ -6,11 +6,12 @@
     <title>Creator Vault - Azad Vault</title>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@800&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
 import { getFirestore, collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
-// 🔥 Firebase Config
+// Firebase Config
 const firebaseConfig = {
     apiKey: "AIzaSyAhjIHv-buPd9HK3Uf52VLxwwJFIZe1H5Y",
     authDomain: "amritone-4bdcd.firebaseapp.com",
@@ -23,10 +24,10 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-// ✅ GitHub Pages ke liye HASH method
+// ✅ Hash se creator name nikaalo (GitHub Pages friendly)
 const creatorName = window.location.hash.replace("#", "").toLowerCase() || "creator";
 
-// ✅ Page load hone ke baad sab run karo
+// ✅ Page load
 window.addEventListener("DOMContentLoaded", () => {
     document.getElementById("cp-name").innerText = creatorName + "'s Uploads";
     document.title = creatorName + " - Azad Vault";
@@ -35,7 +36,7 @@ window.addEventListener("DOMContentLoaded", () => {
     loadCreatorDesigns();
 });
 
-// ✅ Creator Profile Load (dp + insta)
+// ✅ Creator Profile Load (DP + Instagram)
 async function loadCreatorProfile() {
     try {
         const snapshot = await getDocs(collection(db, "creators"));
@@ -45,15 +46,19 @@ async function loadCreatorProfile() {
             const data = doc.data();
 
             if (data.name && data.name.toLowerCase() === creatorName) {
-                document.getElementById("cp-img").src = data.dp || "";
+
+                // ✅ FIXED FIELD NAMES
+                document.getElementById("cp-img").src =
+                    data.dpImage || "https://ui-avatars.com/api/?name=" + creatorName;
+
                 document.getElementById("cp-follow-btn").onclick = () => {
-                    window.open(data.insta || "#", "_blank");
+                    window.open(data.instagramLink || "#", "_blank");
                 };
+
                 found = true;
             }
         });
 
-        // ❌ agar creator nahi mila
         if (!found) {
             document.getElementById("cp-name").innerText = "Creator Not Found";
         }
@@ -107,7 +112,6 @@ async function loadCreatorDesigns() {
     }
 }
 </script>
-
     <style>
         :root {
             --bg-color: #F4F6F9;
