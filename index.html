@@ -172,96 +172,8 @@
         footer { text-align: center; padding: 40px 20px; color: var(--text-muted); font-size: 14px; }
 
         @media (max-width: 768px) { .text-logo { font-size: 40px; } .masonry-grid { column-count: 2; column-gap: 15px; } }
-        .popup {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0,0,0,0.6);
-    justify-content: center;
-    align-items: center;
-    z-index: 999;
-}
-
-.popup-box {
-    background: white;
-    padding: 25px;
-    border-radius: 16px;
-    max-width: 420px;
-    width: 90%;
-    text-align: center;
-    position: relative;
-    animation: fadeUp 0.4s ease;
-}
-
-.popup-box h2 {
-    color: #8B0000;
-    margin-bottom: 10px;
-}
-
-.popup-box p {
-    font-size: 14px;
-    color: #444;
-    margin-bottom: 10px;
-}
-
-.close-btn {
-    position: absolute;
-    right: 15px;
-    top: 10px;
-    font-size: 24px;
-    cursor: pointer;
-}
-        .popup {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0,0,0,0.6);
-    justify-content: center;
-    align-items: center;
-    z-index: 999;
-}
-
-.popup-box {
-    background: white;
-    padding: 20px;
-    border-radius: 16px;
-    max-width: 420px;
-    width: 90%;
-    max-height: 85vh;
-    overflow-y: auto;
-    position: relative;
-    animation: fadeUp 0.4s ease;
-}
-
-.popup-box h2 {
-    color: #8B0000;
-    margin-bottom: 10px;
-}
-
-.popup-box h3 {
-    margin-top: 12px;
-    color: #333;
-    font-size: 15px;
-}
-
-.popup-box p {
-    font-size: 13px;
-    color: #555;
-}
-
-.close-btn {
-    position: absolute;
-    right: 15px;
-    top: 10px;
-    font-size: 24px;
-    cursor: pointer;
-}
+        
+    
     </style>
 </head>
 <body>
@@ -289,18 +201,12 @@
         <div class="masonry-grid" id="main-grid"></div>
     </div>
 <footer>
-  <p>
-    &copy; 2026 Azad Vault | 
-    <a href="#" onclick="openAbout()">About Us</a>
-      <a href="#" onclick="openPrivacy()">Privacy Policy</a>
-  </p>
+<p>
+&copy; 2026 Azad Vault |
+<a href="about.html">About Us</a> |
+<a href="privacy-policy.html">Privacy Policy</a>
+</p>
 </footer>
-<div id="aboutPopup" class="popup">
-    
-</div>
-<div id="privacyPopup" class="popup">
-  
-</div>
     
     <script>
         function openImagePreview(imageUrl, title) {
@@ -338,22 +244,6 @@
         });
 
         function openBiodataPage() { window.location.href = "biodata.html"; }
-        
-function openAbout() {
-    document.getElementById("aboutPopup").style.display = "flex";
-}
-
-function closeAbout() {
-    document.getElementById("aboutPopup").style.display = "none";
-}
-
-function openPrivacy() {
-    document.getElementById("privacyPopup").style.display = "flex";
-}
-
-function closePrivacy() {
-    document.getElementById("privacyPopup").style.display = "none";
-}
 
     </script>
 </body>
