@@ -51,11 +51,14 @@
                     const category = String(data.category || "other").toLowerCase();
                     const creator = String(data.creator || "").toLowerCase();
                     const imageUrl = data.imageUrl || "";
+                    
+                    // Fallback for trending if views don't exist in DB
+                    const views = data.views || Math.floor(Math.random() * 1000);
 
                     if (!imageUrl) return; 
 
                     gridHTML += `
-                        <div class="item-card search-item" data-category="${category}" data-keywords="${keywords}" data-creator="${creator}" style="animation-delay: ${animationDelay}s" onclick="openImagePreview('${imageUrl}', '${safeTitle}')">
+                        <div class="item-card search-item" data-index="${index}" data-views="${views}" data-category="${category}" data-keywords="${keywords}" data-creator="${creator}" style="animation-delay: ${animationDelay}s" onclick="openImagePreview('${imageUrl}', '${safeTitle}')">
                         <img src="${imageUrl}" alt="${safeTitle} HD wallpaper download free" title="${safeTitle} wallpaper" loading="lazy">
                             <div class="card-overlay">
                                 <h3>${safeTitle}</h3>
@@ -186,6 +189,13 @@
         .cat-pill.active { background: var(--theme-maroon); color: white; }
 
         .container { padding: 0 5%; max-width: 1600px; margin: auto; }
+        
+        /* Sorting Controls CSS */
+        .sort-container { display: flex; justify-content: flex-end; gap: 12px; margin-bottom: 15px; padding-right: 5px; }
+        .sort-btn { cursor: pointer; font-size: 13px; font-weight: 600; color: var(--text-muted); padding: 5px 12px; border-radius: 20px; transition: 0.3s; background: transparent; }
+        .sort-btn.active { color: var(--theme-maroon); background: rgba(139, 0, 0, 0.08); }
+        .sort-btn:hover:not(.active) { color: var(--text-dark); }
+
         .masonry-grid { column-count: 1; column-gap: 20px; padding: 10px 0 30px; }
         @media (min-width: 600px) { .masonry-grid { column-count: 2; } }
         @media (min-width: 900px) { .masonry-grid { column-count: 3; } }
@@ -212,8 +222,7 @@
             justify-content: center; 
             align-items: center; 
             flex-direction: column; 
-            background: url('https://i.ibb.co/v63vXzCc/ef6ce83607c4c89f3ea698acb72d4872.jpg') no-repeat center center; 
-            background-size: cover; 
+            background-color: #F4F0EC; /* Simple cream paper color added here */
             z-index: 99999;
             transition: opacity 1s ease;
         }
@@ -348,6 +357,11 @@
     </div>
 
     <div class="container">
+        <div class="sort-container">
+            <span class="sort-btn active" onclick="sortGrid('latest', this)">Latest</span>
+            <span class="sort-btn" onclick="sortGrid('trending', this)">Trending</span>
+        </div>
+
         <div class="no-results" id="no-results-msg" style="display:none; text-align:center; padding:50px; font-weight: 500; font-size: 18px; color: var(--text-muted);">No designs found. Try a different search.</div>
         <div class="masonry-grid" id="main-grid"></div>
     </div>
@@ -392,6 +406,28 @@
             });
             document.getElementById('no-results-msg').style.display = hasResults ? 'none' : 'block';
         }
+
+        // ================= SORT SYSTEM (LATEST/TRENDING) =================
+        window.sortGrid = function(type, btnElement) {
+            // Manage active class
+            document.querySelectorAll('.sort-btn').forEach(btn => btn.classList.remove('active'));
+            if(btnElement) btnElement.classList.add('active');
+
+            let grid = document.getElementById('main-grid');
+            let items = Array.from(grid.getElementsByClassName('search-item'));
+
+            if (type === 'trending') {
+                // Sort by views
+                items.sort((a, b) => parseInt(b.getAttribute('data-views')) - parseInt(a.getAttribute('data-views')));
+            } else {
+                // Restore to latest (original load index)
+                items.sort((a, b) => parseInt(a.getAttribute('data-index')) - parseInt(b.getAttribute('data-index')));
+            }
+
+            // Re-append items in new sorted order
+            items.forEach(item => grid.appendChild(item));
+        };
+        // ================= END SORT SYSTEM =================
 
         // ================= IMPROVED ADVANCED SEARCH SYSTEM =================
         const searchInput = document.getElementById('global-search');
