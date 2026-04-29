@@ -173,7 +173,96 @@
 
         @media (max-width: 768px) { .text-logo { font-size: 40px; } .masonry-grid { column-count: 2; column-gap: 15px; } }
         
-    
+    #landing page 
+          * { 
+    margin: 0; 
+    padding: 0; 
+    box-sizing: border-box; 
+  }
+  
+  body { 
+    height: 100vh; 
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    flex-direction: column; 
+    font-family: Arial, sans-serif; 
+    color: white; 
+    overflow: hidden; 
+    /* Clear Background Image - Overlay removed */
+    background: url('https://i.ibb.co/v63vXzCc/ef6ce83607c4c89f3ea698acb72d4872.jpg') no-repeat center center; 
+    background-size: cover; 
+  }
+
+  /* Center Logo Area */
+  .logo-box {
+    position: relative;
+    width: 450px;
+    height: 450px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  /* SVG Text Rings Container */
+  .text-rings {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 1;
+  }
+
+  /* 4 Rotating SVG Layers */
+  .layer1, .layer2, .layer3, .layer4 {
+    transform-origin: 250px 250px; /* Center of SVG viewBox */
+  }
+
+  .layer1 { animation: spin 35s linear infinite; }
+  .layer2 { animation: spinReverse 30s linear infinite; }
+  .layer3 { animation: spin 25s linear infinite; }
+  .layer4 { animation: spinReverse 20s linear infinite; }
+
+  /* Logo Image */
+  .logo {
+    z-index: 5;
+    position: relative;
+  }
+  .logo img {
+    width: 250px;
+    filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.5));
+  }
+
+  .tagline {
+  margin-top: 20px;
+  font-size: 17px;
+  letter-spacing: 1px;
+  z-index: 5;
+  color: black;
+}
+
+  /* Animations */
+  @keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+  @keyframes spinReverse {
+    from { transform: rotate(360deg); }
+    to { transform: rotate(0deg); }
+  }
+  .text-logo {
+  font-size: 42px;
+  font-weight: 700;
+  font-family: 'Poppins', sans-serif;
+  color: black;
+  margin-top: 15px;
+  text-align: center;
+  letter-spacing: 2px;
+  text-shadow: 0 2px 5px rgba(0,0,0,0.3);
+}
+  
+        
     </style>
 </head>
 <body>
