@@ -11,20 +11,19 @@
         :root {
             --theme-maroon: #8B0000; 
             --theme-maroon-dark: #4A0000;
-            --curve-large: 24px;
-            --curve-small: 10px;
+            --bg-dark: #1e2029;
+            --device-border: #1a1a1a;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
 
-        /* Dark background similar to your popup overlay */
         body { 
-            background-color: #1e2029; /* Dark slate background */
+            background-color: var(--bg-dark); 
             color: white; 
             overflow-x: hidden; 
         }
 
-        /* HEADER STYLES */
+        /* --- HEADER --- */
         .page-header { 
             padding: 20px 5%; 
             display: flex; 
@@ -32,18 +31,18 @@
             position: sticky; 
             top: 0; 
             z-index: 101; 
-            background-color: #1e2029; /* Match body */
+            background-color: var(--bg-dark);
         }
         
         .btn-back { 
-            background: rgba(255,255,255,0.15); 
+            background: rgba(255,255,255,0.1); 
             color: white; 
             border: 1px solid rgba(255,255,255,0.2); 
-            padding: 8px 18px; 
+            padding: 10px 20px; 
             border-radius: 50px; 
             cursor: pointer; 
             margin-right: 20px; 
-            font-size: 15px;
+            font-size: 14px;
             font-weight: 500; 
             transition: 0.3s; 
             display: flex; 
@@ -51,107 +50,119 @@
             gap: 8px; 
         }
         
-        .btn-back:hover { 
-            background: rgba(255,255,255,0.25); 
-            transform: translateX(-3px); 
-        }
+        .btn-back:hover { background: rgba(255,255,255,0.2); transform: translateX(-3px); }
 
-        #dynamic-preview-title { 
-            color: white; 
-            font-weight: 500; 
-            font-size: 18px; 
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
+        #dynamic-preview-title { font-weight: 500; font-size: 18px; }
 
-        /* PREVIEW WRAPPER (The White Card) */
-        .container { padding: 0 5%; max-width: 800px; margin: 0 auto; }
+        .container { padding: 0 5%; max-width: 1000px; margin: 0 auto; }
         
         .preview-wrapper { 
-            margin: 20px auto 40px; 
-            background: white; 
-            padding: 25px; 
-            border-radius: var(--curve-large); 
-            box-shadow: 0 25px 50px rgba(0,0,0,0.25); 
+            margin: 20px auto 50px; 
+            background: rgba(255, 255, 255, 0.03); 
+            padding: 60px 20px; 
+            border-radius: 30px; 
             text-align: center; 
-        }
-        
-        .preview-wrapper img { 
-            max-width: 100%; 
-            max-height: 65vh; 
-            object-fit: contain; 
-            border-radius: var(--curve-small); 
-            margin-bottom: 25px; 
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1); 
-        }
-        
-        .button-group { 
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
-            gap: 14px; 
+            border: 1px solid rgba(255,255,255,0.05);
         }
 
-        /* BUTTONS */
+        /* --- LAPTOP FRAME (DESKTOP) --- */
+        .device-frame {
+            position: relative;
+            width: 100%;
+            max-width: 700px; 
+            aspect-ratio: 16 / 10;
+            background: #000;
+            border: 14px solid var(--device-border);
+            border-radius: 20px 20px 5px 5px;
+            margin: 0 auto 60px;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.5);
+            z-index: 5;
+        }
+
+        /* Laptop Webcam */
+        .device-frame::before {
+            content: '';
+            position: absolute;
+            top: -9px; left: 50%;
+            transform: translateX(-50%);
+            width: 6px; height: 6px;
+            background: #222; border-radius: 50%;
+            z-index: 10;
+        }
+
+        /* Laptop Bottom Base (Refined) */
+        .device-frame::after {
+            content: '';
+            position: absolute;
+            bottom: -28px; left: -10%;
+            width: 120%; height: 14px;
+            background: linear-gradient(to bottom, #444, #111);
+            border-radius: 0 0 20px 20px;
+            z-index: -1;
+        }
+
+        .device-frame img {
+            width: 100%; height: 100%;
+            object-fit: contain;
+            background: #000;
+        }
+
+        /* --- MOBILE FRAME (SMALL SCREENS) --- */
+        @media (max-width: 767px) {
+            .preview-wrapper { padding: 40px 15px; }
+
+            .device-frame {
+                max-width: 280px; 
+                aspect-ratio: 9 / 19.5; 
+                border: 12px solid #121212; 
+                border-radius: 45px; 
+                margin-bottom: 40px;
+            }
+            
+            /* Laptop base hide karna */
+            .device-frame::after {
+                width: 35%; height: 4px;
+                background: rgba(255,255,255,0.4);
+                bottom: 12px; left: 50%;
+                transform: translateX(-50%);
+                border-radius: 10px;
+                z-index: 10;
+            }
+
+            /* Mobile Notch */
+            .device-frame::before {
+                top: 0; width: 45%; height: 22px;
+                background: #121212;
+                border-radius: 0 0 18px 18px;
+                z-index: 11;
+            }
+
+            .device-frame img {
+                object-fit: cover;
+                border-radius: 33px;
+            }
+        }
+
+        /* --- BUTTONS --- */
+        .button-group { display: flex; flex-direction: column; align-items: center; gap: 15px; }
+
         .btn-download { 
-            background: var(--theme-maroon); 
-            color: white; 
-            border: none; 
-            padding: 14px 28px; 
-            border-radius: 50px; 
-            cursor: pointer; 
-            font-size: 16px; 
-            font-weight: 600; 
-            transition: all 0.3s ease; 
-            display: inline-flex; 
-            align-items: center; 
-            justify-content: center; 
-            gap: 8px; 
-            width: 100%; 
-            max-width: 320px; 
-            box-shadow: 0 6px 15px rgba(139,0,0,0.25); 
+            background: var(--theme-maroon); color: white; border: none; 
+            padding: 16px 40px; border-radius: 50px; cursor: pointer; 
+            font-size: 16px; font-weight: 600; width: 100%; max-width: 300px;
+            box-shadow: 0 10px 20px rgba(139,0,0,0.3); transition: 0.3s;
         }
         
-        .btn-download:hover { 
-            background: var(--theme-maroon-dark); 
-            transform: translateY(-2px); 
-            box-shadow: 0 8px 20px rgba(139,0,0,0.35); 
-        }
+        .btn-download:hover { background: var(--theme-maroon-dark); transform: translateY(-3px); }
 
         .btn-share { 
-            background: white; 
-            color: var(--theme-maroon); 
-            border: 2px solid var(--theme-maroon); 
-            padding: 12px 28px; 
-            border-radius: 50px; 
-            cursor: pointer; 
-            font-size: 15px; 
-            font-weight: 600; 
-            transition: all 0.3s ease; 
-            display: inline-flex; 
-            align-items: center; 
-            justify-content: center; 
-            gap: 8px; 
-            width: 100%; 
-            max-width: 320px; 
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05); 
+            background: transparent; color: white; border: 2px solid rgba(255,255,255,0.3); 
+            padding: 14px 40px; border-radius: 50px; cursor: pointer; 
+            font-size: 15px; font-weight: 500; width: 100%; max-width: 300px;
+            transition: 0.3s;
         }
         
-        .btn-share:hover { 
-            background: #fef2f2; 
-            transform: translateY(-2px); 
-            box-shadow: 0 6px 15px rgba(139,0,0,0.15); 
-        }
-
-        /* MOBILE ADJUSTMENTS */
-        @media (max-width: 768px) {
-            .page-header { padding: 15px 5%; }
-            .preview-wrapper { padding: 15px; margin: 10px auto 30px; }
-            .preview-wrapper img { max-height: 55vh; margin-bottom: 20px; }
-            #dynamic-preview-title { font-size: 16px; }
-            .btn-back { padding: 6px 14px; font-size: 14px; }
-        }
+        .btn-share:hover { background: rgba(255,255,255,0.1); border-color: white; }
     </style>
 </head>
 <body>
@@ -165,10 +176,13 @@
     
     <div class="container">
         <div class="preview-wrapper">
-            <img id="dynamic-preview-img" src="" alt="Preview Image" style="display: none;">
+            <div class="device-frame">
+                <img id="dynamic-preview-img" src="" alt="Preview Image" style="display: none;">
+            </div>
+            
             <div class="button-group">
                 <button id="dynamic-download-btn" class="btn-download">
-                    Download Image
+                    <i class="fas fa-download"></i> Download Image
                 </button>
                 <button id="dynamic-share-btn" class="btn-share" style="display: none;">
                     <i class="fas fa-share-alt"></i> Share Image
@@ -178,98 +192,56 @@
     </div>
 
     <script>
-        // 1. Get URL Parameters (Main page will pass data through URL)
         const urlParams = new URLSearchParams(window.location.search);
         const imageUrl = urlParams.get('url');
         const imageTitle = urlParams.get('title') || 'Wallpaper';
 
-        // 2. Setup the Page Content
         document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('dynamic-preview-title').innerText = imageTitle;
-            
             if(imageUrl) {
                 const imgElement = document.getElementById('dynamic-preview-img');
                 imgElement.src = imageUrl;
-                imgElement.style.display = 'inline-block';
-                
-                document.getElementById('dynamic-download-btn').onclick = function() { 
-                    downloadImage(imageUrl, imageTitle); 
-                };
+                imgElement.style.display = 'block'; 
+                document.getElementById('dynamic-download-btn').onclick = function() { downloadImage(imageUrl, imageTitle); };
             } else {
                 document.getElementById('dynamic-preview-title').innerText = "Image Not Found";
                 document.getElementById('dynamic-download-btn').style.display = "none";
             }
         });
 
-        // 3. Back Button Functionality
-        function goBack() {
-            // Checks if there's history, otherwise goes to main page fallback
-            if (window.history.length > 1) {
-                window.history.back();
-            } else {
-                window.location.href = 'index.html'; // Fallback to your main page
-            }
-        }
+        function goBack() { window.history.length > 1 ? window.history.back() : window.location.href = 'index.html'; }
 
-        // 4. Download Function logic (Same as your original)
         async function downloadImage(url, title) {
             try {
                 const btn = document.getElementById('dynamic-download-btn');
                 const shareBtn = document.getElementById('dynamic-share-btn');
                 const originalText = btn.innerHTML;
-                
                 btn.innerHTML = "⏳ Downloading...";
-                
                 const response = await fetch(url);
                 const blob = await response.blob();
                 const objectUrl = window.URL.createObjectURL(blob);
                 const a = document.createElement('a');
                 a.href = objectUrl;
-                a.download = title ? `${title}.png` : "download.png";
+                a.download = `${title}.png`;
                 document.body.appendChild(a);
                 a.click();
                 document.body.removeChild(a);
                 window.URL.revokeObjectURL(objectUrl);
-
                 btn.innerHTML = "✅ Downloaded!";
-                
-                // Show Share button
                 shareBtn.style.display = 'inline-flex';
                 shareBtn.onclick = function() { shareImageLink(url, title); };
-
                 setTimeout(() => btn.innerHTML = originalText, 3000); 
-            } catch (error) {
-                console.error("Error:", error);
-                window.open(url, '_blank'); 
-            }
+            } catch (error) { window.open(url, '_blank'); }
         }
 
-        // 5. Share Function logic (Same as your original)
         async function shareImageLink(url, title) {
             if (navigator.share) {
                 try {
                     const response = await fetch(url);
                     const blob = await response.blob();
-                    const file = new File([blob], title ? `${title}.png` : 'shared-image.png', { type: blob.type });
-
-                    if (navigator.canShare && navigator.canShare({ files: [file] })) {
-                        await navigator.share({
-                            title: title,
-                            text: `Check out this amazing design from Azad Vault: ${title}`,
-                            files: [file]
-                        });
-                    } else {
-                        await navigator.share({
-                            title: title,
-                            text: `Check out this amazing design from Azad Vault: ${title}`,
-                            url: url
-                        });
-                    }
-                } catch (error) {
-                    console.log('Error sharing:', error);
-                }
-            } else {
-                alert('Share feature is not supported on this device/browser. You can manually copy the link.');
+                    const file = new File([blob], `${title}.png`, { type: blob.type });
+                    await navigator.share({ title: title, files: [file] });
+                } catch (e) { console.log(e); }
             }
         }
     </script>
