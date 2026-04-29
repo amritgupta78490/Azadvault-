@@ -3,17 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="description" content="Download free HD wallpapers and create biodata online easily. Fast and simple tools by Azad Vault.">
-
-<meta name="keywords" content="HD wallpapers, 4K wallpapers, mobile wallpapers, biodata maker, free wallpaper download, wallpaper website India,4k wallpaper, best wallpaper">
+    <meta name="keywords" content="HD wallpapers, 4K wallpapers, mobile wallpapers, biodata maker, free wallpaper download, wallpaper website India,4k wallpaper, best wallpaper">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="google-site-verification" content="jydhjXEpqS0wSyo2ttz2Zk61at6uzJPc0s876WTO820" />
+    <meta name="google-site-verification" content="jydhjXEpqS0wSyo2ttz2Zk61at6uzJPc0s876WTO820" />
     <meta name="google-adsense-account" content="ca-pub-7682804389550520">
     
     <title>Free HD Wallpapers Download | Biodata Maker Online - Azad Vault</title>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@800&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
-    
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
         import { getFirestore, collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
@@ -173,99 +171,132 @@
 
         @media (max-width: 768px) { .text-logo { font-size: 40px; } .masonry-grid { column-count: 2; column-gap: 15px; } }
         
-    #landing page 
-          * { 
-    margin: 0; 
-    padding: 0; 
-    box-sizing: border-box; 
-  }
-  
-  body { 
-    height: 100vh; 
-    display: flex; 
-    justify-content: center; 
-    align-items: center; 
-    flex-direction: column; 
-    font-family: Arial, sans-serif; 
-    color: white; 
-    overflow: hidden; 
-    /* Clear Background Image - Overlay removed */
-    background: url('https://i.ibb.co/v63vXzCc/ef6ce83607c4c89f3ea698acb72d4872.jpg') no-repeat center center; 
-    background-size: cover; 
-  }
+        /* FIXED LANDING PAGE CSS */
+        #landing-screen { 
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            flex-direction: column; 
+            background: url('https://i.ibb.co/v63vXzCc/ef6ce83607c4c89f3ea698acb72d4872.jpg') no-repeat center center; 
+            background-size: cover; 
+            z-index: 99999;
+            transition: opacity 1s ease;
+        }
 
-  /* Center Logo Area */
-  .logo-box {
-    position: relative;
-    width: 450px;
-    height: 450px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
+        .logo-box {
+            position: relative;
+            width: 450px;
+            height: 450px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
 
-  /* SVG Text Rings Container */
-  .text-rings {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    z-index: 1;
-  }
+        .text-rings {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 1;
+        }
 
-  /* 4 Rotating SVG Layers */
-  .layer1, .layer2, .layer3, .layer4 {
-    transform-origin: 250px 250px; /* Center of SVG viewBox */
-  }
+        .layer1, .layer2, .layer3, .layer4 {
+            transform-origin: 250px 250px; 
+        }
 
-  .layer1 { animation: spin 35s linear infinite; }
-  .layer2 { animation: spinReverse 30s linear infinite; }
-  .layer3 { animation: spin 25s linear infinite; }
-  .layer4 { animation: spinReverse 20s linear infinite; }
+        .layer1 { animation: spin 35s linear infinite; }
+        .layer2 { animation: spinReverse 30s linear infinite; }
+        .layer3 { animation: spin 25s linear infinite; }
+        .layer4 { animation: spinReverse 20s linear infinite; }
 
-  /* Logo Image */
-  .logo {
-    z-index: 5;
-    position: relative;
-  }
-  .logo img {
-    width: 250px;
-    filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.5));
-  }
-
-  .tagline {
-  margin-top: 20px;
-  font-size: 17px;
-  letter-spacing: 1px;
-  z-index: 5;
-  color: black;
-}
-
-  /* Animations */
-  @keyframes spin {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
-  }
-  @keyframes spinReverse {
-    from { transform: rotate(360deg); }
-    to { transform: rotate(0deg); }
-  }
-  .text-logo {
-  font-size: 42px;
-  font-weight: 700;
-  font-family: 'Poppins', sans-serif;
-  color: black;
-  margin-top: 15px;
-  text-align: center;
-  letter-spacing: 2px;
-  text-shadow: 0 2px 5px rgba(0,0,0,0.3);
-}
-  
+        .logo {
+            z-index: 5;
+            position: relative;
+        }
         
+        .logo img {
+            width: 250px;
+            filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.5));
+        }
+
+        .tagline {
+            margin-top: 20px;
+            font-size: 17px;
+            letter-spacing: 1px;
+            z-index: 5;
+            color: black;
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        @keyframes spinReverse {
+            from { transform: rotate(360deg); }
+            to { transform: rotate(0deg); }
+        }
+        
+        #landing-screen .text-logo {
+            font-size: 42px;
+            font-weight: 700;
+            font-family: 'Poppins', sans-serif;
+            color: black;
+            margin-top: 15px;
+            text-align: center;
+            letter-spacing: 2px;
+            text-shadow: 0 2px 5px rgba(0,0,0,0.3);
+        }
     </style>
 </head>
 <body>
+
+    <div id="landing-screen">
+        <div class="logo-box">
+            <svg class="text-rings" viewBox="0 0 500 500">
+                <defs>
+                    <path id="circle1" d="M 250, 250 m -220, 0 a 220,220 0 1,1 440,0 a 220,220 0 1,1 -440,0" />
+                    <path id="circle2" d="M 250, 250 m -185, 0 a 185,185 0 1,1 370,0 a 185,185 0 1,1 -370,0" />
+                    <path id="circle3" d="M 250, 250 m -150, 0 a 150,150 0 1,1 300,0 a 150,150 0 1,1 -300,0" />
+                    <path id="circle4" d="M 250, 250 m -115, 0 a 115,115 0 1,1 230,0 a 115,115 0 1,1 -230,0" />
+                </defs>
+                
+                <g class="layer1">
+                    <text fill="#d32f2f" font-size="20" font-weight="bold" letter-spacing="4">
+                        <textPath href="#circle1" startOffset="0%">राम राम राम राम राम राम राम राम राम राम राम राम राम राम राम राम राम राम राम राम राम राम राम राम राम राम राम राम राम राम राम</textPath>
+                    </text>
+                </g>
+                <g class="layer2">
+                    <text fill="#d32f2f" font-size="19" font-weight="bold" letter-spacing="3.5">
+                        <textPath href="#circle2" startOffset="0%">राम राम राम राम राम राम राम राम राम राम राम राम राम राम राम राम राम राम राम राम राम राम राम राम राम राम राम</textPath>
+                    </text>
+                </g>
+                <g class="layer3">
+                    <text fill="#d32f2f" font-size="18" font-weight="bold" letter-spacing="3">
+                        <textPath href="#circle3" startOffset="0%">राम राम राम राम राम राम राम राम राम राम राम राम राम राम राम राम राम राम राम राम राम राम राम राम  </textPath>
+                    </text>
+                </g>
+                <g class="layer4">
+                    <text fill="#d32f2f" font-size="16" font-weight="bold" letter-spacing="3.5">
+                        <textPath href="#circle4" startOffset="0%">राम राम राम राम राम राम राम राम राम राम राम राम राम राम राम राम राम राम राम</textPath>
+                    </text>
+                </g>
+            </svg>
+
+            <div class="logo">
+                <img src="https://i.ibb.co/21fkxzvH/In-Shot-20260429-025521557.png" alt="logo">
+            </div>
+        </div>
+        <h1 class="text-logo">Azad Vault</h1>
+        <div class="tagline">आजाद तिजोरी</div>
+        <div class="tagline">Free HD Wallpapers Download</div>
+    </div>
 
     <header>
         <h1 class="text-logo">Azad Vault</h1>
@@ -289,56 +320,15 @@
         <div class="no-results" id="no-results-msg" style="display:none; text-align:center; padding:50px;">No designs found.</div>
         <div class="masonry-grid" id="main-grid"></div>
     </div>
-<footer>
-<p>
-&copy; 2026 Azad Vault |
-<a href="about.html">About Us</a> |
-<a href="privacy-policy.html">Privacy Policy</a>
-</p>
-</footer>
 
-     
-    <div id="landing-screen">
-    <div class="logo-box">
-    <svg class="text-rings" viewBox="0 0 500 500">
-      <defs>
-        <path id="circle1" d="M 250, 250 m -220, 0 a 220,220 0 1,1 440,0 a 220,220 0 1,1 -440,0" />
-        <path id="circle2" d="M 250, 250 m -185, 0 a 185,185 0 1,1 370,0 a 185,185 0 1,1 -370,0" />
-        <path id="circle3" d="M 250, 250 m -150, 0 a 150,150 0 1,1 300,0 a 150,150 0 1,1 -300,0" />
-        <path id="circle4" d="M 250, 250 m -115, 0 a 115,115 0 1,1 230,0 a 115,115 0 1,1 -230,0" />
-      </defs>
-      
-      <g class="layer1">
-        <text fill="#d32f2f" font-size="20" font-weight="bold" letter-spacing="4">
-          <textPath href="#circle1" startOffset="0%">राम राम राम राम राम राम राम राम राम राम राम राम राम राम राम राम राम राम राम राम राम राम राम राम राम राम राम राम राम राम राम</textPath>
-        </text>
-      </g>
-      <g class="layer2">
-        <text fill="#d32f2f" font-size="19" font-weight="bold" letter-spacing="3.5">
-          <textPath href="#circle2" startOffset="0%">राम राम राम राम राम राम राम राम राम राम राम राम राम राम राम राम राम राम राम राम राम राम राम राम राम राम राम</textPath>
-        </text>
-      </g>
-      <g class="layer3">
-        <text fill="#d32f2f" font-size="18" font-weight="bold" letter-spacing="3">
-          <textPath href="#circle3" startOffset="0%">राम राम राम राम राम राम राम राम राम राम राम राम राम राम राम राम राम राम राम राम राम राम राम राम  </textPath>
-        </text>
-      </g>
-      <g class="layer4">
-        <text fill="#d32f2f" font-size="16" font-weight="bold" letter-spacing="3.5">
-          <textPath href="#circle4" startOffset="0%">राम राम राम राम राम राम राम राम राम राम राम राम राम राम राम राम राम राम राम</textPath>
-        </text>
-      </g>
-    </svg>
+    <footer>
+        <p>
+        &copy; 2026 Azad Vault |
+        <a href="about.html">About Us</a> |
+        <a href="privacy-policy.html">Privacy Policy</a>
+        </p>
+    </footer>
 
-    <div class="logo">
-      <img src="https://i.ibb.co/21fkxzvH/In-Shot-20260429-025521557.png" alt="logo">
-    </div>
-  </div>
-<h1 class="text-logo">Azad Vault</h1>
-  <div class="tagline">आजाद तिजोरी </div>
-  <div class="tagline">Free HD Wallpapers Download </div>
-    
-    
     <script>
         function openImagePreview(imageUrl, title) {
             const encodedUrl = encodeURIComponent(imageUrl);
@@ -376,17 +366,17 @@
 
         function openBiodataPage() { window.location.href = "biodata.html"; }
 
-        ---
-  setTimeout(() => {
-    const landing = document.getElementById("landing-screen");
-    landing.style.opacity = "0";
+        // FIXED LANDING PAGE HIDE LOGIC (Removed invalid '---' syntax)
+        setTimeout(() => {
+            const landing = document.getElementById("landing-screen");
+            if(landing) {
+                landing.style.opacity = "0";
 
-    setTimeout(() => {
-      landing.style.display = "none";
-    }, 1000);
-
-  }, 4000); // 4 sec
-
+                setTimeout(() => {
+                    landing.style.display = "none";
+                }, 1000);
+            }
+        }, 5000); // 4 sec fade logic
 
     </script>
 </body>
