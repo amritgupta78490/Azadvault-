@@ -47,14 +47,15 @@
 
                     const animationDelay = (index % 10) * 0.05; 
                     const safeTitle = data.title ? String(data.title).replace(/'/g, "\\'") : 'Design';
-                    const keywords = Array.isArray(data.keywords) ? data.keywords.join(" ") : String(data.keywords || "");
+                    const keywords = Array.isArray(data.keywords) ? data.keywords.join(" ").toLowerCase() : String(data.keywords || "").toLowerCase();
                     const category = String(data.category || "other").toLowerCase();
+                    const creator = String(data.creator || "").toLowerCase();
                     const imageUrl = data.imageUrl || "";
 
                     if (!imageUrl) return; 
 
                     gridHTML += `
-                        <div class="item-card search-item" data-category="${category}" data-keywords="${keywords}" style="animation-delay: ${animationDelay}s" onclick="openImagePreview('${imageUrl}', '${safeTitle}')">
+                        <div class="item-card search-item" data-category="${category}" data-keywords="${keywords}" data-creator="${creator}" style="animation-delay: ${animationDelay}s" onclick="openImagePreview('${imageUrl}', '${safeTitle}')">
                         <img src="${imageUrl}" alt="${safeTitle} HD wallpaper download free" title="${safeTitle} wallpaper" loading="lazy">
                             <div class="card-overlay">
                                 <h3>${safeTitle}</h3>
@@ -136,10 +137,39 @@
         .text-logo { font-family: 'Playfair Display', serif; font-size: 52px; font-weight: 800; text-align: center; color: #fff; }
         
         .header-search {
+            position: relative; /* Added for suggestions positioning */
             display: flex; align-items: center; background: rgba(255, 255, 255, 0.95);
             border-radius: 50px; padding: 14px 24px; width: 100%; max-width: 580px;
         }
         .header-search input { border: none; outline: none; width: 100%; background: transparent; margin-left: 12px; font-size: 15px; }
+
+        /* Search Suggestions Box CSS */
+        .suggestions-box {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+            margin-top: 10px;
+            max-height: 280px;
+            overflow-y: auto;
+            z-index: 1000;
+            display: none;
+            padding: 8px 0;
+        }
+        .suggestion-item {
+            padding: 12px 24px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: background 0.2s;
+        }
+        .suggestion-item:hover { background: #f8f9fa; }
+        .suggestion-text { color: var(--text-dark); font-size: 14px; font-weight: 500; }
+        .suggestion-type { font-size: 11px; color: white; background: var(--theme-maroon); padding: 3px 8px; border-radius: 6px; font-weight: 600;}
 
         .creator-section { padding: 25px 5% 10px 5%; }
         .creator-scroll { display: flex; gap: 20px; overflow-x: auto; padding-bottom: 15px; scrollbar-width: none; }
@@ -302,7 +332,8 @@
         <h1 class="text-logo">Azad Vault</h1>
         <div class="header-search">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#8B0000" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-            <input type="text" id="global-search" placeholder="Search designs...">
+            <input type="text" id="global-search" placeholder="Search by name, creator or keywords..." autocomplete="off">
+            <div id="search-suggestions" class="suggestions-box"></div>
         </div>
     </header>
 
@@ -317,7 +348,7 @@
     </div>
 
     <div class="container">
-        <div class="no-results" id="no-results-msg" style="display:none; text-align:center; padding:50px;">No designs found.</div>
+        <div class="no-results" id="no-results-msg" style="display:none; text-align:center; padding:50px; font-weight: 500; font-size: 18px; color: var(--text-muted);">No designs found. Try a different search.</div>
         <div class="masonry-grid" id="main-grid"></div>
     </div>
 
@@ -336,7 +367,6 @@
             window.location.href = `wallpaper.html?url=${encodedUrl}&title=${encodedTitle}`;
         }
 
-        // REDIRECT TO CREATOR PAGE
         function openCreatorProfile(name, dpUrl, instaLink) {
             const encodedName = encodeURIComponent(name);
             const encodedDp = encodeURIComponent(dpUrl);
@@ -349,24 +379,105 @@
             if(btnElement) btnElement.classList.add('active');
 
             let items = document.querySelectorAll('.search-item');
+            let hasResults = false;
+
             items.forEach(item => {
                 let category = item.getAttribute('data-category');
-                item.style.display = (keyword === 'all' || category.includes(keyword)) ? 'block' : 'none';
+                if (keyword === 'all' || category.includes(keyword)) {
+                    item.style.display = 'block';
+                    hasResults = true;
+                } else {
+                    item.style.display = 'none';
+                }
             });
+            document.getElementById('no-results-msg').style.display = hasResults ? 'none' : 'block';
         }
 
-        document.getElementById('global-search').addEventListener('input', function(e) {
-            let query = e.target.value.toLowerCase();
+        // ================= IMPROVED ADVANCED SEARCH SYSTEM =================
+        const searchInput = document.getElementById('global-search');
+        const suggestionsBox = document.getElementById('search-suggestions');
+
+        searchInput.addEventListener('input', function(e) {
+            let query = e.target.value.toLowerCase().trim();
             let items = document.querySelectorAll('.search-item');
+            let hasResults = false;
+            
+            // 1. Filter Grid items dynamically
             items.forEach(item => {
                 let title = item.querySelector('h3').innerText.toLowerCase();
-                item.style.display = title.includes(query) ? 'block' : 'none';
+                let category = item.getAttribute('data-category') || "";
+                let keywords = item.getAttribute('data-keywords') || "";
+                let creator = item.getAttribute('data-creator') || "";
+                
+                // Matches title, keywords, or creator
+                if(title.includes(query) || keywords.includes(query) || creator.includes(query) || category.includes(query)) {
+                    item.style.display = 'block';
+                    hasResults = true;
+                } else {
+                    item.style.display = 'none';
+                }
             });
+
+            document.getElementById('no-results-msg').style.display = hasResults || query === "" ? 'none' : 'block';
+
+            // 2. Build Autocomplete Suggestions
+            if (query.length > 0 && window.allDesignsData) {
+                let matchedSuggestions = [];
+
+                window.allDesignsData.forEach(data => {
+                    let sTitle = (data.title || "").toLowerCase();
+                    let sCreator = (data.creator || "").toLowerCase();
+                    let sKeywords = Array.isArray(data.keywords) ? data.keywords.join(" ").toLowerCase() : String(data.keywords || "").toLowerCase();
+                    
+                    if (sTitle.includes(query)) {
+                        matchedSuggestions.push({ text: data.title, type: 'Title' });
+                    } else if (sCreator.includes(query)) {
+                        matchedSuggestions.push({ text: data.creator, type: 'Creator' });
+                    } else if (sKeywords.includes(query)) {
+                        let kwArray = sKeywords.split(" ");
+                        let matchKw = kwArray.find(k => k.includes(query));
+                        if(matchKw) matchedSuggestions.push({ text: matchKw, type: 'Keyword' });
+                    }
+                });
+
+                // Remove duplicate suggestions and limit to top 6
+                let uniqueSuggestions = Array.from(new Set(matchedSuggestions.map(s => s.text)))
+                    .map(text => matchedSuggestions.find(s => s.text === text)).slice(0, 6);
+
+                if (uniqueSuggestions.length > 0) {
+                    suggestionsBox.innerHTML = uniqueSuggestions.map(s => `
+                        <div class="suggestion-item" onclick="applySearch('${s.text.replace(/'/g, "\\'")}')">
+                            <span class="suggestion-text">${s.text}</span>
+                            <span class="suggestion-type">${s.type}</span>
+                        </div>
+                    `).join('');
+                    suggestionsBox.style.display = 'block';
+                } else {
+                    suggestionsBox.style.display = 'none';
+                }
+            } else {
+                suggestionsBox.style.display = 'none';
+            }
         });
+
+        // Click outside to close suggestions
+        document.addEventListener('click', function(e) {
+            if (!searchInput.contains(e.target) && !suggestionsBox.contains(e.target)) {
+                suggestionsBox.style.display = 'none';
+            }
+        });
+
+        // Function triggered when suggestion is clicked
+        window.applySearch = function(text) {
+            searchInput.value = text;
+            suggestionsBox.style.display = 'none';
+            searchInput.dispatchEvent(new Event('input')); // Re-trigger the search event
+        };
+        // ================= END OF ADVANCED SEARCH SYSTEM =================
 
         function openBiodataPage() { window.location.href = "biodata.html"; }
 
-        // FIXED LANDING PAGE HIDE LOGIC (Removed invalid '---' syntax)
+        // FIXED LANDING PAGE HIDE LOGIC
         setTimeout(() => {
             const landing = document.getElementById("landing-screen");
             if(landing) {
