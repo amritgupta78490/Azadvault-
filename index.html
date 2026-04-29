@@ -376,6 +376,18 @@
 
         function openBiodataPage() { window.location.href = "biodata.html"; }
 
+        ---
+  setTimeout(() => {
+    const landing = document.getElementById("landing-screen");
+    landing.style.opacity = "0";
+
+    setTimeout(() => {
+      landing.style.display = "none";
+    }, 1000);
+
+  }, 4000); // 4 sec
+
+
     </script>
 </body>
 </html>
