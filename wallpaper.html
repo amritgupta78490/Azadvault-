@@ -82,7 +82,7 @@
             transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        /* Desktop Mode Style */
+        /* Desktop Mode Style (Laptop) */
         .mode-desktop {
             width: 100%;
             max-width: 750px;
@@ -100,7 +100,7 @@
             border-radius: 0 0 20px 20px; z-index: -1;
         }
 
-        /* Mobile Mode Style */
+        /* Mobile Mode Style (Phone) */
         .mode-mobile {
             width: 280px;
             aspect-ratio: 9 / 19.5;
@@ -154,7 +154,6 @@
 
         .success-bg { background: #28a745 !important; box-shadow: 0 10px 25px rgba(40, 167, 69, 0.4) !important; }
 
-        /* Mobile specific adjustment for Desktop Frame */
         @media (max-width: 600px) {
             .mode-desktop { width: 100%; border-width: 8px; }
             .mode-desktop::after { height: 10px; bottom: -18px; }
@@ -181,7 +180,7 @@
                     <i class="fas fa-cloud-download-alt"></i> Download Image
                 </button>
                 <button id="dynamic-share-btn" class="btn-share" style="display: none;">
-                    <i class="fas fa-share-nodes"></i> Share with Friends
+                    <i class="fas fa-share-nodes"></i> Share Image
                 </button>
             </div>
         </div>
@@ -189,18 +188,23 @@
 
     <script>
         const urlParams = new URLSearchParams(window.location.search);
-        const imageUrl = urlParams.get('url');
+        const imageUrl = urlParams.get('url') || '';
         const imageTitle = urlParams.get('title') || 'Wallpaper';
-        const isDesktop = urlParams.get('type') === 'desktop';
 
         document.addEventListener('DOMContentLoaded', () => {
             const frame = document.getElementById('device-switcher');
             const imgElement = document.getElementById('dynamic-preview-img');
+            
+            // KEYWORD FINDER: Title ya URL me "desktop" word check karega
+            const isDesktopWallpaper = 
+                imageTitle.toLowerCase().includes('desktop') || 
+                imageUrl.toLowerCase().includes('desktop') || 
+                urlParams.get('type') === 'desktop';
 
             document.getElementById('dynamic-preview-title').innerText = imageTitle;
 
-            // SMART SWITCH: Apply frame based on URL parameter
-            if(isDesktop) {
+            // Agar keyword mil gaya, toh Desktop Frame apply hoga
+            if(isDesktopWallpaper) {
                 frame.classList.remove('mode-mobile');
                 frame.classList.add('mode-desktop');
             }
@@ -240,7 +244,6 @@
 
                 btn.innerHTML = '<i class="fas fa-check-circle"></i> Downloaded!';
                 btn.classList.add('success-bg');
-                
                 shareBtn.style.display = 'flex';
                 shareBtn.onclick = function() { shareImageLink(url, title); };
 
@@ -268,9 +271,9 @@
                         text: `Check out this amazing wallpaper!`,
                         files: [file]
                     });
-                } catch (err) { console.log("Share cancelled"); }
+                } catch (err) { console.log("Share failed"); }
             } else {
-                alert("Sharing not supported. Link copied: " + url);
+                alert("Sharing not supported. Link: " + url);
             }
         }
     </script>
