@@ -10,9 +10,11 @@
     <style>
         :root {
             --theme-maroon: #8B0000; 
+            --theme-maroon-light: #FF3131;
             --theme-maroon-dark: #4A0000;
-            --bg-dark: #1e2029;
-            --device-border: #1a1a1a;
+            --bg-dark: #0f1016;
+            --card-bg: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.1);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
@@ -21,6 +23,7 @@
             background-color: var(--bg-dark); 
             color: white; 
             overflow-x: hidden; 
+            min-height: 100vh;
         }
 
         /* --- HEADER --- */
@@ -31,13 +34,15 @@
             position: sticky; 
             top: 0; 
             z-index: 101; 
-            background-color: var(--bg-dark);
+            background: rgba(15, 16, 22, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--glass-border);
         }
         
         .btn-back { 
-            background: rgba(255,255,255,0.1); 
+            background: var(--card-bg); 
             color: white; 
-            border: 1px solid rgba(255,255,255,0.2); 
+            border: 1px solid var(--glass-border); 
             padding: 10px 20px; 
             border-radius: 50px; 
             cursor: pointer; 
@@ -50,67 +55,61 @@
             gap: 8px; 
         }
         
-        .btn-back:hover { background: rgba(255,255,255,0.2); transform: translateX(-3px); }
+        .btn-back:hover { background: rgba(255,255,255,0.1); transform: translateX(-3px); }
 
-        #dynamic-preview-title { font-weight: 500; font-size: 18px; }
+        #dynamic-preview-title { font-weight: 600; font-size: 18px; letter-spacing: 0.5px; }
 
-        .container { padding: 0 5%; max-width: 1000px; margin: 0 auto; }
+        .container { padding: 0 5%; max-width: 1100px; margin: 0 auto; }
         
         .preview-wrapper { 
-            margin: 20px auto 50px; 
-            background: rgba(255, 255, 255, 0.03); 
-            padding: 60px 20px; 
+            margin: 30px auto 50px; 
+            background: var(--card-bg); 
+            padding: 50px 20px; 
             border-radius: 30px; 
             text-align: center; 
-            border: 1px solid rgba(255,255,255,0.05);
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
         }
 
-        /* --- LAPTOP FRAME (DESKTOP) --- */
+        /* --- DEVICE FRAME (DESKTOP/LAPTOP) --- */
         .device-frame {
             position: relative;
             width: 100%;
-            max-width: 700px; 
+            max-width: 750px; 
             aspect-ratio: 16 / 10;
             background: #000;
-            border: 14px solid var(--device-border);
+            border: 14px solid #1a1a1a;
             border-radius: 20px 20px 5px 5px;
             margin: 0 auto 60px;
-            box-shadow: 0 30px 60px rgba(0,0,0,0.5);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.6);
             z-index: 5;
+            display: flex; justify-content: center; align-items: center;
         }
 
         /* Laptop Webcam */
         .device-frame::before {
-            content: '';
-            position: absolute;
-            top: -9px; left: 50%;
-            transform: translateX(-50%);
-            width: 6px; height: 6px;
-            background: #222; border-radius: 50%;
-            z-index: 10;
+            content: ''; position: absolute; top: -9px; left: 50%;
+            transform: translateX(-50%); width: 6px; height: 6px;
+            background: #333; border-radius: 50%; z-index: 10;
         }
 
-        /* Laptop Bottom Base (Refined) */
+        /* Laptop Bottom Base */
         .device-frame::after {
-            content: '';
-            position: absolute;
-            bottom: -28px; left: -10%;
-            width: 120%; height: 14px;
-            background: linear-gradient(to bottom, #444, #111);
-            border-radius: 0 0 20px 20px;
-            z-index: -1;
+            content: ''; position: absolute; bottom: -30px; left: -10%;
+            width: 120%; height: 16px;
+            background: linear-gradient(to bottom, #333, #000);
+            border-radius: 0 0 20px 20px; z-index: -1;
         }
 
         .device-frame img {
             width: 100%; height: 100%;
-            object-fit: contain;
+            object-fit: cover; /* Laptop screen fills perfectly */
             background: #000;
+            border-radius: 2px;
         }
 
-        /* --- MOBILE FRAME (SMALL SCREENS) --- */
+        /* --- MOBILE FRAME (AUTO SWITCH) --- */
         @media (max-width: 767px) {
-            .preview-wrapper { padding: 40px 15px; }
-
             .device-frame {
                 max-width: 280px; 
                 aspect-ratio: 9 / 19.5; 
@@ -119,59 +118,64 @@
                 margin-bottom: 40px;
             }
             
-            /* Laptop base hide karna */
             .device-frame::after {
                 width: 35%; height: 4px;
                 background: rgba(255,255,255,0.4);
                 bottom: 12px; left: 50%;
                 transform: translateX(-50%);
-                border-radius: 10px;
-                z-index: 10;
+                border-radius: 10px; z-index: 10;
             }
 
-            /* Mobile Notch */
             .device-frame::before {
                 top: 0; width: 45%; height: 22px;
-                background: #121212;
-                border-radius: 0 0 18px 18px;
-                z-index: 11;
+                background: #121212; border-radius: 0 0 18px 18px;
             }
 
-            .device-frame img {
-                object-fit: cover;
-                border-radius: 33px;
-            }
+            .device-frame img { border-radius: 33px; }
         }
 
-        /* --- BUTTONS --- */
-        .button-group { display: flex; flex-direction: column; align-items: center; gap: 15px; }
+        /* --- BUTTONS DESIGN --- */
+        .button-group { display: flex; flex-direction: column; align-items: center; gap: 16px; }
 
         .btn-download { 
-            background: var(--theme-maroon); color: white; border: none; 
-            padding: 16px 40px; border-radius: 50px; cursor: pointer; 
-            font-size: 16px; font-weight: 600; width: 100%; max-width: 300px;
-            box-shadow: 0 10px 20px rgba(139,0,0,0.3); transition: 0.3s;
+            background: linear-gradient(135deg, var(--theme-maroon) 0%, var(--theme-maroon-dark) 100%);
+            color: white; border: none; 
+            padding: 16px 45px; border-radius: 50px; cursor: pointer; 
+            font-size: 16px; font-weight: 700; width: 100%; max-width: 320px;
+            box-shadow: 0 10px 25px rgba(139, 0, 0, 0.4); 
+            transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: flex; align-items: center; justify-content: center; gap: 10px;
         }
         
-        .btn-download:hover { background: var(--theme-maroon-dark); transform: translateY(-3px); }
+        .btn-download:hover { 
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 15px 30px rgba(139, 0, 0, 0.6); 
+        }
 
         .btn-share { 
-            background: transparent; color: white; border: 2px solid rgba(255,255,255,0.3); 
-            padding: 14px 40px; border-radius: 50px; cursor: pointer; 
-            font-size: 15px; font-weight: 500; width: 100%; max-width: 300px;
+            background: rgba(255, 255, 255, 0.05);
+            color: white; border: 1px solid var(--glass-border); 
+            padding: 14px 45px; border-radius: 50px; cursor: pointer; 
+            font-size: 15px; font-weight: 600; width: 100%; max-width: 320px;
             transition: 0.3s;
+            display: flex; align-items: center; justify-content: center; gap: 10px;
         }
         
-        .btn-share:hover { background: rgba(255,255,255,0.1); border-color: white; }
+        .btn-share:hover { 
+            background: rgba(255, 255, 255, 0.1);
+            border-color: white;
+        }
+
+        .success-bg { background: #28a745 !important; box-shadow: 0 10px 25px rgba(40, 167, 69, 0.4) !important; }
     </style>
 </head>
 <body>
 
     <div class="page-header">
         <button class="btn-back" onclick="goBack()">
-            <i class="fas fa-arrow-left"></i> Back
+            <i class="fas fa-chevron-left"></i> Back
         </button>
-        <h2 id="dynamic-preview-title">Loading...</h2>
+        <h2 id="dynamic-preview-title">Azad Vault Preview</h2>
     </div>
     
     <div class="container">
@@ -182,10 +186,10 @@
             
             <div class="button-group">
                 <button id="dynamic-download-btn" class="btn-download">
-                    <i class="fas fa-download"></i> Download Image
+                    <i class="fas fa-cloud-download-alt"></i> Download Image
                 </button>
                 <button id="dynamic-share-btn" class="btn-share" style="display: none;">
-                    <i class="fas fa-share-alt"></i> Share Image
+                    <i class="fas fa-share-nodes"></i> Share with Friends
                 </button>
             </div>
         </div>
@@ -197,8 +201,8 @@
         const imageTitle = urlParams.get('title') || 'Wallpaper';
 
         document.addEventListener('DOMContentLoaded', () => {
-            document.getElementById('dynamic-preview-title').innerText = imageTitle;
             if(imageUrl) {
+                document.getElementById('dynamic-preview-title').innerText = imageTitle;
                 const imgElement = document.getElementById('dynamic-preview-img');
                 imgElement.src = imageUrl;
                 imgElement.style.display = 'block'; 
@@ -209,29 +213,50 @@
             }
         });
 
-        function goBack() { window.history.length > 1 ? window.history.back() : window.location.href = 'index.html'; }
+        function goBack() { 
+            window.history.length > 1 ? window.history.back() : window.location.href = 'index.html'; 
+        }
 
         async function downloadImage(url, title) {
+            const btn = document.getElementById('dynamic-download-btn');
+            const shareBtn = document.getElementById('dynamic-share-btn');
+            const originalHTML = btn.innerHTML;
+            
             try {
-                const btn = document.getElementById('dynamic-download-btn');
-                const shareBtn = document.getElementById('dynamic-share-btn');
-                const originalText = btn.innerHTML;
-                btn.innerHTML = "⏳ Downloading...";
+                btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Preparing...';
+                btn.style.pointerEvents = 'none';
+
                 const response = await fetch(url);
                 const blob = await response.blob();
                 const objectUrl = window.URL.createObjectURL(blob);
+                
                 const a = document.createElement('a');
                 a.href = objectUrl;
-                a.download = `${title}.png`;
+                a.download = `${title.replace(/\s+/g, '_')}_AzadVault.png`;
                 document.body.appendChild(a);
                 a.click();
                 document.body.removeChild(a);
                 window.URL.revokeObjectURL(objectUrl);
-                btn.innerHTML = "✅ Downloaded!";
-                shareBtn.style.display = 'inline-flex';
+
+                // Success State
+                btn.innerHTML = '<i class="fas fa-check-circle"></i> Saved Successfully!';
+                btn.classList.add('success-bg');
+                
+                // Show Share button with animation
+                shareBtn.style.display = 'flex';
                 shareBtn.onclick = function() { shareImageLink(url, title); };
-                setTimeout(() => btn.innerHTML = originalText, 3000); 
-            } catch (error) { window.open(url, '_blank'); }
+
+                setTimeout(() => {
+                    btn.innerHTML = originalHTML;
+                    btn.classList.remove('success-bg');
+                    btn.style.pointerEvents = 'auto';
+                }, 4000); 
+
+            } catch (error) {
+                btn.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Try Again';
+                setTimeout(() => { btn.innerHTML = originalHTML; btn.style.pointerEvents = 'auto'; }, 3000);
+                window.open(url, '_blank'); 
+            }
         }
 
         async function shareImageLink(url, title) {
@@ -240,8 +265,14 @@
                     const response = await fetch(url);
                     const blob = await response.blob();
                     const file = new File([blob], `${title}.png`, { type: blob.type });
-                    await navigator.share({ title: title, files: [file] });
-                } catch (e) { console.log(e); }
+                    await navigator.share({
+                        title: `Azad Vault - ${title}`,
+                        text: `Check out this cool wallpaper!`,
+                        files: [file]
+                    });
+                } catch (err) { console.log("Share failed"); }
+            } else {
+                alert("Sharing not supported on this browser. Link: " + url);
             }
         }
     </script>
