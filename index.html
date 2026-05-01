@@ -52,13 +52,13 @@
                     const creator = String(data.creator || "").toLowerCase();
                     const imageUrl = data.imageUrl || "";
                     
-                    // Fallback for trending if views don't exist in DB
-                    const views = data.views || Math.floor(Math.random() * 1000);
+                    // Changed to sort by actual downloads. Fallback to 0 if no downloads data exists.
+                    const downloads = data.downloads || 0;
 
                     if (!imageUrl) return; 
 
                     gridHTML += `
-                        <div class="item-card search-item" data-index="${index}" data-views="${views}" data-category="${category}" data-keywords="${keywords}" data-creator="${creator}" style="animation-delay: ${animationDelay}s" onclick="openImagePreview('${imageUrl}', '${safeTitle}')">
+                        <div class="item-card search-item" data-index="${index}" data-downloads="${downloads}" data-category="${category}" data-keywords="${keywords}" data-creator="${creator}" style="animation-delay: ${animationDelay}s" onclick="openImagePreview('${imageUrl}', '${safeTitle}')">
                         <img src="${imageUrl}" alt="${safeTitle} HD wallpaper download free" title="${safeTitle} wallpaper" loading="lazy">
                             <div class="card-overlay">
                                 <h3>${safeTitle}</h3>
@@ -417,8 +417,8 @@
             let items = Array.from(grid.getElementsByClassName('search-item'));
 
             if (type === 'trending') {
-                // Sort by views
-                items.sort((a, b) => parseInt(b.getAttribute('data-views')) - parseInt(a.getAttribute('data-views')));
+                // Sort by downloads
+                items.sort((a, b) => parseInt(b.getAttribute('data-downloads')) - parseInt(a.getAttribute('data-downloads')));
             } else {
                 // Restore to latest (original load index)
                 items.sort((a, b) => parseInt(a.getAttribute('data-index')) - parseInt(b.getAttribute('data-index')));
