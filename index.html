@@ -73,31 +73,37 @@
                 let gridHTML = ""; 
 
                 querySnapshot.forEach((doc, index) => {
-                    const data = doc.data();
-                    window.allDesignsData.push(data); 
+    const data = doc.data();
+    window.allDesignsData.push(data); 
 
-                    const animationDelay = (index % 10) * 0.05; 
-                    const safeTitle = data.title ? String(data.title).replace(/'/g, "\\'") : 'Design';
-                    const keywords = Array.isArray(data.keywords) ? data.keywords.join(" ").toLowerCase() : String(data.keywords || "").toLowerCase();
-                    const category = String(data.category || "other").toLowerCase();
-                    const creator = String(data.creator || "").toLowerCase();
-                    const imageUrl = data.imageUrl || "";
-                    const downloads = data.downloads || 0;
+    const animationDelay = (index % 10) * 0.05; 
+    const safeTitle = data.title ? String(data.title).replace(/'/g, "\\'") : 'Design';
+    
+    // --- DESCRIPTION ADDED HERE ---
+    const rawDesc = data.description || ""; // Firebase se description liya
+    const safeDesc = rawDesc.replace(/'/g, "\\'"); // Single quotes handle kiye
+    
+    const keywords = Array.isArray(data.keywords) ? data.keywords.join(" ").toLowerCase() : String(data.keywords || "").toLowerCase();
+    const category = String(data.category || "other").toLowerCase();
+    const creator = String(data.creator || "").toLowerCase();
+    const imageUrl = data.imageUrl || "";
+    const downloads = data.downloads || 0;
 
-                    if (!imageUrl) return; 
+    if (!imageUrl) return; 
 
-                    gridHTML += `
-                        <div class="item-card search-item" data-index="${index}" data-downloads="${downloads}" data-category="${category}" data-keywords="${keywords}" data-creator="${creator}" style="animation-delay: ${animationDelay}s" onclick="openImagePreview('${imageUrl}', '${safeTitle}')">
-                            <img src="${imageUrl}" alt="${safeTitle} - 4K HD Wallpaper" title="${safeTitle} wallpaper" loading="lazy">
-                            <div class="card-overlay">
-                                <h3>${safeTitle}</h3>
-                                <div class="card-actions">
-                                    <span class="downloads"><i class="fa-solid fa-arrow-down"></i> ${downloads}</span>
-                                </div>
-                            </div>
-                        </div>
-                    `;
-                });
+    gridHTML += `
+        <div class="item-card search-item" data-index="${index}" data-downloads="${downloads}" data-category="${category}" data-keywords="${keywords}" data-creator="${creator}" style="animation-delay: ${animationDelay}s" onclick="openImagePreview('${imageUrl}', '${safeTitle}', '${safeDesc}')">
+            <img src="${imageUrl}" alt="${safeTitle} - 4K HD Wallpaper" title="${safeTitle} wallpaper" loading="lazy">
+            <div class="card-overlay">
+                <h3>${safeTitle}</h3>
+                <div class="card-actions">
+                    <span class="downloads"><i class="fa-solid fa-arrow-down"></i> ${downloads}</span>
+                </div>
+            </div>
+        </div>
+    `;
+});
+                
                 
                 mainGrid.innerHTML = gridHTML; 
                 
@@ -727,11 +733,15 @@
         }
 
         // ================= ROUTING =================
-        function openImagePreview(imageUrl, title) {
-            const encodedUrl = encodeURIComponent(imageUrl);
-            const encodedTitle = encodeURIComponent(title);
-            window.location.href = `wallpaper.html?url=${encodedUrl}&title=${encodedTitle}`;
-        }
+        function openImagePreview(imageUrl, title, description) {
+    const encodedUrl = encodeURIComponent(imageUrl);
+    const encodedTitle = encodeURIComponent(title);
+    const encodedDesc = encodeURIComponent(description || ""); // Description ko encode kiya
+    
+    // URL mein description parameter add kar diya
+    window.location.href = `wallpaper.html?url=${encodedUrl}&title=${encodedTitle}&desc=${encodedDesc}`;
+}
+
 
         function openCreatorProfile(name, dpUrl, instaLink) {
             const encodedName = encodeURIComponent(name);
