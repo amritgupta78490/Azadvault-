@@ -344,6 +344,40 @@
         .loader-line::after{ content:''; position:absolute; width:35%; height:100%; background:#E63946; border-radius:20px; animation:loaderMove 2s linear infinite; }
         @keyframes loaderMove{ 0%{left:-35%;} 100%{left:100%;} }
         @media(max-width:900px){ .landing-content{ flex-direction:column; text-align:center; } .landing-logo{ font-size:42px; } .landing-tagline{ font-size:15px; } .landing-preview-img{ width:220px; } }
+.site-footer{
+    width:100%;
+    padding:25px 5%;
+    text-align:center;
+    background:var(--surface-dark);
+    border-top:1px solid var(--glass-border);
+    margin-top:30px;
+}
+
+.site-footer p{
+    color:var(--text-secondary);
+    font-size:13px;
+    margin-bottom:12px;
+}
+
+.footer-links{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:18px;
+    flex-wrap:wrap;
+}
+
+.footer-links a{
+    color:var(--text-primary);
+    text-decoration:none;
+    font-size:14px;
+    transition:0.3s;
+}
+
+.footer-links a:hover{
+    color:var(--theme-accent);
+}
+        
     </style>
 </head>
 <body>
