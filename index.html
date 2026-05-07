@@ -550,7 +550,7 @@
 
     <nav class="bottom-nav">
         <a class="nav-item active" href="#" onclick="window.scrollTo(0,0)"><i class="fa-solid fa-house"></i>Home</a>
-        <a class="nav-item" href="#" onclick="document.getElementById('global-search').focus()"><i class="fa-solid fa-magnifying-glass"></i>Search</a>
+        <a class="nav-item" href="search.html" ><i class="fa-solid fa-magnifying-glass"></i>Search</a>
         <a class="nav-item" href="biodata.html"><i class="fa-solid fa-file-contract"></i>Biodata</a>
         <a class="nav-item" href="about.html"><i class="fa-solid fa-circle-info"></i>About</a>
     </nav>
@@ -741,23 +741,39 @@
         };
 
         // ================= LANDING PAGE DISMISSAL LOGIC =================
-        let landingDismissed = false;
 
-        function dismissLanding() {
-            if (landingDismissed) return;
-            landingDismissed = true;
-            
-            const landing = document.getElementById("landing-screen");
-            if(landing) {
-                landing.style.opacity = "0";
-                setTimeout(() => { landing.style.display = "none"; }, 800);
-            }
+function dismissLanding() {
+    const landing = document.getElementById("landing-screen");
+
+    if (landing) {
+        landing.style.opacity = "0";
+
+        setTimeout(() => {
+            landing.style.display = "none";
+        }, 800);
+
+        // Save state
+        sessionStorage.setItem("landingShown", "true");
+    }
+}
+
+// Check if already shown
+window.addEventListener("DOMContentLoaded", () => {
+    const alreadyShown = sessionStorage.getItem("landingShown");
+
+    if (alreadyShown === "true") {
+        const landing = document.getElementById("landing-screen");
+
+        if (landing) {
+            landing.style.display = "none";
         }
-
-        // Auto dismiss after 6 seconds (6000ms)
+    } else {
+        // Auto dismiss after 6 seconds
         setTimeout(() => {
             dismissLanding();
-        }, 6000); 
+        }, 6000);
+    }
+});
 
     </script>
 </body>
