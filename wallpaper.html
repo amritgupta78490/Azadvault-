@@ -3,81 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Creator Vault - Azad Vault</title>
+    <title>Wallpaper Preview - Azad Vault</title>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@800&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-        import { getFirestore, collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
-        
-        const firebaseConfig = {
-            apiKey: "AIzaSyAhjIHv-buPd9HK3Uf52VLxwwJFIZe1H5Y",
-            authDomain: "amritone-4bdcd.firebaseapp.com",
-            projectId: "amritone-4bdcd",
-            storageBucket: "amritone-4bdcd.firebasestorage.app",
-            messagingSenderId: "500948842891",
-            appId: "1:500948842891:web:36eb457b02445fa3d4978e",
-            measurementId: "G-ZSJ73XSSNQ"
-        };
-
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
-
-        const urlParams = new URLSearchParams(window.location.search);
-        const creatorName = urlParams.get('name') || "Creator";
-        const dpUrl = urlParams.get('dp') || "https://ui-avatars.com/api/?name=Creator";
-        const instaLink = urlParams.get('insta') || "#";
-
-        document.getElementById('cp-name-text').innerText = creatorName;
-        document.getElementById('cp-img').src = dpUrl;
-        document.getElementById('cp-follow-btn').onclick = () => window.open(instaLink, '_blank');
-        document.title = `${creatorName} - Azad Vault`;
-
-        async function loadCreatorDesigns() {
-            const mainGrid = document.getElementById('main-grid');
-            const targetCreator = creatorName.toLowerCase();
-
-            try {
-                const q = query(collection(db, "designs"), orderBy("createdAt", "desc"));
-                const querySnapshot = await getDocs(q);
-                let gridHTML = ""; 
-                let count = 0;
-
-                querySnapshot.forEach((doc) => {
-                    const data = doc.data();
-                    const postCreator = data.creator ? String(data.creator).toLowerCase() : "";
-                    
-                    if (postCreator === targetCreator) {
-                        const safeTitle = data.title ? String(data.title).replace(/'/g, "\\'") : 'Design';
-                        const imageUrl = data.imageUrl || "";
-
-                        if (imageUrl) {
-                            gridHTML += `
-                                <div class="item-card" onclick="openImagePreview('${imageUrl}', '${safeTitle}')">
-                                    <img src="${imageUrl}" alt="${safeTitle}" loading="lazy">
-                                    <div class="card-overlay">
-                                        <h3>${safeTitle}</h3>
-                                    </div>
-                                </div>
-                            `;
-                            count++;
-                        }
-                    }
-                });
-                
-                if (count > 0) {
-                    mainGrid.innerHTML = gridHTML; 
-                } else {
-                    mainGrid.innerHTML = `<div class="no-results"><i class="fa-solid fa-ghost"></i><br>No designs by ${creatorName} yet.</div>`;
-                }
-            } catch (error) {
-                console.error("Error fetching designs: ", error);
-            }
-        }
-
-        window.addEventListener('DOMContentLoaded', loadCreatorDesigns);
-    </script>
 
     <style>
         :root {
@@ -88,10 +16,11 @@
             --theme-accent: #E63946; 
             --glass-bg: rgba(30, 30, 36, 0.75);
             --glass-border: rgba(255, 255, 255, 0.08);
-            --curve-medium: 16px;
+            --theme-maroon: #8B0000;
+            --theme-maroon-dark: #4A0000;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; -webkit-tap-highlight-color: transparent; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
         body { background-color: var(--bg-dark); color: var(--text-primary); padding-bottom: 90px; overflow-x: hidden; }
 
         /* Header */
@@ -103,54 +32,51 @@
             border-bottom: 1px solid var(--glass-border);
             display: flex; align-items: center; justify-content: space-between;
         }
-        .back-btn { color: white; text-decoration: none; font-size: 18px; }
+        .back-btn { color: white; text-decoration: none; font-size: 18px; cursor: pointer; }
         .brand-small { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 800; }
         .brand-small span { color: var(--theme-accent); }
 
-        /* Profile Banner */
-        .creator-banner {
-            padding: 40px 5%;
-            display: flex; flex-direction: column; align-items: center;
-            text-align: center;
-            background: linear-gradient(to bottom, #1a1a24, var(--bg-dark));
-        }
-        .profile-img-wrapper {
-            width: 100px; height: 100px;
-            border-radius: 50%;
-            padding: 3px;
-            background: linear-gradient(45deg, var(--theme-accent), #FF9A9E);
-            margin-bottom: 15px;
-        }
-        .profile-img-wrapper img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 3px solid var(--bg-dark); }
-        .creator-banner h2 { font-size: 22px; font-weight: 700; margin-bottom: 15px; }
-        .btn-follow {
-            background: #fff; color: #000; border: none; padding: 10px 25px;
-            border-radius: 30px; font-weight: 600; font-size: 14px;
-            display: flex; align-items: center; gap: 8px; cursor: pointer; transition: 0.3s;
-        }
-        .btn-follow:active { transform: scale(0.95); }
+        /* Preview Container */
+        .container { padding: 30px 5%; display: flex; flex-direction: column; align-items: center; }
+        #dynamic-preview-title { margin-bottom: 25px; font-size: 20px; font-weight: 600; text-align: center; }
 
-        /* Grid */
-        .container { padding: 10px 5%; max-width: 1600px; margin: auto; }
-        .masonry-grid { column-count: 2; column-gap: 15px; }
-        @media (min-width: 900px) { .masonry-grid { column-count: 4; } }
+        /* Smart Device Frames */
+        .device-container { position: relative; margin-bottom: 40px; transition: 0.5s; }
+        .device-container img { width: 100%; height: 100%; object-fit: cover; display: none; }
 
-        .item-card { 
-            background: var(--surface-dark); border-radius: var(--curve-medium); overflow: hidden; 
-            margin-bottom: 15px; break-inside: avoid; position: relative;
-            border: 1px solid var(--glass-border);
+        /* Mobile Mode */
+        .mode-mobile {
+            width: 280px; aspect-ratio: 9 / 19.5;
+            background: #000; border: 10px solid #1a1a1a;
+            border-radius: 40px; box-shadow: 0 20px 40px rgba(0,0,0,0.5);
         }
-        .item-card img { width: 100%; display: block; }
-        .card-overlay { 
-            position: absolute; bottom: 0; left: 0; width: 100%; padding: 30px 10px 10px; 
-            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+        .mode-mobile img { border-radius: 30px; }
+
+        /* Desktop Mode */
+        .mode-desktop {
+            width: 100%; max-width: 600px; aspect-ratio: 16 / 10;
+            background: #000; border: 12px solid #1a1a1a;
+            border-radius: 15px 15px 5px 5px; box-shadow: 0 30px 60px rgba(0,0,0,0.6);
         }
-        .card-overlay h3 { font-size: 12px; font-weight: 400; color: #fff; }
+        .mode-desktop img { border-radius: 4px; }
 
-        .no-results { text-align: center; padding: 50px; color: var(--text-secondary); }
-        .no-results i { font-size: 40px; margin-bottom: 10px; opacity: 0.2; }
+        /* Buttons */
+        .button-group { display: flex; flex-direction: column; align-items: center; gap: 15px; width: 100%; }
+        .btn-download {
+            background: linear-gradient(135deg, var(--theme-maroon), var(--theme-maroon-dark));
+            color: white; border: none; padding: 16px 50px; border-radius: 50px;
+            font-weight: 700; cursor: pointer; width: 100%; max-width: 320px;
+            display: flex; align-items: center; justify-content: center; gap: 10px;
+            box-shadow: 0 10px 20px rgba(139,0,0,0.3); transition: 0.3s;
+        }
+        .btn-share {
+            background: rgba(255,255,255,0.05); color: white; border: 1px solid var(--glass-border);
+            padding: 14px 50px; border-radius: 50px; font-weight: 600; cursor: pointer;
+            width: 100%; max-width: 320px; display: none; align-items: center; justify-content: center; gap: 10px;
+        }
+        .success-bg { background: #28a745 !important; }
 
-        /* BOTTOM NAV (Native Style) */
+        /* Bottom Nav */
         .bottom-nav {
             position: fixed; bottom: 0; left: 0; width: 100%;
             background: var(--glass-bg); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
@@ -159,34 +85,31 @@
         }
         .nav-item { display: flex; flex-direction: column; align-items: center; color: var(--text-secondary); text-decoration: none; font-size: 10px; gap: 4px; }
         .nav-item i { font-size: 20px; }
-        .nav-item.active { color: var(--theme-accent); }
-
-        @keyframes fadeUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
-        .item-card { animation: fadeUp 0.5s ease forwards; }
-
     </style>
 </head>
 <body>
 
     <header>
-        <a href="index.html" class="back-btn"><i class="fa-solid fa-chevron-left"></i></a>
+        <div class="back-btn" onclick="goBack()"><i class="fa-solid fa-chevron-left"></i></div>
         <div class="brand-small">Azad<span>Vault</span></div>
-        <div style="width:20px;"></div> </header>
-
-    <div class="creator-banner">
-        <div class="profile-img-wrapper">
-            <img id="cp-img" src="" alt="Creator">
-        </div>
-        <h2 id="cp-name-text">Loading...</h2>
-        <button id="cp-follow-btn" class="btn-follow">
-            <i class="fab fa-instagram"></i> Follow
-        </button>
-    </div>
+        <div style="width:20px;"></div>
+    </header>
 
     <div class="container">
-        <div class="section-title" style="margin-bottom: 15px; font-size: 14px; color: var(--text-secondary);">Published Designs</div>
-        <div class="masonry-grid" id="main-grid">
-            </div>
+        <h2 id="dynamic-preview-title">Loading...</h2>
+        
+        <div id="device-switcher" class="device-container mode-mobile">
+            <img id="dynamic-preview-img" src="" alt="Preview">
+        </div>
+
+        <div class="button-group">
+            <button id="dynamic-download-btn" class="btn-download">
+                <i class="fas fa-cloud-download-alt"></i> Download Image
+            </button>
+            <button id="dynamic-share-btn" class="btn-share">
+                <i class="fas fa-share-nodes"></i> Share Image
+            </button>
+        </div>
     </div>
 
     <nav class="bottom-nav">
@@ -197,10 +120,76 @@
     </nav>
 
     <script>
-        function openImagePreview(imageUrl, title) {
-            const encodedUrl = encodeURIComponent(imageUrl);
-            const encodedTitle = encodeURIComponent(title);
-            window.location.href = `wallpaper.html?url=${encodedUrl}&title=${encodedTitle}`;
+        const urlParams = new URLSearchParams(window.location.search);
+        const imageUrl = urlParams.get('url') || '';
+        const imageTitle = urlParams.get('title') || 'Wallpaper';
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const frame = document.getElementById('device-switcher');
+            const imgElement = document.getElementById('dynamic-preview-img');
+            
+            document.getElementById('dynamic-preview-title').innerText = imageTitle;
+
+            // Desktop Frame Checker
+            const isDesktop = imageTitle.toLowerCase().includes('desktop') || imageUrl.toLowerCase().includes('desktop');
+            if(isDesktop) {
+                frame.classList.replace('mode-mobile', 'mode-desktop');
+            }
+
+            if(imageUrl) {
+                imgElement.src = imageUrl;
+                imgElement.style.display = 'block';
+                document.getElementById('dynamic-download-btn').onclick = () => downloadImage(imageUrl, imageTitle);
+            }
+        });
+
+        function goBack() { window.history.length > 1 ? window.history.back() : window.location.href = 'index.html'; }
+
+        async function downloadImage(url, title) {
+            const btn = document.getElementById('dynamic-download-btn');
+            const shareBtn = document.getElementById('dynamic-share-btn');
+            const originalHTML = btn.innerHTML;
+
+            try {
+                btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Downloading...';
+                const response = await fetch(url);
+                const blob = await response.blob();
+                const objectUrl = window.URL.createObjectURL(blob);
+                
+                const a = document.createElement('a');
+                a.href = objectUrl;
+                a.download = `${title.replace(/\s+/g, '_')}_AzadVault.png`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                
+                btn.innerHTML = '<i class="fas fa-check-circle"></i> Downloaded!';
+                btn.classList.add('success-bg');
+                shareBtn.style.display = 'flex';
+                shareBtn.onclick = () => shareImage(url, title);
+                
+                setTimeout(() => {
+                    btn.innerHTML = originalHTML;
+                    btn.classList.remove('success-bg');
+                }, 3000);
+            } catch (error) {
+                btn.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Open in Tab';
+                window.open(url, '_blank');
+            }
+        }
+
+        async function shareImage(url, title) {
+            if (navigator.share) {
+                try {
+                    const response = await fetch(url);
+                    const blob = await response.blob();
+                    const file = new File([blob], `${title}.png`, { type: blob.type });
+                    await navigator.share({
+                        title: `Azad Vault - ${title}`,
+                        files: [file]
+                    });
+                } catch (err) { console.log("Share failed"); }
+            }
         }
     </script>
 </body>
