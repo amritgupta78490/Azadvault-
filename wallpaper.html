@@ -48,7 +48,8 @@
             margin-bottom: 25px; 
             line-height: 1.6; 
             max-width: 350px;
-            white-space: pre-wrap; /* Preserve line breaks if any */
+            white-space: pre-wrap; /* Preserve line breaks */
+            display: none; /* Hidden by default, shown if text exists */
         }
 
         /* Smart Device Frames */
@@ -132,7 +133,7 @@
     </nav>
 
     <script>
-        // Fetching and decoding parameters properly
+        // Proper Decoding for URL Parameters
         const urlParams = new URLSearchParams(window.location.search);
         const imageUrl = urlParams.get('url') ? decodeURIComponent(urlParams.get('url')) : '';
         const imageTitle = urlParams.get('title') ? decodeURIComponent(urlParams.get('title')) : 'Wallpaper';
@@ -146,8 +147,8 @@
             
             titleElement.innerText = imageTitle;
             
-            // Fixed Description Display Logic
-            if(imageDesc && imageDesc.trim() !== "" && imageDesc !== "undefined") {
+            // Refined Description logic
+            if(imageDesc && imageDesc !== "null" && imageDesc !== "undefined" && imageDesc.trim() !== "") {
                 descElement.innerText = imageDesc;
                 descElement.style.display = 'block';
             } else {
