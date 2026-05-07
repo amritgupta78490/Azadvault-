@@ -2,10 +2,11 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Creator Vault - Azad Vault</title>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@800&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@800&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
         import { getFirestore, collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
@@ -22,14 +23,13 @@
 
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
-// URL: /creator/
-        const urlParams = new URLSearchParams(window.location.search);
-const creatorName = urlParams.get('name') || "Creator";
-const dpUrl = urlParams.get('dp') || "https://ui-avatars.com/api/?name=Creator";
-const instaLink = urlParams.get('insta') || "#";
 
-        // Setup UI
-        document.getElementById('cp-name').innerText = creatorName + "'s Uploads";
+        const urlParams = new URLSearchParams(window.location.search);
+        const creatorName = urlParams.get('name') || "Creator";
+        const dpUrl = urlParams.get('dp') || "https://ui-avatars.com/api/?name=Creator";
+        const instaLink = urlParams.get('insta') || "#";
+
+        document.getElementById('cp-name-text').innerText = creatorName;
         document.getElementById('cp-img').src = dpUrl;
         document.getElementById('cp-follow-btn').onclick = () => window.open(instaLink, '_blank');
         document.title = `${creatorName} - Azad Vault`;
@@ -46,9 +46,8 @@ const instaLink = urlParams.get('insta') || "#";
 
                 querySnapshot.forEach((doc) => {
                     const data = doc.data();
-                    const postCreator = data.creatorName ? String(data.creatorName).toLowerCase() : "";
+                    const postCreator = data.creator ? String(data.creator).toLowerCase() : "";
                     
-                    // Sirf target creator ke designs filter karna
                     if (postCreator === targetCreator) {
                         const safeTitle = data.title ? String(data.title).replace(/'/g, "\\'") : 'Design';
                         const imageUrl = data.imageUrl || "";
@@ -70,7 +69,7 @@ const instaLink = urlParams.get('insta') || "#";
                 if (count > 0) {
                     mainGrid.innerHTML = gridHTML; 
                 } else {
-                    mainGrid.innerHTML = `<p style="text-align:center; width:100%; color:#64748B;">No designs uploaded by ${creatorName} yet.</p>`;
+                    mainGrid.innerHTML = `<div class="no-results"><i class="fa-solid fa-ghost"></i><br>No designs by ${creatorName} yet.</div>`;
                 }
             } catch (error) {
                 console.error("Error fetching designs: ", error);
@@ -82,83 +81,122 @@ const instaLink = urlParams.get('insta') || "#";
 
     <style>
         :root {
-            --bg-color: #F4F6F9;
-            --text-dark: #1A1A24;
-            --theme-maroon: #8B0000;
-            --theme-maroon-dark: #4A0000;
-            --curve-large: 24px;
+            --bg-dark: #0A0A0C;
+            --surface-dark: #1E1E24;
+            --text-primary: #FFFFFF;
+            --text-secondary: #A0A0B0;
+            --theme-accent: #E63946; 
+            --glass-bg: rgba(30, 30, 36, 0.75);
+            --glass-border: rgba(255, 255, 255, 0.08);
             --curve-medium: 16px;
-            --shadow-soft: 0 4px 20px rgba(0,0,0,0.06);
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
-        body { background-color: var(--bg-color); color: var(--text-dark); }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; -webkit-tap-highlight-color: transparent; }
+        body { background-color: var(--bg-dark); color: var(--text-primary); padding-bottom: 90px; overflow-x: hidden; }
 
-        @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-
-        /* Simple Header for Back Navigation */
+        /* Header */
         header {
+            position: sticky; top: 0; z-index: 100;
             padding: 15px 5%;
-            background: linear-gradient(135deg, var(--theme-maroon) 0%, var(--theme-maroon-dark) 100%);
-            display: flex; align-items: center;
-            border-bottom-left-radius: 20px; border-bottom-right-radius: 20px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--glass-border);
+            display: flex; align-items: center; justify-content: space-between;
         }
+        .back-btn { color: white; text-decoration: none; font-size: 18px; }
+        .brand-small { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 800; }
+        .brand-small span { color: var(--theme-accent); }
 
-        .back-btn {
-            color: white; text-decoration: none; font-weight: 600; font-size: 16px;
-            display: flex; align-items: center; gap: 8px;
+        /* Profile Banner */
+        .creator-banner {
+            padding: 40px 5%;
+            display: flex; flex-direction: column; align-items: center;
+            text-align: center;
+            background: linear-gradient(to bottom, #1a1a24, var(--bg-dark));
         }
-
-        /* Banner Design */
-        .creator-profile-banner {
-            background: white; margin: 30px auto; width: 90%; max-width: 500px;
-            padding: 25px; border-radius: var(--curve-large); 
-            display: flex; align-items: center; gap: 20px; box-shadow: var(--shadow-soft);
+        .profile-img-wrapper {
+            width: 100px; height: 100px;
+            border-radius: 50%;
+            padding: 3px;
+            background: linear-gradient(45deg, var(--theme-accent), #FF9A9E);
+            margin-bottom: 15px;
         }
-        .creator-profile-banner img { width: 85px; height: 85px; border-radius: 50%; object-fit: cover; }
-        .cp-info h2 { font-size: 20px; margin-bottom: 10px; }
-        .btn-follow { background: linear-gradient(135deg, #f09433, #dc2743, #bc1888); color: #fff; border: none; padding: 10px 20px; border-radius: 50px; font-weight: 600; cursor: pointer; }
+        .profile-img-wrapper img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 3px solid var(--bg-dark); }
+        .creator-banner h2 { font-size: 22px; font-weight: 700; margin-bottom: 15px; }
+        .btn-follow {
+            background: #fff; color: #000; border: none; padding: 10px 25px;
+            border-radius: 30px; font-weight: 600; font-size: 14px;
+            display: flex; align-items: center; gap: 8px; cursor: pointer; transition: 0.3s;
+        }
+        .btn-follow:active { transform: scale(0.95); }
 
-        /* Grid Design */
-        .container { padding: 0 5%; max-width: 1600px; margin: auto; }
-        .masonry-grid { column-count: 1; column-gap: 20px; padding: 10px 0 30px; }
-        @media (min-width: 600px) { .masonry-grid { column-count: 2; } }
-        @media (min-width: 900px) { .masonry-grid { column-count: 3; } }
-        @media (min-width: 1200px) { .masonry-grid { column-count: 4; } }
+        /* Grid */
+        .container { padding: 10px 5%; max-width: 1600px; margin: auto; }
+        .masonry-grid { column-count: 2; column-gap: 15px; }
+        @media (min-width: 900px) { .masonry-grid { column-count: 4; } }
 
-        .item-card { background: white; border-radius: var(--curve-medium); overflow: hidden; margin-bottom: 20px; break-inside: avoid; position: relative; cursor: pointer; animation: fadeUp 0.6s ease forwards; box-shadow: var(--shadow-soft); transition: 0.3s; }
-        .item-card:hover { transform: translateY(-8px); }
+        .item-card { 
+            background: var(--surface-dark); border-radius: var(--curve-medium); overflow: hidden; 
+            margin-bottom: 15px; break-inside: avoid; position: relative;
+            border: 1px solid var(--glass-border);
+        }
         .item-card img { width: 100%; display: block; }
-        .card-overlay { position: absolute; bottom: 0; left: 0; width: 100%; padding: 30px 15px 15px; background: linear-gradient(to top, rgba(0,0,0,0.85), transparent); color: white; opacity: 0; transition: 0.3s; }
-        .item-card:hover .card-overlay { opacity: 1; }
+        .card-overlay { 
+            position: absolute; bottom: 0; left: 0; width: 100%; padding: 30px 10px 10px; 
+            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+        }
+        .card-overlay h3 { font-size: 12px; font-weight: 400; color: #fff; }
 
-        @media (max-width: 768px) { .masonry-grid { column-count: 2; column-gap: 15px; } }
+        .no-results { text-align: center; padding: 50px; color: var(--text-secondary); }
+        .no-results i { font-size: 40px; margin-bottom: 10px; opacity: 0.2; }
+
+        /* BOTTOM NAV (Native Style) */
+        .bottom-nav {
+            position: fixed; bottom: 0; left: 0; width: 100%;
+            background: var(--glass-bg); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+            border-top: 1px solid var(--glass-border);
+            display: flex; justify-content: space-around; padding: 12px 0; z-index: 1000;
+        }
+        .nav-item { display: flex; flex-direction: column; align-items: center; color: var(--text-secondary); text-decoration: none; font-size: 10px; gap: 4px; }
+        .nav-item i { font-size: 20px; }
+        .nav-item.active { color: var(--theme-accent); }
+
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+        .item-card { animation: fadeUp 0.5s ease forwards; }
+
     </style>
 </head>
 <body>
 
     <header>
-        <a href="index.html" class="back-btn">
-            ← Back to Home
-        </a>
-    </header>
+        <a href="index.html" class="back-btn"><i class="fa-solid fa-chevron-left"></i></a>
+        <div class="brand-small">Azad<span>Vault</span></div>
+        <div style="width:20px;"></div> </header>
 
-    <div class="creator-profile-banner">
-        <img id="cp-img" src="" alt="Creator">
-        <div class="cp-info">
-            <h2 id="cp-name">Loading...</h2>
-            <button id="cp-follow-btn" class="btn-follow">
-    <i class="fab fa-instagram"></i> Follow on Instagram
-            </button>
+    <div class="creator-banner">
+        <div class="profile-img-wrapper">
+            <img id="cp-img" src="" alt="Creator">
         </div>
+        <h2 id="cp-name-text">Loading...</h2>
+        <button id="cp-follow-btn" class="btn-follow">
+            <i class="fab fa-instagram"></i> Follow
+        </button>
     </div>
 
     <div class="container">
-        <div class="masonry-grid" id="main-grid"></div>
+        <div class="section-title" style="margin-bottom: 15px; font-size: 14px; color: var(--text-secondary);">Published Designs</div>
+        <div class="masonry-grid" id="main-grid">
+            </div>
     </div>
 
+    <nav class="bottom-nav">
+        <a class="nav-item" href="index.html"><i class="fa-solid fa-house"></i>Home</a>
+        <a class="nav-item" href="index.html"><i class="fa-solid fa-magnifying-glass"></i>Search</a>
+        <a class="nav-item" href="biodata.html"><i class="fa-solid fa-file-contract"></i>Biodata</a>
+        <a class="nav-item" href="about.html"><i class="fa-solid fa-circle-info"></i>About</a>
+    </nav>
+
     <script>
-        // Redirect to wallpaper details
         function openImagePreview(imageUrl, title) {
             const encodedUrl = encodeURIComponent(imageUrl);
             const encodedTitle = encodeURIComponent(title);
@@ -167,4 +205,3 @@ const instaLink = urlParams.get('insta') || "#";
     </script>
 </body>
 </html>
-
