@@ -40,7 +40,7 @@
         .container { padding: 30px 5%; display: flex; flex-direction: column; align-items: center; }
         #dynamic-preview-title { margin-bottom: 10px; font-size: 22px; font-weight: 600; text-align: center; }
         
-        /* NEW: Description Styles */
+        /* Description Styles */
         #dynamic-preview-desc { 
             color: var(--text-secondary); 
             font-size: 14px; 
@@ -48,6 +48,7 @@
             margin-bottom: 25px; 
             line-height: 1.6; 
             max-width: 350px;
+            white-space: pre-wrap; /* Preserve line breaks if any */
         }
 
         /* Smart Device Frames */
@@ -131,21 +132,24 @@
     </nav>
 
     <script>
+        // Fetching and decoding parameters properly
         const urlParams = new URLSearchParams(window.location.search);
-        const imageUrl = urlParams.get('url') || '';
-        const imageTitle = urlParams.get('title') || 'Wallpaper';
-        const imageDesc = urlParams.get('desc') || ''; // Fetch description from URL
+        const imageUrl = urlParams.get('url') ? decodeURIComponent(urlParams.get('url')) : '';
+        const imageTitle = urlParams.get('title') ? decodeURIComponent(urlParams.get('title')) : 'Wallpaper';
+        const imageDesc = urlParams.get('desc') ? decodeURIComponent(urlParams.get('desc')) : '';
 
         document.addEventListener('DOMContentLoaded', () => {
             const frame = document.getElementById('device-switcher');
             const imgElement = document.getElementById('dynamic-preview-img');
             const descElement = document.getElementById('dynamic-preview-desc');
+            const titleElement = document.getElementById('dynamic-preview-title');
             
-            document.getElementById('dynamic-preview-title').innerText = imageTitle;
+            titleElement.innerText = imageTitle;
             
-            // Show description only if available
-            if(imageDesc) {
-                descElement.innerText = decodeURIComponent(imageDesc);
+            // Fixed Description Display Logic
+            if(imageDesc && imageDesc.trim() !== "" && imageDesc !== "undefined") {
+                descElement.innerText = imageDesc;
+                descElement.style.display = 'block';
             } else {
                 descElement.style.display = 'none';
             }
@@ -158,7 +162,7 @@
 
             if(imageUrl) {
                 imgElement.src = imageUrl;
-                imgElement.style.display = 'block';
+                imgElement.onload = () => { imgElement.style.display = 'block'; };
                 document.getElementById('dynamic-download-btn').onclick = () => downloadImage(imageUrl, imageTitle);
             }
         });
