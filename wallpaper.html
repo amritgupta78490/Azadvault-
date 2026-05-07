@@ -38,18 +38,32 @@
 
         /* Preview Container */
         .container { padding: 30px 5%; display: flex; flex-direction: column; align-items: center; }
-        #dynamic-preview-title { margin-bottom: 10px; font-size: 22px; font-weight: 600; text-align: center; }
+        #dynamic-preview-title { margin-bottom: 25px; font-size: 22px; font-weight: 600; text-align: center; }
         
-        /* Description Styles */
-        #dynamic-preview-desc { 
-            color: var(--text-secondary); 
-            font-size: 14px; 
-            text-align: center; 
-            margin-bottom: 25px; 
-            line-height: 1.6; 
-            max-width: 350px;
-            white-space: pre-wrap; /* Preserve line breaks */
-            display: none; /* Hidden by default, shown if text exists */
+        /* New Static Description Box */
+        .static-desc-container {
+            background: var(--surface-dark);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 20px;
+            margin-top: 30px;
+            max-width: 500px;
+            width: 100%;
+        }
+        .static-desc-title {
+            color: var(--theme-accent);
+            font-weight: 700;
+            font-size: 16px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .static-desc-text {
+            color: var(--text-secondary);
+            font-size: 13px;
+            line-height: 1.8;
+            text-align: justify;
         }
 
         /* Smart Device Frames */
@@ -84,7 +98,7 @@
         .btn-share {
             background: rgba(255,255,255,0.05); color: white; border: 1px solid var(--glass-border);
             padding: 14px 50px; border-radius: 50px; font-weight: 600; cursor: pointer;
-            width: 100%; max-width: 320px; display: none; align-items: center; justify-content: center; gap: 10px;
+            width: 100%; max-width: 320px; display: flex; align-items: center; justify-content: center; gap: 10px;
         }
         .success-bg { background: #28a745 !important; }
 
@@ -108,8 +122,7 @@
     </header>
 
     <div class="container">
-        <h2 id="dynamic-preview-title">Loading...</h2>
-        <p id="dynamic-preview-desc"></p>
+        <h2 id="dynamic-preview-title">Wallpaper Preview</h2>
         
         <div id="device-switcher" class="device-container mode-mobile">
             <img id="dynamic-preview-img" src="" alt="Preview">
@@ -123,6 +136,17 @@
                 <i class="fas fa-share-nodes"></i> Share Image
             </button>
         </div>
+
+        <div class="static-desc-container">
+            <div class="static-desc-title">
+                <i class="fa-solid fa-circle-info"></i> Welcome to Azad Vault
+            </div>
+            <div class="static-desc-text">
+                Discover an endless collection of high-quality HD, 4K, and mobile wallpapers designed to transform your device into a visual masterpiece. 
+                Our collection is optimized for smartphones and desktops, featuring categories like nature, anime, and minimalistic designs. 
+                Enjoy daily updates with fresh, premium designs curated to reflect your personality and style. All wallpapers are free to download and optimized for fast loading without losing resolution.
+            </div>
+        </div>
     </div>
 
     <nav class="bottom-nav">
@@ -133,27 +157,16 @@
     </nav>
 
     <script>
-        // Proper Decoding for URL Parameters
         const urlParams = new URLSearchParams(window.location.search);
         const imageUrl = urlParams.get('url') ? decodeURIComponent(urlParams.get('url')) : '';
-        const imageTitle = urlParams.get('title') ? decodeURIComponent(urlParams.get('title')) : 'Wallpaper';
-        const imageDesc = urlParams.get('desc') ? decodeURIComponent(urlParams.get('desc')) : '';
+        const imageTitle = urlParams.get('title') ? decodeURIComponent(urlParams.get('title')) : 'Wallpaper Preview';
 
         document.addEventListener('DOMContentLoaded', () => {
             const frame = document.getElementById('device-switcher');
             const imgElement = document.getElementById('dynamic-preview-img');
-            const descElement = document.getElementById('dynamic-preview-desc');
             const titleElement = document.getElementById('dynamic-preview-title');
             
             titleElement.innerText = imageTitle;
-            
-            // Refined Description logic
-            if(imageDesc && imageDesc !== "null" && imageDesc !== "undefined" && imageDesc.trim() !== "") {
-                descElement.innerText = imageDesc;
-                descElement.style.display = 'block';
-            } else {
-                descElement.style.display = 'none';
-            }
 
             // Desktop Frame Checker
             const isDesktop = imageTitle.toLowerCase().includes('desktop') || imageUrl.toLowerCase().includes('desktop');
@@ -172,7 +185,6 @@
 
         async function downloadImage(url, title) {
             const btn = document.getElementById('dynamic-download-btn');
-            const shareBtn = document.getElementById('dynamic-share-btn');
             const originalHTML = btn.innerHTML;
 
             try {
@@ -190,8 +202,6 @@
                 
                 btn.innerHTML = '<i class="fas fa-check-circle"></i> Downloaded!';
                 btn.classList.add('success-bg');
-                shareBtn.style.display = 'flex';
-                shareBtn.onclick = () => shareImage(url, title);
                 
                 setTimeout(() => {
                     btn.innerHTML = originalHTML;
@@ -203,19 +213,19 @@
             }
         }
 
-        async function shareImage(url, title) {
+        document.getElementById('dynamic-share-btn').onclick = async () => {
             if (navigator.share) {
                 try {
-                    const response = await fetch(url);
-                    const blob = await response.blob();
-                    const file = new File([blob], `${title}.png`, { type: blob.type });
                     await navigator.share({
-                        title: `Azad Vault - ${title}`,
-                        files: [file]
+                        title: `Azad Vault - ${imageTitle}`,
+                        text: 'Check out this amazing wallpaper on Azad Vault!',
+                        url: window.location.href
                     });
                 } catch (err) { console.log("Share failed"); }
+            } else {
+                alert("Sharing not supported on this browser.");
             }
-        }
+        };
     </script>
 </body>
 </html>
