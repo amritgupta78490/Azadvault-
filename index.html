@@ -77,11 +77,13 @@
                     window.allDesignsData.push(data); 
 
                     const animationDelay = (index % 10) * 0.05; 
+                    
+                    // Safe handling for Title and Description
                     const safeTitle = data.title ? String(data.title).replace(/'/g, "\\'") : 'Design';
                     
-                    // --- DESCRIPTION HANDLING ---
+                    // Encode description to prevent breaking the onclick event
                     const rawDesc = data.description || ""; 
-                    const safeDesc = rawDesc.replace(/'/g, "\\'"); 
+                    const encodedDesc = encodeURIComponent(rawDesc).replace(/'/g, "%27");
                     
                     const keywords = Array.isArray(data.keywords) ? data.keywords.join(" ").toLowerCase() : String(data.keywords || "").toLowerCase();
                     const category = String(data.category || "other").toLowerCase();
@@ -91,8 +93,9 @@
 
                     if (!imageUrl) return; 
 
+                    // Pass encoded strings to openImagePreview
                     gridHTML += `
-                        <div class="item-card search-item" data-index="${index}" data-downloads="${downloads}" data-category="${category}" data-keywords="${keywords}" data-creator="${creator}" style="animation-delay: ${animationDelay}s" onclick="openImagePreview('${imageUrl}', '${safeTitle}', '${safeDesc}')">
+                        <div class="item-card search-item" data-index="${index}" data-downloads="${downloads}" data-category="${category}" data-keywords="${keywords}" data-creator="${creator}" style="animation-delay: ${animationDelay}s" onclick="openImagePreview('${encodeURIComponent(imageUrl)}', '${encodeURIComponent(safeTitle)}', '${encodedDesc}')">
                             <img src="${imageUrl}" alt="${safeTitle} - 4K HD Wallpaper" title="${safeTitle} wallpaper" loading="lazy">
                             <div class="card-overlay">
                                 <h3>${safeTitle}</h3>
@@ -150,6 +153,15 @@
             loadDesigns();
             loadCreators();
         });
+
+        // Global Routing Functions
+        window.openImagePreview = function(url, title, desc) {
+            window.location.href = `wallpaper.html?url=${url}&title=${title}&desc=${desc}`;
+        };
+
+        window.openCreatorProfile = function(name, dpUrl, instaLink) {
+            window.location.href = `creator.html?name=${encodeURIComponent(name)}&dp=${encodeURIComponent(dpUrl)}&insta=${encodeURIComponent(instaLink)}`;
+        };
     </script>
 
     <style>
@@ -465,16 +477,7 @@
         }
 
         // ================= ROUTING =================
-        function openImagePreview(imageUrl, title, description) {
-            const encodedUrl = encodeURIComponent(imageUrl);
-            const encodedTitle = encodeURIComponent(title);
-            const encodedDesc = encodeURIComponent(description || "");
-            window.location.href = `wallpaper.html?url=${encodedUrl}&title=${encodedTitle}&desc=${encodedDesc}`;
-        }
-
-        function openCreatorProfile(name, dpUrl, instaLink) {
-            window.location.href = `creator.html?name=${encodeURIComponent(name)}&dp=${encodeURIComponent(dpUrl)}&insta=${encodeURIComponent(instaLink)}`;
-        }
+        // Functions now moved to script module window scope
         
         function openBiodataPage() { window.location.href = "biodata.html"; }
 
