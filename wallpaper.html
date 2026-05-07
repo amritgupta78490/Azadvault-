@@ -2,281 +2,205 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wallpaper Preview - Azad Vault</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Creator Vault - Azad Vault</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@800&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+        import { getFirestore, collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+        
+        const firebaseConfig = {
+            apiKey: "AIzaSyAhjIHv-buPd9HK3Uf52VLxwwJFIZe1H5Y",
+            authDomain: "amritone-4bdcd.firebaseapp.com",
+            projectId: "amritone-4bdcd",
+            storageBucket: "amritone-4bdcd.firebasestorage.app",
+            messagingSenderId: "500948842891",
+            appId: "1:500948842891:web:36eb457b02445fa3d4978e",
+            measurementId: "G-ZSJ73XSSNQ"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const creatorName = urlParams.get('name') || "Creator";
+        const dpUrl = urlParams.get('dp') || "https://ui-avatars.com/api/?name=Creator";
+        const instaLink = urlParams.get('insta') || "#";
+
+        document.getElementById('cp-name-text').innerText = creatorName;
+        document.getElementById('cp-img').src = dpUrl;
+        document.getElementById('cp-follow-btn').onclick = () => window.open(instaLink, '_blank');
+        document.title = `${creatorName} - Azad Vault`;
+
+        async function loadCreatorDesigns() {
+            const mainGrid = document.getElementById('main-grid');
+            const targetCreator = creatorName.toLowerCase();
+
+            try {
+                const q = query(collection(db, "designs"), orderBy("createdAt", "desc"));
+                const querySnapshot = await getDocs(q);
+                let gridHTML = ""; 
+                let count = 0;
+
+                querySnapshot.forEach((doc) => {
+                    const data = doc.data();
+                    const postCreator = data.creator ? String(data.creator).toLowerCase() : "";
+                    
+                    if (postCreator === targetCreator) {
+                        const safeTitle = data.title ? String(data.title).replace(/'/g, "\\'") : 'Design';
+                        const imageUrl = data.imageUrl || "";
+
+                        if (imageUrl) {
+                            gridHTML += `
+                                <div class="item-card" onclick="openImagePreview('${imageUrl}', '${safeTitle}')">
+                                    <img src="${imageUrl}" alt="${safeTitle}" loading="lazy">
+                                    <div class="card-overlay">
+                                        <h3>${safeTitle}</h3>
+                                    </div>
+                                </div>
+                            `;
+                            count++;
+                        }
+                    }
+                });
+                
+                if (count > 0) {
+                    mainGrid.innerHTML = gridHTML; 
+                } else {
+                    mainGrid.innerHTML = `<div class="no-results"><i class="fa-solid fa-ghost"></i><br>No designs by ${creatorName} yet.</div>`;
+                }
+            } catch (error) {
+                console.error("Error fetching designs: ", error);
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', loadCreatorDesigns);
+    </script>
+
     <style>
         :root {
-            --theme-maroon: #8B0000; 
-            --theme-maroon-light: #FF3131;
-            --theme-maroon-dark: #4A0000;
-            --bg-dark: #0f1016;
-            --card-bg: #fff8e7;
-            --glass-border: rgba(255, 255, 255, 0.1);
+            --bg-dark: #0A0A0C;
+            --surface-dark: #1E1E24;
+            --text-primary: #FFFFFF;
+            --text-secondary: #A0A0B0;
+            --theme-accent: #E63946; 
+            --glass-bg: rgba(30, 30, 36, 0.75);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --curve-medium: 16px;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; -webkit-tap-highlight-color: transparent; }
+        body { background-color: var(--bg-dark); color: var(--text-primary); padding-bottom: 90px; overflow-x: hidden; }
 
-        body { 
-            background-color: var(--bg-dark); 
-            color: white; 
-            overflow-x: hidden; 
-            min-height: 100vh;
-        }
-
-        /* --- HEADER --- */
-        .page-header { 
-            padding: 20px 5%; 
-            display: flex; 
-            align-items: center; 
-            position: sticky; 
-            top: 0; 
-            z-index: 101; 
-            background: rgba(15, 16, 22, 0.9);
-            backdrop-filter: blur(10px);
+        /* Header */
+        header {
+            position: sticky; top: 0; z-index: 100;
+            padding: 15px 5%;
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
             border-bottom: 1px solid var(--glass-border);
+            display: flex; align-items: center; justify-content: space-between;
         }
-        
-        
-            .btn-back { 
-    background: rgba(255, 255, 255, 0.05); /* dark glass look */
-    color: white;
-            
-            border: 1px solid var(--glass-border); 
-            padding: 10px 20px; 
-            border-radius: 50px; 
-            cursor: pointer; 
-            margin-right: 20px; 
-            font-size: 14px;
-            font-weight: 500; 
-            transition: 0.3s; 
-            display: flex; 
-            align-items: center; 
-            gap: 8px; 
+        .back-btn { color: white; text-decoration: none; font-size: 18px; }
+        .brand-small { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 800; }
+        .brand-small span { color: var(--theme-accent); }
+
+        /* Profile Banner */
+        .creator-banner {
+            padding: 40px 5%;
+            display: flex; flex-direction: column; align-items: center;
+            text-align: center;
+            background: linear-gradient(to bottom, #1a1a24, var(--bg-dark));
         }
-        
-        .btn-back:hover { background: rgba(255,255,255,0.1); transform: translateX(-3px); }
+        .profile-img-wrapper {
+            width: 100px; height: 100px;
+            border-radius: 50%;
+            padding: 3px;
+            background: linear-gradient(45deg, var(--theme-accent), #FF9A9E);
+            margin-bottom: 15px;
+        }
+        .profile-img-wrapper img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 3px solid var(--bg-dark); }
+        .creator-banner h2 { font-size: 22px; font-weight: 700; margin-bottom: 15px; }
+        .btn-follow {
+            background: #fff; color: #000; border: none; padding: 10px 25px;
+            border-radius: 30px; font-weight: 600; font-size: 14px;
+            display: flex; align-items: center; gap: 8px; cursor: pointer; transition: 0.3s;
+        }
+        .btn-follow:active { transform: scale(0.95); }
 
-        #dynamic-preview-title { font-weight: 600; font-size: 18px; letter-spacing: 0.5px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;}
+        /* Grid */
+        .container { padding: 10px 5%; max-width: 1600px; margin: auto; }
+        .masonry-grid { column-count: 2; column-gap: 15px; }
+        @media (min-width: 900px) { .masonry-grid { column-count: 4; } }
 
-        .container { padding: 0 5%; max-width: 1100px; margin: 0 auto; }
-        
-        .preview-wrapper { 
-            margin: 30px auto 50px; 
-            background: var(--card-bg); 
-            padding: 50px 20px; 
-            border-radius: 30px; 
-            text-align: center; 
+        .item-card { 
+            background: var(--surface-dark); border-radius: var(--curve-medium); overflow: hidden; 
+            margin-bottom: 15px; break-inside: avoid; position: relative;
             border: 1px solid var(--glass-border);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
-            position: relative;
         }
-
-        /* --- SMART DEVICE FRAME --- */
-        .device-container {
-            position: relative;
-            margin: 0 auto 60px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        .item-card img { width: 100%; display: block; }
+        .card-overlay { 
+            position: absolute; bottom: 0; left: 0; width: 100%; padding: 30px 10px 10px; 
+            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
         }
+        .card-overlay h3 { font-size: 12px; font-weight: 400; color: #fff; }
 
-        /* Desktop Mode Style (Laptop) */
-        .mode-desktop {
-            width: 100%;
-            max-width: 750px;
-            aspect-ratio: 16 / 10;
-            background: #000;
-            border: 14px solid #1a1a1a;
-            border-radius: 20px 20px 5px 5px;
-            box-shadow: 0 30px 60px rgba(0,0,0,0.6);
+        .no-results { text-align: center; padding: 50px; color: var(--text-secondary); }
+        .no-results i { font-size: 40px; margin-bottom: 10px; opacity: 0.2; }
+
+        /* BOTTOM NAV (Native Style) */
+        .bottom-nav {
+            position: fixed; bottom: 0; left: 0; width: 100%;
+            background: var(--glass-bg); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+            border-top: 1px solid var(--glass-border);
+            display: flex; justify-content: space-around; padding: 12px 0; z-index: 1000;
         }
+        .nav-item { display: flex; flex-direction: column; align-items: center; color: var(--text-secondary); text-decoration: none; font-size: 10px; gap: 4px; }
+        .nav-item i { font-size: 20px; }
+        .nav-item.active { color: var(--theme-accent); }
 
-        .mode-desktop::after {
-            content: ''; position: absolute; bottom: -28px; left: -10%;
-            width: 120%; height: 16px;
-            background: linear-gradient(to bottom, #333, #000);
-            border-radius: 0 0 20px 20px; z-index: -1;
-        }
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+        .item-card { animation: fadeUp 0.5s ease forwards; }
 
-        /* Mobile Mode Style (Phone) */
-        .mode-mobile {
-            width: 280px;
-            aspect-ratio: 9 / 19.5;
-            background: #000;
-            border: 12px solid #1a1a1a;
-            border-radius: 45px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
-        }
-
-        .mode-mobile::after {
-            content: ''; position: absolute; bottom: 12px; left: 50%;
-            transform: translateX(-50%); width: 35%; height: 4px;
-            background: rgba(255,255,255,0.4); border-radius: 10px;
-        }
-
-        .device-container img {
-            width: 100%; height: 100%;
-            object-fit: cover;
-            background: #000;
-            transition: 0.3s;
-        }
-
-        .mode-desktop img { border-radius: 4px; }
-        .mode-mobile img { border-radius: 33px; }
-
-        /* --- BUTTONS --- */
-        .button-group { display: flex; flex-direction: column; align-items: center; gap: 16px; }
-
-        .btn-download { 
-            background: linear-gradient(135deg, var(--theme-maroon) 0%, var(--theme-maroon-dark) 100%);
-            color: white; border: none; 
-            padding: 16px 45px; border-radius: 50px; cursor: pointer; 
-            font-size: 16px; font-weight: 700; width: 100%; max-width: 320px;
-            box-shadow: 0 10px 25px rgba(139, 0, 0, 0.4); 
-            transition: 0.3s;
-            display: flex; align-items: center; justify-content: center; gap: 10px;
-        }
-        
-        .btn-download:hover { transform: translateY(-3px); box-shadow: 0 15px 30px rgba(139, 0, 0, 0.6); }
-
-        .btn-share { 
-            background: rgba(255, 255, 255, 0.05);
-            color: white; border: 1px solid var(--glass-border); 
-            padding: 14px 45px; border-radius: 50px; cursor: pointer; 
-            font-size: 15px; font-weight: 600; width: 100%; max-width: 320px;
-            display: flex; align-items: center; justify-content: center; gap: 10px;
-            transition: 0.3s;
-        }
-        
-        .btn-share:hover { background: rgba(255, 255, 255, 0.1); border-color: white; }
-
-        .success-bg { background: #28a745 !important; box-shadow: 0 10px 25px rgba(40, 167, 69, 0.4) !important; }
-
-        @media (max-width: 600px) {
-            .mode-desktop { width: 100%; border-width: 8px; }
-            .mode-desktop::after { height: 10px; bottom: -18px; }
-        }
     </style>
 </head>
 <body>
 
-    <div class="page-header">
-        <button class="btn-back" onclick="goBack()">
-            <i class="fas fa-chevron-left"></i> Back
-        </button>
-        <h2 id="dynamic-preview-title">Loading...</h2>
-    </div>
-    
-    <div class="container">
-        <div class="preview-wrapper">
-            <div id="device-switcher" class="device-container mode-mobile">
-                <img id="dynamic-preview-img" src="" alt="Preview Image" style="display: none;">
-            </div>
-            
-            <div class="button-group">
-                <button id="dynamic-download-btn" class="btn-download">
-                    <i class="fas fa-cloud-download-alt"></i> Download Image
-                </button>
-                <button id="dynamic-share-btn" class="btn-share" style="display: none;">
-                    <i class="fas fa-share-nodes"></i> Share Image
-                </button>
-            </div>
+    <header>
+        <a href="index.html" class="back-btn"><i class="fa-solid fa-chevron-left"></i></a>
+        <div class="brand-small">Azad<span>Vault</span></div>
+        <div style="width:20px;"></div> </header>
+
+    <div class="creator-banner">
+        <div class="profile-img-wrapper">
+            <img id="cp-img" src="" alt="Creator">
         </div>
+        <h2 id="cp-name-text">Loading...</h2>
+        <button id="cp-follow-btn" class="btn-follow">
+            <i class="fab fa-instagram"></i> Follow
+        </button>
     </div>
+
+    <div class="container">
+        <div class="section-title" style="margin-bottom: 15px; font-size: 14px; color: var(--text-secondary);">Published Designs</div>
+        <div class="masonry-grid" id="main-grid">
+            </div>
+    </div>
+
+    <nav class="bottom-nav">
+        <a class="nav-item" href="index.html"><i class="fa-solid fa-house"></i>Home</a>
+        <a class="nav-item" href="index.html"><i class="fa-solid fa-magnifying-glass"></i>Search</a>
+        <a class="nav-item" href="biodata.html"><i class="fa-solid fa-file-contract"></i>Biodata</a>
+        <a class="nav-item" href="about.html"><i class="fa-solid fa-circle-info"></i>About</a>
+    </nav>
 
     <script>
-        const urlParams = new URLSearchParams(window.location.search);
-        const imageUrl = urlParams.get('url') || '';
-        const imageTitle = urlParams.get('title') || 'Wallpaper';
-
-        document.addEventListener('DOMContentLoaded', () => {
-            const frame = document.getElementById('device-switcher');
-            const imgElement = document.getElementById('dynamic-preview-img');
-            
-            // KEYWORD FINDER: Title ya URL me "desktop" word check karega
-            const isDesktopWallpaper = 
-                imageTitle.toLowerCase().includes('desktop') || 
-                imageUrl.toLowerCase().includes('desktop') || 
-                urlParams.get('type') === 'desktop';
-
-            document.getElementById('dynamic-preview-title').innerText = imageTitle;
-
-            // Agar keyword mil gaya, toh Desktop Frame apply hoga
-            if(isDesktopWallpaper) {
-                frame.classList.remove('mode-mobile');
-                frame.classList.add('mode-desktop');
-            }
-
-            if(imageUrl) {
-                imgElement.src = imageUrl;
-                imgElement.style.display = 'block'; 
-                document.getElementById('dynamic-download-btn').onclick = function() { downloadImage(imageUrl, imageTitle); };
-            } else {
-                document.getElementById('dynamic-preview-title').innerText = "Image Not Found";
-                document.getElementById('dynamic-download-btn').style.display = "none";
-            }
-        });
-
-        function goBack() { window.history.length > 1 ? window.history.back() : window.location.href = 'index.html'; }
-
-        async function downloadImage(url, title) {
-            const btn = document.getElementById('dynamic-download-btn');
-            const shareBtn = document.getElementById('dynamic-share-btn');
-            const originalHTML = btn.innerHTML;
-            
-            try {
-                btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Downloading...';
-                btn.style.pointerEvents = 'none';
-
-                const response = await fetch(url);
-                const blob = await response.blob();
-                const objectUrl = window.URL.createObjectURL(blob);
-                
-                const a = document.createElement('a');
-                a.href = objectUrl;
-                a.download = `${title.replace(/\s+/g, '_')}_AzadVault.png`;
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-                window.URL.revokeObjectURL(objectUrl);
-
-                btn.innerHTML = '<i class="fas fa-check-circle"></i> Downloaded!';
-                btn.classList.add('success-bg');
-                shareBtn.style.display = 'flex';
-                shareBtn.onclick = function() { shareImageLink(url, title); };
-
-                setTimeout(() => {
-                    btn.innerHTML = originalHTML;
-                    btn.classList.remove('success-bg');
-                    btn.style.pointerEvents = 'auto';
-                }, 4000); 
-
-            } catch (error) {
-                btn.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Error!';
-                setTimeout(() => { btn.innerHTML = originalHTML; btn.style.pointerEvents = 'auto'; }, 3000);
-                window.open(url, '_blank'); 
-            }
-        }
-
-        async function shareImageLink(url, title) {
-            if (navigator.share) {
-                try {
-                    const response = await fetch(url);
-                    const blob = await response.blob();
-                    const file = new File([blob], `${title}.png`, { type: blob.type });
-                    await navigator.share({
-                        title: `Azad Vault - ${title}`,
-                        text: `Check out this amazing wallpaper!`,
-                        files: [file]
-                    });
-                } catch (err) { console.log("Share failed"); }
-            } else {
-                alert("Sharing not supported. Link: " + url);
-            }
+        function openImagePreview(imageUrl, title) {
+            const encodedUrl = encodeURIComponent(imageUrl);
+            const encodedTitle = encodeURIComponent(title);
+            window.location.href = `wallpaper.html?url=${encodedUrl}&title=${encodedTitle}`;
         }
     </script>
 </body>
