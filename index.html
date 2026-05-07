@@ -73,41 +73,38 @@
                 let gridHTML = ""; 
 
                 querySnapshot.forEach((doc, index) => {
-    const data = doc.data();
-    window.allDesignsData.push(data); 
+                    const data = doc.data();
+                    window.allDesignsData.push(data); 
 
-    const animationDelay = (index % 10) * 0.05; 
-    const safeTitle = data.title ? String(data.title).replace(/'/g, "\\'") : 'Design';
-    
-    // --- DESCRIPTION ADDED HERE ---
-    const rawDesc = data.description || ""; // Firebase se description liya
-    const safeDesc = rawDesc.replace(/'/g, "\\'"); // Single quotes handle kiye
-    
-    const keywords = Array.isArray(data.keywords) ? data.keywords.join(" ").toLowerCase() : String(data.keywords || "").toLowerCase();
-    const category = String(data.category || "other").toLowerCase();
-    const creator = String(data.creator || "").toLowerCase();
-    const imageUrl = data.imageUrl || "";
-    const downloads = data.downloads || 0;
+                    const animationDelay = (index % 10) * 0.05; 
+                    const safeTitle = data.title ? String(data.title).replace(/'/g, "\\'") : 'Design';
+                    
+                    // --- DESCRIPTION HANDLING ---
+                    const rawDesc = data.description || ""; 
+                    const safeDesc = rawDesc.replace(/'/g, "\\'"); 
+                    
+                    const keywords = Array.isArray(data.keywords) ? data.keywords.join(" ").toLowerCase() : String(data.keywords || "").toLowerCase();
+                    const category = String(data.category || "other").toLowerCase();
+                    const creator = String(data.creator || "").toLowerCase();
+                    const imageUrl = data.imageUrl || "";
+                    const downloads = data.downloads || 0;
 
-    if (!imageUrl) return; 
+                    if (!imageUrl) return; 
 
-    gridHTML += `
-        <div class="item-card search-item" data-index="${index}" data-downloads="${downloads}" data-category="${category}" data-keywords="${keywords}" data-creator="${creator}" style="animation-delay: ${animationDelay}s" onclick="openImagePreview('${imageUrl}', '${safeTitle}', '${safeDesc}')">
-            <img src="${imageUrl}" alt="${safeTitle} - 4K HD Wallpaper" title="${safeTitle} wallpaper" loading="lazy">
-            <div class="card-overlay">
-                <h3>${safeTitle}</h3>
-                <div class="card-actions">
-                    <span class="downloads"><i class="fa-solid fa-arrow-down"></i> ${downloads}</span>
-                </div>
-            </div>
-        </div>
-    `;
-});
-                
+                    gridHTML += `
+                        <div class="item-card search-item" data-index="${index}" data-downloads="${downloads}" data-category="${category}" data-keywords="${keywords}" data-creator="${creator}" style="animation-delay: ${animationDelay}s" onclick="openImagePreview('${imageUrl}', '${safeTitle}', '${safeDesc}')">
+                            <img src="${imageUrl}" alt="${safeTitle} - 4K HD Wallpaper" title="${safeTitle} wallpaper" loading="lazy">
+                            <div class="card-overlay">
+                                <h3>${safeTitle}</h3>
+                                <div class="card-actions">
+                                    <span class="downloads"><i class="fa-solid fa-arrow-down"></i> ${downloads}</span>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
                 
                 mainGrid.innerHTML = gridHTML; 
-                
-                // GENERATE DYNAMIC KEYWORDS AFTER LOADING DESIGNS
                 generateDynamicKeywords(window.allDesignsData);
 
             } catch (error) {
@@ -205,7 +202,6 @@
         .text-logo { font-family: 'Playfair Display', serif; font-size: 26px; font-weight: 800; color: #fff; letter-spacing: 0.5px; }
         .text-logo span { color: var(--theme-accent); }
 
-        /* --- SEARCH BAR --- */
         .search-container {
             width: 100%; max-width: 1600px; margin: 0 auto; position: relative;
         }
@@ -224,7 +220,6 @@
         }
         .header-search input::placeholder { color: var(--text-secondary); }
 
-        /* Search Suggestions */
         .suggestions-box {
             position: absolute; top: calc(100% + 8px); left: 0; right: 0;
             background: var(--surface-dark); border: 1px solid var(--glass-border);
@@ -275,30 +270,14 @@
         
         .gallery-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
         
-        /* IMPROVED SORTING UX */
         .sort-container { 
-            display: flex; 
-            background: var(--surface-dark); 
-            border-radius: 20px; 
-            padding: 4px; 
-            border: 1px solid var(--glass-border);
+            display: flex; background: var(--surface-dark); border-radius: 20px; padding: 4px; border: 1px solid var(--glass-border);
         }
         .sort-btn { 
-            cursor: pointer; 
-            font-size: 13px; 
-            font-weight: 500; 
-            color: var(--text-secondary); 
-            padding: 6px 16px; 
-            border-radius: 16px; 
-            transition: 0.3s; 
-            display: flex;
-            align-items: center;
-            gap: 6px;
+            cursor: pointer; font-size: 13px; font-weight: 500; color: var(--text-secondary); padding: 6px 16px; border-radius: 16px; transition: 0.3s; display: flex; align-items: center; gap: 6px;
         }
         .sort-btn.active { 
-            background: var(--surface-light); 
-            color: var(--theme-accent); 
-            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            background: var(--surface-light); color: var(--theme-accent); box-shadow: 0 2px 8px rgba(0,0,0,0.2);
         }
 
         .masonry-grid { column-count: 2; column-gap: 15px; padding-bottom: 30px; }
@@ -307,19 +286,13 @@
         @media (min-width: 1200px) { .masonry-grid { column-count: 5; } }
 
         .item-card { 
-            background: var(--surface-dark); border-radius: var(--curve-medium); overflow: hidden; 
-            margin-bottom: 15px; break-inside: avoid; position: relative; cursor: pointer; 
-            animation: fadeUp 0.6s ease forwards; opacity: 0;
-            border: 1px solid var(--glass-border);
+            background: var(--surface-dark); border-radius: var(--curve-medium); overflow: hidden; margin-bottom: 15px; break-inside: avoid; position: relative; cursor: pointer; animation: fadeUp 0.6s ease forwards; opacity: 0; border: 1px solid var(--glass-border);
         }
         .item-card img { width: 100%; display: block; object-fit: cover; transition: transform 0.5s ease; }
         .item-card:hover img { transform: scale(1.05); }
         
         .card-overlay { 
-            position: absolute; bottom: 0; left: 0; width: 100%; padding: 40px 15px 15px; 
-            background: linear-gradient(to top, rgba(0,0,0,0.9), transparent); 
-            display: flex; justify-content: space-between; align-items: flex-end;
-            opacity: 1;
+            position: absolute; bottom: 0; left: 0; width: 100%; padding: 40px 15px 15px; background: linear-gradient(to top, rgba(0,0,0,0.9), transparent); display: flex; justify-content: space-between; align-items: flex-end; opacity: 1;
         }
         @media (min-width: 900px) {
             .card-overlay { opacity: 0; transition: 0.3s; }
@@ -334,10 +307,7 @@
 
         /* --- MOBILE BOTTOM APP NAV --- */
         .bottom-nav {
-            position: fixed; bottom: 0; left: 0; width: 100%;
-            background: var(--glass-bg); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
-            border-top: 1px solid var(--glass-border);
-            display: none; justify-content: space-around; padding: 12px 0; z-index: 100;
+            position: fixed; bottom: 0; left: 0; width: 100%; background: var(--glass-bg); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); border-top: 1px solid var(--glass-border); display: none; justify-content: space-around; padding: 12px 0; z-index: 100;
         }
         .nav-item { display: flex; flex-direction: column; align-items: center; color: var(--text-secondary); text-decoration: none; font-size: 10px; gap: 4px; cursor: pointer;}
         .nav-item i { font-size: 20px; }
@@ -349,252 +319,54 @@
             .text-logo { font-size: 22px; }
         }
 
-    /* ===== PREMIUM CLEAN GLASS LANDING ===== */
-
-#landing-screen{
-    position:fixed;
-    inset:0;
-    background:#070707;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    z-index:99999;
-    overflow:hidden;
-    padding:20px;
-    transition:0.7s;
-}
-
-/* Soft Background Glow */
-#landing-screen::before{
-    content:'';
-    position:absolute;
-    width:350px;
-    height:350px;
-    background:rgba(230,57,70,0.12);
-    filter:blur(120px);
-    top:-100px;
-    right:-50px;
-    animation:glowMove 6s ease-in-out infinite;
-}
-
-@keyframes glowMove{
-    0%{transform:translateY(0);}
-    50%{transform:translateY(20px);}
-    100%{transform:translateY(0);}
-}
-
-/* Main Card */
-.landing-fullscreen{
-    width:100%;
-    max-width:1200px;
-    position:relative;
-}
-
-/* Top Accent Line */
-.landing-glass-card::before{
-    content:'';
-    position:absolute;
-    top:0;
-    left:0;
-    width:100%;
-    height:2px;
-    background:linear-gradient(
-        90deg,
-        transparent,
-        rgba(230,57,70,0.8),
-        transparent
-    );
-}
-
-/* Layout */
-.landing-content{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    gap:50px;
-}
-
-.landing-left{
-    flex:1;
-}
-
-.landing-logo{
-    font-size:64px;
-    line-height:1;
-    font-weight:800;
-    color:#fff;
-    margin-bottom:20px;
-    font-family:'Playfair Display', serif;
-    letter-spacing:1px;
-}
-
-.landing-logo span{
-    color:#E63946;
-}
-
-.landing-tagline{
-    color:#d2d2d2;
-    font-size:17px;
-    line-height:1.8;
-    margin-bottom:25px;
-    font-weight:400;
-}
-
-.landing-info{
-    color:#8f8f95;
-    line-height:1.9;
-    font-size:14px;
-    max-width:500px;
-}
-
-/* Right Image */
-.landing-right{
-    flex:1;
-    display:flex;
-    justify-content:center;
-}
-
-.landing-preview-img{
-    width:300px;
-    border-radius:28px;
-    object-fit:cover;
-    border:1px solid rgba(255,255,255,0.08);
-    box-shadow:
-        0 15px 40px rgba(0,0,0,0.45);
-    animation:floatPhone 5s ease-in-out infinite;
-}
-
-@keyframes floatPhone{
-    0%{transform:translateY(0px);}
-    50%{transform:translateY(-10px);}
-    100%{transform:translateY(0px);}
-}
-
-/* Skip Button */
-.skip-btn{
-    position:absolute;
-    top:22px;
-    right:22px;
-    background:rgba(255,255,255,0.05);
-    color:#fff;
-    border:none;
-    padding:10px 18px;
-    border-radius:30px;
-    cursor:pointer;
-    font-size:13px;
-    border:1px solid rgba(255,255,255,0.06);
-    backdrop-filter:blur(10px);
-    transition:0.3s;
-}
-
-.skip-btn:hover{
-    background:#E63946;
-}
-
-/* Bottom Loader */
-.bottom-loader{
-    margin-top:40px;
-}
-
-.loader-line{
-    width:100%;
-    height:4px;
-    border-radius:20px;
-    background:rgba(255,255,255,0.05);
-    overflow:hidden;
-    position:relative;
-}
-
-.loader-line::after{
-    content:'';
-    position:absolute;
-    width:35%;
-    height:100%;
-    background:#E63946;
-    border-radius:20px;
-    animation:loaderMove 2s linear infinite;
-}
-
-@keyframes loaderMove{
-    0%{left:-35%;}
-    100%{left:100%;}
-}
-
-/* Mobile */
-@media(max-width:900px){
-
-    .landing-glass-card{
-        padding:35px 22px;
-    }
-
-    .landing-content{
-        flex-direction:column;
-        text-align:center;
-    }
-
-    .landing-logo{
-        font-size:42px;
-    }
-
-    .landing-tagline{
-        font-size:15px;
-    }
-
-    .landing-preview-img{
-        width:220px;
-    }
-}
+        /* ===== LANDING SCREEN ===== */
+        #landing-screen{
+            position:fixed; inset:0; background:#070707; display:flex; justify-content:center; align-items:center; z-index:99999; overflow:hidden; padding:20px; transition:0.7s;
+        }
+        #landing-screen::before{
+            content:''; position:absolute; width:350px; height:350px; background:rgba(230,57,70,0.12); filter:blur(120px); top:-100px; right:-50px; animation:glowMove 6s ease-in-out infinite;
+        }
+        @keyframes glowMove{ 0%{transform:translateY(0);} 50%{transform:translateY(20px);} 100%{transform:translateY(0);} }
+        .landing-fullscreen{ width:100%; max-width:1200px; position:relative; }
+        .landing-content{ display:flex; align-items:center; justify-content:space-between; gap:50px; }
+        .landing-left{ flex:1; }
+        .landing-logo{ font-size:64px; line-height:1; font-weight:800; color:#fff; margin-bottom:20px; font-family:'Playfair Display', serif; letter-spacing:1px; }
+        .landing-logo span{ color:#E63946; }
+        .landing-tagline{ color:#d2d2d2; font-size:17px; line-height:1.8; margin-bottom:25px; font-weight:400; }
+        .landing-info{ color:#8f8f95; line-height:1.9; font-size:14px; max-width:500px; }
+        .landing-right{ flex:1; display:flex; justify-content:center; }
+        .landing-preview-img{ width:300px; border-radius:28px; object-fit:cover; border:1px solid rgba(255,255,255,0.08); box-shadow: 0 15px 40px rgba(0,0,0,0.45); animation:floatPhone 5s ease-in-out infinite; }
+        @keyframes floatPhone{ 0%{transform:translateY(0px);} 50%{transform:translateY(-10px);} 100%{transform:translateY(0px);} }
+        .skip-btn{ position:absolute; top:22px; right:22px; background:rgba(255,255,255,0.05); color:#fff; border:none; padding:10px 18px; border-radius:30px; cursor:pointer; font-size:13px; border:1px solid rgba(255,255,255,0.06); backdrop-filter:blur(10px); transition:0.3s; }
+        .skip-btn:hover{ background:#E63946; }
+        .bottom-loader{ margin-top:40px; }
+        .loader-line{ width:100%; height:4px; border-radius:20px; background:rgba(255,255,255,0.05); overflow:hidden; position:relative; }
+        .loader-line::after{ content:''; position:absolute; width:35%; height:100%; background:#E63946; border-radius:20px; animation:loaderMove 2s linear infinite; }
+        @keyframes loaderMove{ 0%{left:-35%;} 100%{left:100%;} }
+        @media(max-width:900px){ .landing-content{ flex-direction:column; text-align:center; } .landing-logo{ font-size:42px; } .landing-tagline{ font-size:15px; } .landing-preview-img{ width:220px; } }
     </style>
 </head>
 <body>
 
     <div id="landing-screen">
-
-    <button class="skip-btn" onclick="dismissLanding()">
-        Skip <i class="fa-solid fa-chevron-right"></i>
-    </button>
-
-    <div class="landing-fullscreen">
-
-        <div class="rgb-border"></div>
-
-        <div class="landing-content">
-
-            <div class="landing-left">
-                <h1 class="landing-logo">
-                    Azad<span>Vault</span>
-                </h1>
-
-                <p class="landing-tagline">
-                    Premium 4K • HD Wallpapers <br>
-                    Modern Biodata Creator
-                </p>
-
-                <div class="landing-info">
-                    Explore high-quality wallpapers with a premium experience.
-                    Fast loading, modern UI and exclusive designs only on Azad Vault.
+        <button class="skip-btn" onclick="dismissLanding()">Skip <i class="fa-solid fa-chevron-right"></i></button>
+        <div class="landing-fullscreen">
+            <div class="landing-content">
+                <div class="landing-left">
+                    <h1 class="landing-logo">Azad<span>Vault</span></h1>
+                    <p class="landing-tagline">Premium 4K • HD Wallpapers <br> Modern Biodata Creator</p>
+                    <div class="landing-info">Explore high-quality wallpapers with a premium experience. Fast loading, modern UI and exclusive designs only on Azad Vault.</div>
+                </div>
+                <div class="landing-right">
+                    <img src="https://i.ibb.co/MDKNjcHh/In-Shot-20260506-191436119.png" class="landing-preview-img">
                 </div>
             </div>
-
-            <div class="landing-right">
-                <img src="https://i.ibb.co/MDKNjcHh/In-Shot-20260506-191436119.png" class="landing-preview-img">
-            </div>
-
+            <div class="bottom-loader"><div class="loader-line"></div></div>
         </div>
-
-        <div class="bottom-loader">
-            <div class="loader-line"></div>
-        </div>
-
-    </div>
     </div>
     
     <header>
-        <div class="header-top">
-            <div class="brand">
-                <h1 class="text-logo">Azad<span>Vault</span></h1>
-            </div>
-        </div>
+        <div class="header-top"><div class="brand"><h1 class="text-logo">Azad<span>Vault</span></h1></div></div>
         <div class="search-container">
             <div class="header-search">
                 <i class="fa-solid fa-magnifying-glass"></i>
@@ -607,8 +379,7 @@
     <main>
         <section class="creator-section">
             <div class="section-title">Top Creators</div>
-            <div class="creator-scroll" id="creator-grid">
-                </div>
+            <div class="creator-scroll" id="creator-grid"></div>
         </section>
 
         <section class="nav-container">
@@ -617,33 +388,19 @@
                 <button class="cat-pill" onclick="filterMainCategory('wallpaper', this)">Exclusives</button>
                 <button class="cat-pill" onclick="openBiodataPage()"><i class="fa-solid fa-file-lines" style="margin-right:5px;"></i> Biodata Maker</button>
             </div>
-            
-            <div class="keyword-nav" id="dynamic-keyword-tags">
-                <button class="kw-tag"><i class="fa-solid fa-spinner fa-spin"></i> Loading trends...</button>
-            </div>
+            <div class="keyword-nav" id="dynamic-keyword-tags"><button class="kw-tag"><i class="fa-solid fa-spinner fa-spin"></i> Loading trends...</button></div>
         </section>
 
         <section class="container">
             <div class="gallery-header">
                 <div class="section-title" id="gallery-title" style="margin:0;">Discover Updates</div>
-                
                 <div class="sort-container">
-                    <span class="sort-btn active" onclick="sortGrid('latest', this)">
-                        <i class="fa-solid fa-clock"></i> Latest
-                    </span>
-                    <span class="sort-btn" onclick="sortGrid('trending', this)">
-                        <i class="fa-solid fa-arrow-trend-up"></i> Trending
-                    </span>
+                    <span class="sort-btn active" onclick="sortGrid('latest', this)"><i class="fa-solid fa-clock"></i> Latest</span>
+                    <span class="sort-btn" onclick="sortGrid('trending', this)"><i class="fa-solid fa-arrow-trend-up"></i> Trending</span>
                 </div>
             </div>
-
-            <div class="no-results" id="no-results-msg" style="display:none;">
-                <i class="fa-solid fa-ghost"></i><br>
-                <span>No designs found. Try another search.</span>
-            </div>
-            
-            <div class="masonry-grid" id="main-grid">
-                </div>
+            <div class="no-results" id="no-results-msg" style="display:none;"><i class="fa-solid fa-ghost"></i><br><span>No designs found. Try another search.</span></div>
+            <div class="masonry-grid" id="main-grid"></div>
         </section>
     </main>
 
@@ -658,34 +415,23 @@
         // ================= DYNAMIC KEYWORD GENERATOR =================
         function generateDynamicKeywords(dataArray) {
             let allKeywords = [];
-            
             dataArray.forEach(item => {
                 if (item.keywords) {
                     let kws = Array.isArray(item.keywords) ? item.keywords : item.keywords.split(/[ ,]+/);
                     kws.forEach(k => {
                         let cleanKw = k.trim().toLowerCase();
-                        if (cleanKw && cleanKw.length > 2 && cleanKw !== 'wallpaper') {
-                            allKeywords.push(cleanKw);
-                        }
+                        if (cleanKw && cleanKw.length > 2 && cleanKw !== 'wallpaper') allKeywords.push(cleanKw);
                     });
                 }
             });
-
             let frequency = {};
             allKeywords.forEach(k => frequency[k] = (frequency[k] || 0) + 1);
-            
             let sortedKeywords = Object.keys(frequency).sort((a,b) => frequency[b] - frequency[a]).slice(0, 15);
-
             const kwContainer = document.getElementById('dynamic-keyword-tags');
             if(sortedKeywords.length > 0) {
                 const capitalize = s => s.charAt(0).toUpperCase() + s.slice(1);
-                
-                kwContainer.innerHTML = sortedKeywords.map(kw => 
-                    `<button class="kw-tag" onclick="filterByTag('${kw}', this)">#${capitalize(kw)}</button>`
-                ).join('');
-            } else {
-                kwContainer.innerHTML = ''; 
-            }
+                kwContainer.innerHTML = sortedKeywords.map(kw => `<button class="kw-tag" onclick="filterByTag('${kw}', this)">#${capitalize(kw)}</button>`).join('');
+            } else { kwContainer.innerHTML = ''; }
         }
 
         // ================= FILTERING LOGIC =================
@@ -693,7 +439,6 @@
             document.querySelectorAll('.kw-tag').forEach(btn => btn.classList.remove('active'));
             document.querySelectorAll('.cat-pill').forEach(btn => btn.classList.remove('active'));
             if(btnElement) btnElement.classList.add('active');
-            
             document.getElementById('gallery-title').innerText = keyword === 'all' ? "Discover Updates" : "Exclusive Wallpapers";
             executeFilter(keyword, 'category');
         }
@@ -702,7 +447,6 @@
             document.querySelectorAll('.cat-pill').forEach(btn => btn.classList.remove('active'));
             document.querySelectorAll('.kw-tag').forEach(btn => btn.classList.remove('active'));
             if(btnElement) btnElement.classList.add('active');
-            
             document.getElementById('gallery-title').innerText = `#${keyword.toUpperCase()}`;
             executeFilter(keyword, 'tag');
         }
@@ -710,58 +454,37 @@
         function executeFilter(keyword, type) {
             let items = document.querySelectorAll('.search-item');
             let hasResults = false;
-
             items.forEach(item => {
                 let category = item.getAttribute('data-category');
                 let tags = item.getAttribute('data-keywords');
-                
-                let match = false;
-                if(type === 'category') {
-                    match = (keyword === 'all' || category.includes(keyword));
-                } else if(type === 'tag') {
-                    match = tags.includes(keyword);
-                }
-
-                if (match) {
-                    item.style.display = 'block';
-                    hasResults = true;
-                } else {
-                    item.style.display = 'none';
-                }
+                let match = (type === 'category') ? (keyword === 'all' || category.includes(keyword)) : tags.includes(keyword);
+                item.style.display = match ? 'block' : 'none';
+                if (match) hasResults = true;
             });
             document.getElementById('no-results-msg').style.display = hasResults ? 'none' : 'block';
         }
 
         // ================= ROUTING =================
         function openImagePreview(imageUrl, title, description) {
-    const encodedUrl = encodeURIComponent(imageUrl);
-    const encodedTitle = encodeURIComponent(title);
-    const encodedDesc = encodeURIComponent(description || ""); // Description ko encode kiya
-    
-    // URL mein description parameter add kar diya
-    window.location.href = `wallpaper.html?url=${encodedUrl}&title=${encodedTitle}&desc=${encodedDesc}`;
-}
-
+            const encodedUrl = encodeURIComponent(imageUrl);
+            const encodedTitle = encodeURIComponent(title);
+            const encodedDesc = encodeURIComponent(description || "");
+            window.location.href = `wallpaper.html?url=${encodedUrl}&title=${encodedTitle}&desc=${encodedDesc}`;
+        }
 
         function openCreatorProfile(name, dpUrl, instaLink) {
-            const encodedName = encodeURIComponent(name);
-            const encodedDp = encodeURIComponent(dpUrl);
-            const encodedInsta = encodeURIComponent(instaLink);
-            window.location.href = `creator.html?name=${encodedName}&dp=${encodedDp}&insta=${encodedInsta}`;
+            window.location.href = `creator.html?name=${encodeURIComponent(name)}&dp=${encodeURIComponent(dpUrl)}&insta=${encodeURIComponent(instaLink)}`;
         }
         
         function openBiodataPage() { window.location.href = "biodata.html"; }
 
-        // ================= SORT SYSTEM (Trending via Download count) =================
+        // ================= SORT SYSTEM =================
         window.sortGrid = function(type, btnElement) {
             document.querySelectorAll('.sort-btn').forEach(btn => btn.classList.remove('active'));
             if(btnElement) btnElement.classList.add('active');
-
             let grid = document.getElementById('main-grid');
             let items = Array.from(grid.getElementsByClassName('search-item'));
-
             if (type === 'trending') {
-                // Sorting based on highest downloads (Trending logic is already working properly here)
                 items.sort((a, b) => parseInt(b.getAttribute('data-downloads')) - parseInt(a.getAttribute('data-downloads')));
             } else {
                 items.sort((a, b) => parseInt(a.getAttribute('data-index')) - parseInt(b.getAttribute('data-index')));
@@ -777,33 +500,24 @@
             let query = e.target.value.toLowerCase().trim();
             let items = document.querySelectorAll('.search-item');
             let hasResults = false;
-            
             document.querySelectorAll('.cat-pill, .kw-tag').forEach(btn => btn.classList.remove('active'));
             document.getElementById('gallery-title').innerText = query ? `Search: ${query}` : "Discover Updates";
-
             items.forEach(item => {
                 let title = item.querySelector('h3').innerText.toLowerCase();
                 let category = item.getAttribute('data-category') || "";
                 let keywords = item.getAttribute('data-keywords') || "";
                 let creator = item.getAttribute('data-creator') || "";
-                
-                if(title.includes(query) || keywords.includes(query) || creator.includes(query) || category.includes(query)) {
-                    item.style.display = 'block';
-                    hasResults = true;
-                } else {
-                    item.style.display = 'none';
-                }
+                let match = title.includes(query) || keywords.includes(query) || creator.includes(query) || category.includes(query);
+                item.style.display = match ? 'block' : 'none';
+                if(match) hasResults = true;
             });
-
             document.getElementById('no-results-msg').style.display = hasResults || query === "" ? 'none' : 'block';
-
             if (query.length > 0 && window.allDesignsData) {
                 let matchedSuggestions = [];
                 window.allDesignsData.forEach(data => {
                     let sTitle = (data.title || "").toLowerCase();
                     let sCreator = (data.creator || "").toLowerCase();
                     let sKeywords = Array.isArray(data.keywords) ? data.keywords.join(" ").toLowerCase() : String(data.keywords || "").toLowerCase();
-                    
                     if (sTitle.includes(query)) matchedSuggestions.push({ text: data.title, type: 'Title' });
                     else if (sCreator.includes(query)) matchedSuggestions.push({ text: data.creator, type: 'Creator' });
                     else if (sKeywords.includes(query)) {
@@ -811,73 +525,26 @@
                         if(matchKw) matchedSuggestions.push({ text: matchKw, type: 'Tag' });
                     }
                 });
-
-                let uniqueSuggestions = Array.from(new Set(matchedSuggestions.map(s => s.text)))
-                    .map(text => matchedSuggestions.find(s => s.text === text)).slice(0, 5);
-
+                let uniqueSuggestions = Array.from(new Set(matchedSuggestions.map(s => s.text))).map(text => matchedSuggestions.find(s => s.text === text)).slice(0, 5);
                 if (uniqueSuggestions.length > 0) {
-                    suggestionsBox.innerHTML = uniqueSuggestions.map(s => `
-                        <div class="suggestion-item" onclick="applySearch('${s.text.replace(/'/g, "\\'")}')">
-                            <span class="suggestion-text"><i class="fa-solid fa-magnifying-glass" style="margin-right:8px; color:gray;"></i> ${s.text}</span>
-                            <span class="suggestion-type">${s.type}</span>
-                        </div>
-                    `).join('');
+                    suggestionsBox.innerHTML = uniqueSuggestions.map(s => `<div class="suggestion-item" onclick="applySearch('${s.text.replace(/'/g, "\\'")}')"><span class="suggestion-text"><i class="fa-solid fa-magnifying-glass" style="margin-right:8px; color:gray;"></i> ${s.text}</span><span class="suggestion-type">${s.type}</span></div>`).join('');
                     suggestionsBox.style.display = 'block';
-                } else {
-                    suggestionsBox.style.display = 'none';
-                }
-            } else {
-                suggestionsBox.style.display = 'none';
-            }
+                } else { suggestionsBox.style.display = 'none'; }
+            } else { suggestionsBox.style.display = 'none'; }
         });
 
-        document.addEventListener('click', function(e) {
-            if (!searchInput.contains(e.target) && !suggestionsBox.contains(e.target)) {
-                suggestionsBox.style.display = 'none';
-            }
-        });
+        document.addEventListener('click', (e) => { if (!searchInput.contains(e.target) && !suggestionsBox.contains(e.target)) suggestionsBox.style.display = 'none'; });
+        window.applySearch = function(text) { searchInput.value = text; suggestionsBox.style.display = 'none'; searchInput.dispatchEvent(new Event('input')); };
 
-        window.applySearch = function(text) {
-            searchInput.value = text;
-            suggestionsBox.style.display = 'none';
-            searchInput.dispatchEvent(new Event('input')); 
-        };
-
-        // ================= LANDING PAGE DISMISSAL LOGIC =================
-
-function dismissLanding() {
-    const landing = document.getElementById("landing-screen");
-
-    if (landing) {
-        landing.style.opacity = "0";
-
-        setTimeout(() => {
-            landing.style.display = "none";
-        }, 800);
-
-        // Save state
-        sessionStorage.setItem("landingShown", "true");
-    }
-}
-
-// Check if already shown
-window.addEventListener("DOMContentLoaded", () => {
-    const alreadyShown = sessionStorage.getItem("landingShown");
-
-    if (alreadyShown === "true") {
-        const landing = document.getElementById("landing-screen");
-
-        if (landing) {
-            landing.style.display = "none";
+        // ================= LANDING PAGE DISMISSAL =================
+        function dismissLanding() {
+            const landing = document.getElementById("landing-screen");
+            if (landing) { landing.style.opacity = "0"; setTimeout(() => { landing.style.display = "none"; }, 800); sessionStorage.setItem("landingShown", "true"); }
         }
-    } else {
-        // Auto dismiss after 6 seconds
-        setTimeout(() => {
-            dismissLanding();
-        }, 6000);
-    }
-});
-
+        window.addEventListener("DOMContentLoaded", () => {
+            if (sessionStorage.getItem("landingShown") === "true") { document.getElementById("landing-screen").style.display = "none"; }
+            else { setTimeout(dismissLanding, 6000); }
+        });
     </script>
 </body>
 </html>
