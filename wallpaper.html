@@ -38,7 +38,17 @@
 
         /* Preview Container */
         .container { padding: 30px 5%; display: flex; flex-direction: column; align-items: center; }
-        #dynamic-preview-title { margin-bottom: 25px; font-size: 20px; font-weight: 600; text-align: center; }
+        #dynamic-preview-title { margin-bottom: 10px; font-size: 22px; font-weight: 600; text-align: center; }
+        
+        /* NEW: Description Styles */
+        #dynamic-preview-desc { 
+            color: var(--text-secondary); 
+            font-size: 14px; 
+            text-align: center; 
+            margin-bottom: 25px; 
+            line-height: 1.6; 
+            max-width: 350px;
+        }
 
         /* Smart Device Frames */
         .device-container { position: relative; margin-bottom: 40px; transition: 0.5s; }
@@ -97,6 +107,7 @@
 
     <div class="container">
         <h2 id="dynamic-preview-title">Loading...</h2>
+        <p id="dynamic-preview-desc"></p>
         
         <div id="device-switcher" class="device-container mode-mobile">
             <img id="dynamic-preview-img" src="" alt="Preview">
@@ -123,12 +134,21 @@
         const urlParams = new URLSearchParams(window.location.search);
         const imageUrl = urlParams.get('url') || '';
         const imageTitle = urlParams.get('title') || 'Wallpaper';
+        const imageDesc = urlParams.get('desc') || ''; // Fetch description from URL
 
         document.addEventListener('DOMContentLoaded', () => {
             const frame = document.getElementById('device-switcher');
             const imgElement = document.getElementById('dynamic-preview-img');
+            const descElement = document.getElementById('dynamic-preview-desc');
             
             document.getElementById('dynamic-preview-title').innerText = imageTitle;
+            
+            // Show description only if available
+            if(imageDesc) {
+                descElement.innerText = decodeURIComponent(imageDesc);
+            } else {
+                descElement.style.display = 'none';
+            }
 
             // Desktop Frame Checker
             const isDesktop = imageTitle.toLowerCase().includes('desktop') || imageUrl.toLowerCase().includes('desktop');
