@@ -1,0 +1,1234 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Icon One — Premium SaaS E-Commerce Builder</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        /* -------------------- BUILDER UI/UX STYLES -------------------- */
+        :root {
+            --bg-color: #f3f4f6;
+            --panel-bg: #ffffff;
+            --primary: #2563eb;
+            --primary-hover: #1d4ed8;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --border-color: #e2e8f0;
+            --radius: 12px;
+        }
+
+        * { box-sizing: border-box; }
+        body { margin: 0; font-family: 'Poppins', sans-serif; background: var(--bg-color); color: var(--text-main); height: 100vh; overflow: hidden; display: flex; }
+
+        /* Split Screen Layout */
+        .sidebar { width: 450px; background: var(--panel-bg); height: 100vh; overflow-y: auto; border-right: 1px solid var(--border-color); display: flex; flex-direction: column; box-shadow: 4px 0 15px rgba(0,0,0,0.03); z-index: 10; }
+        .preview-area { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; background: #e2e8f0; position: relative; }
+
+        /* Header */
+        .sidebar-header { padding: 24px; border-bottom: 1px solid var(--border-color); background: #fff; position: sticky; top: 0; z-index: 20; display: flex; justify-content: space-between; align-items: center; }
+        .sidebar-header h1 { font-size: 20px; font-weight: 800; margin: 0; color: #000; letter-spacing: -0.5px; display: flex; align-items: center; gap: 10px; }
+        .badge { font-size: 10px; font-weight: 700; background: var(--text-main); color: #fff; padding: 4px 8px; border-radius: 6px; letter-spacing: 1px; text-transform: uppercase; }
+
+        /* Intro Box */
+        .intro-box { margin: 24px 24px 0 24px; padding: 20px; background: #eff6ff; border: 2px solid #bfdbfe; border-radius: 16px; }
+        .intro-box h2 { font-size: 16px; font-weight: 700; color: #1e3a8a; margin: 0 0 8px 0; display: flex; align-items: center; gap: 8px; }
+        .intro-box p { font-size: 12px; color: #1e40af; margin: 0 0 12px 0; line-height: 1.5; }
+        .intro-features { list-style: none; padding: 0; margin: 0; display: grid; gap: 8px; }
+        .intro-features li { font-size: 11px; color: #1e3a8a; font-weight: 500; display: flex; align-items: center; gap: 8px; background: #fff; padding: 8px 12px; border-radius: 8px; border: 1px solid #bfdbfe; box-shadow: 0 2px 0 #bfdbfe; }
+        .intro-features li i { color: var(--primary); }
+
+        /* Form Sections */
+        .config-section { padding: 24px; border-bottom: 1px solid var(--border-color); }
+        .config-section h3 { font-size: 14px; font-weight: 700; text-transform: uppercase; color: var(--text-muted); margin: 0 0 16px 0; letter-spacing: 1px; display: flex; align-items: center; gap: 8px; }
+        
+        .form-group { margin-bottom: 16px; }
+        label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 6px; color: var(--text-main); }
+        .desc { font-size: 11px; color: var(--text-muted); margin-top: -4px; margin-bottom: 8px; line-height: 1.4; }
+        
+        input[type="text"], select, textarea { width: 100%; padding: 12px 14px; background: #f8fafc; border: 2px solid #cbd5e1; border-radius: 8px; font-family: 'Poppins', sans-serif; font-size: 13px; font-weight: 500; color: var(--text-main); transition: all 0.2s; }
+        input:focus, select:focus, textarea:focus { outline: none; border-color: var(--primary); background: #fff; box-shadow: 4px 4px 0 rgba(37, 99, 235, 0.1); transform: translate(-2px, -2px); }
+        textarea { resize: vertical; font-family: monospace; font-size: 12px; }
+
+        /* Checkboxes */
+        .checkbox-wrapper { display: flex; align-items: flex-start; gap: 10px; margin-top: 12px; padding: 12px; background: #f8fafc; border: 2px solid var(--border-color); border-radius: 8px; cursor: pointer; transition: 0.2s; }
+        .checkbox-wrapper:hover { border-color: #cbd5e1; transform: translateY(-1px); box-shadow: 2px 2px 0 rgba(0,0,0,0.05); }
+        .checkbox-wrapper input[type="checkbox"] { margin-top: 3px; width: 16px; height: 16px; accent-color: var(--primary); cursor: pointer; }
+        .checkbox-wrapper label { margin: 0; cursor: pointer; font-size: 13px; font-weight: 700; color: var(--text-main); }
+        
+        /* Buttons */
+        .action-bar { padding: 24px; background: #fff; position: sticky; bottom: 0; border-top: 1px solid var(--border-color); display: flex; flex-direction: column; gap: 10px; z-index: 20; }
+        .btn { width: 100%; padding: 14px; border-radius: 12px; border: 2px solid var(--text-main); font-size: 14px; font-weight: 700; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px; font-family: 'Poppins', sans-serif; text-transform: uppercase; }
+        .btn-primary { background: var(--primary); color: #fff; box-shadow: 4px 4px 0 var(--text-main); }
+        .btn-primary:hover { background: var(--primary-hover); transform: translate(-2px, -2px); box-shadow: 6px 6px 0 var(--text-main); }
+        .btn-primary:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 var(--text-main); }
+        .btn-secondary { background: #fff; color: var(--text-main); box-shadow: 3px 3px 0 var(--text-main); }
+        .btn-secondary:hover { background: #f8fafc; transform: translate(-1px, -1px); box-shadow: 4px 4px 0 var(--text-main); }
+        .btn-secondary:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 var(--text-main); }
+
+        /* Mobile Preview Frame */
+        .device-wrapper { padding: 20px; display: flex; flex-direction: column; align-items: center; width: 100%; height: 100%; justify-content: center; }
+        .device-frame { width: 375px; height: 812px; background: #fff; border: 12px solid #0f172a; border-radius: 40px; overflow: hidden; position: relative; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); transform-origin: top center; }
+        @media (max-height: 900px) { .device-frame { transform: scale(0.85); } }
+        @media (max-height: 750px) { .device-frame { transform: scale(0.75); } }
+        
+        .device-notch { position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 120px; height: 25px; background: #0f172a; border-bottom-left-radius: 16px; border-bottom-right-radius: 16px; z-index: 100; }
+        iframe { width: 100%; height: 100%; border: none; background: #fff; }
+
+        .preview-header { position: absolute; top: 30px; display: flex; gap: 20px; background: #fff; padding: 10px 20px; border-radius: 30px; box-shadow: 4px 4px 0 rgba(0,0,0,0.1); border: 2px solid #0f172a; }
+        .preview-header span { font-size: 13px; font-weight: 700; color: var(--text-main); text-transform: uppercase; }
+
+        /* Modal */
+        .modal-overlay { position: fixed; inset: 0; background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(4px); z-index: 9999; display: none; align-items: center; justify-content: center; }
+        .modal-content { background: #fff; width: 100%; max-width: 550px; border-radius: 20px; padding: 30px; box-shadow: 8px 8px 0 #0f172a; border: 3px solid #0f172a; }
+        .modal-content h2 { margin-top: 0; font-size: 22px; color: #000; font-weight: 800; text-transform: uppercase; }
+        .code-block { background: #0f172a; color: #38bdf8; padding: 15px; border-radius: 12px; font-family: monospace; font-size: 12px; height: 250px; overflow-y: auto; margin: 15px 0; border: 2px solid #334155; }
+        
+        .hidden { display: none !important; }
+    </style>
+</head>
+<body>
+
+    <!-- LEFT SIDEBAR: BUILDER SETTINGS -->
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <h1><i class="fas fa-cube text-primary"></i> Icon One</h1>
+            <span class="badge">SAAS BUILDER</span>
+        </div>
+
+        <!-- Introduction Section -->
+        <div class="intro-box">
+            <h2><i class="fas fa-rocket"></i> Launch Your E-Commerce</h2>
+            <p>Welcome to Icon One! Configure your premium, cartoon-styled mobile app below. Features include:</p>
+            <ul class="intro-features">
+                <li><i class="fas fa-paint-brush"></i> <b>Premium UI:</b> Interactive 3D Cartoon Design</li>
+                <li><i class="fas fa-shield-alt"></i> <b>Smart Auth:</b> OTP & Google Login with Flow Control</li>
+                <li><i class="fab fa-whatsapp"></i> <b>WhatsApp Logic:</b> Direct order forwarding</li>
+                <li><i class="fas fa-database"></i> <b>Firebase Ready:</b> Real-time DB & Dynamic Ads</li>
+            </ul>
+        </div>
+
+        <div class="config-section">
+            <h3><i class="fas fa-store"></i> 1. General Info</h3>
+            <div class="form-group">
+                <label>Store Name</label>
+                <input id="store-name" type="text" placeholder="e.g. Guptaji Shop" value="Guptaji Shop">
+            </div>
+            <div class="form-group">
+                <label>User Login Flow</label>
+                <p class="desc">Define when the user is required to authenticate.</p>
+                <select id="login-flow">
+                    <option value="checkout">Allow Browsing -> Login for Cart/Profile</option>
+                    <option value="mandatory">Mandatory -> Login on First Open</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="config-section">
+            <h3><i class="fas fa-database"></i> 2. Firebase Database</h3>
+            <div class="form-group">
+                <label>Firebase Config Object</label>
+                <p class="desc">Paste the JSON config from your Firebase Console.</p>
+                <textarea id="fb-config" rows="6" placeholder="{&#10;  apiKey: '...',&#10;  authDomain: '...',&#10;  projectId: '...',&#10;  storageBucket: '...',&#10;  messagingSenderId: '...',&#10;  appId: '...'&#10;}">{
+  apiKey: "AIzaSyBNPsgZ4JqmCboabo0_ftmnVlbeRZHwIXI",
+  authDomain: "guptaji-e-commerce.firebaseapp.com",
+  projectId: "guptaji-e-commerce",
+  storageBucket: "guptaji-e-commerce.firebasestorage.app",
+  messagingSenderId: "31014748793",
+  appId: "1:31014748793:web:ef89e82fdecb02b28f0aa8"
+}</textarea>
+            </div>
+        </div>
+
+        <div class="config-section">
+            <h3><i class="fas fa-user-lock"></i> 3. Advanced Auth Features</h3>
+            
+            <label class="checkbox-wrapper">
+                <input type="checkbox" id="enable-google" checked>
+                <div>
+                    <label>Enable Google Auth</label>
+                    <p class="desc">Add "Sign in with Google" secure popup.</p>
+                </div>
+            </label>
+
+            <label class="checkbox-wrapper">
+                <input type="checkbox" id="enable-wa" onchange="toggleWaSettings()">
+                <div>
+                    <label>Enable WhatsApp OTP API</label>
+                    <p class="desc">Verify numbers via custom WhatsApp messaging API.</p>
+                </div>
+            </label>
+
+            <div id="wa-settings" class="hidden form-group" style="margin-top: 15px; padding-left: 10px; border-left: 3px solid var(--primary);">
+                <label>API Endpoint (GET)</label>
+                <p class="desc">Variables: <b>{phone}</b> and <b>{otp}</b></p>
+                <input id="wa-url" type="text" placeholder="https://api.yourdomain.com/send?phone={phone}&msg=OTP+{otp}">
+            </div>
+        </div>
+
+        <div class="action-bar">
+            <button class="btn btn-primary" onclick="generatePreview()">
+                <i class="fas fa-sync-alt"></i> Update Live Preview
+            </button>
+            <button class="btn btn-secondary" onclick="openExportModal()">
+                <i class="fas fa-code"></i> Export Final Code
+            </button>
+        </div>
+    </div>
+
+    <!-- RIGHT SIDEBAR: LIVE PREVIEW -->
+    <div class="preview-area">
+        <div class="preview-header">
+            <span><i class="fas fa-mobile-alt"></i> Live Mobile Preview</span>
+        </div>
+        <div class="device-wrapper">
+            <div class="device-frame">
+                <div class="device-notch"></div>
+                <iframe id="preview-iframe"></iframe>
+            </div>
+        </div>
+    </div>
+
+    <!-- EXPORT MODAL -->
+    <div id="export-modal" class="modal-overlay">
+        <div class="modal-content">
+            <h2>🎉 Your App is Ready!</h2>
+            <p class="desc" style="font-size: 13px; color: #475569;">Copy the generated source code below. It contains your complete e-commerce logic tailored with Icon One features.</p>
+            
+            <div class="code-block" id="generated-code-box"></div>
+
+            <div style="display: flex; gap: 12px; margin-top: 20px;">
+                <button class="btn btn-primary" onclick="copySourceCode()" style="flex: 1;">
+                    <i class="fas fa-copy"></i> Copy Code
+                </button>
+                <button class="btn btn-secondary" onclick="downloadHTML()" style="flex: 1;">
+                    <i class="fas fa-download"></i> Download .html
+                </button>
+            </div>
+            <button class="btn btn-secondary" onclick="closeExportModal()" style="margin-top: 12px; border-color: transparent; box-shadow: none; background: #f1f5f9;">Close</button>
+        </div>
+    </div>
+
+    <!-- =================================================================================== -->
+    <!-- SECURE TEMPLATE STORAGE (Contains Guptaji Shop Exact Logic + SaaS Variables) -->
+    <!-- =================================================================================== -->
+    <textarea id="ecommerce-template" style="display:none;">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>/*STORE_NAME*/ - Premium Store</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet">
+    
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script type="importmap">
+      {
+        "imports": {
+          "firebase/app": "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js",
+          "firebase/firestore": "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js",
+          "firebase/auth": "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js"
+        }
+      }
+    </script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { 
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        shop: {
+                            bg: '#f8fafc',
+                            card: '#ffffff', 
+                            primary: '#2563eb', /* Azad Primary */
+                            accent: '#1d4ed8',  
+                            dark: '#0f172a',    /* Azad Border/Text */
+                            text: '#0f172a',
+                            muted: '#64748b',
+                            border: '#0f172a',
+                            shadow: '#0f172a'
+                        }
+                    },
+                    animation: {
+                        'slide-in': 'slideIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) forwards',
+                        'slide-up': 'slideUp 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards',
+                        'fade-in': 'fadeIn 0.4s ease-out forwards',
+                        'bounce-soft': 'bounceSoft 2s infinite ease-in-out',
+                        'spin-slow': 'spinSlow 30s linear infinite'
+                    },
+                    keyframes: {
+                        slideIn: { '0%': { transform: 'translateX(-100%)' }, '100%': { transform: 'translateX(0)' } },
+                        slideUp: { '0%': { transform: 'translateY(100%)' }, '100%': { transform: 'translateY(0)' } },
+                        fadeIn: { '0%': { opacity: '0' }, '100%': { opacity: '1' } },
+                        bounceSoft: { '0%, 100%': { transform: 'translateY(-5%)' }, '50%': { transform: 'translateY(0)' } },
+                        spinSlow: { '0%': { transform: 'rotate(0deg)' }, '100%': { transform: 'rotate(360deg)' } }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body { 
+            -webkit-tap-highlight-color: transparent; 
+            background-color: #f8fafc;
+        }
+        .hide-scroll::-webkit-scrollbar { display: none; }
+        .hide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
+        .view-section { display: none; animation: fadeIn 0.3s ease-out; }
+        .view-section.active { display: block; }
+        
+        /* AZAD SKILL DESIGN SYSTEM INTEGRATION */
+        .shadow-cartoon { box-shadow: 4px 4px 0px #0f172a; }
+        .shadow-cartoon-hover { box-shadow: 7px 7px 0px #0f172a; }
+        .shadow-cartoon-press { box-shadow: 2px 2px 0px #0f172a; }
+        .border-cartoon { border: 2.5px solid #0f172a; }
+
+        .btn-cartoon {
+            background-color: #2563eb; color: #ffffff;
+            border-radius: 12px; border: 2.5px solid #0f172a;
+            box-shadow: 4px 4px 0px #0f172a;
+            transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            text-transform: uppercase;
+        }
+        .btn-cartoon:hover { background-color: #1d4ed8; transform: translate(-1px, -1px); box-shadow: 5px 5px 0px #0f172a; }
+        .btn-cartoon:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0px #0f172a; }
+
+        .btn-3d-white {
+            background-color: #ffffff; color: #0f172a; border: 2.5px solid #0f172a;
+            box-shadow: 3px 3px 0px #0f172a; transition: all 0.2s ease;
+        }
+        .btn-3d-white:active { box-shadow: 1px 1px 0px #0f172a; transform: translate(2px, 2px); }
+        
+        .safe-pb { padding-bottom: calc(env(safe-area-inset-bottom) + 100px); }
+        .safe-pt { padding-top: calc(env(safe-area-inset-top) + 95px); }
+
+        .input-cartoon {
+            background: #ffffff; border: 2.5px solid #0f172a; border-radius: 12px;
+            transition: all 0.2s ease; box-shadow: 3px 3px 0px #0f172a;
+        }
+        .input-cartoon:focus { transform: translate(-2px, -2px); box-shadow: 5px 5px 0px #0f172a; outline: none; }
+
+        .chakra-bg {
+            position: fixed; top: -40px; right: -40px; width: 300px; height: 300px;
+            z-index: 0; pointer-events: none; opacity: 0.03; animation: spinSlow 30s linear infinite;
+        }
+
+        /* SaaS: Auth Overlay Mode for Checkout Login Flow */
+        .auth-overlay-mode { position: fixed; inset: 0; z-index: 5000; background: rgba(15,23,42,0.85); backdrop-filter: blur(8px); display: flex; flex-direction: column; justify-content: flex-end; }
+        .auth-overlay-mode > div { background: #f8fafc; width: 100%; border-radius: 32px 32px 0 0; padding: 30px 20px 50px 20px; border-top: 3px solid #0f172a; animation: slideUp 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); }
+    </style>
+</head>
+<body class="text-shop-text font-sans antialiased min-h-screen overflow-x-hidden selection:bg-shop-primary selection:text-white">
+
+    <img src="https://i.ibb.co/NdNntcXc/ashok-chakra-e1426766122112.png" alt="Background Element" class="chakra-bg">
+
+    <!-- Auth View -->
+    <div id="auth-view" class="fixed inset-0 z-[100] bg-shop-bg flex flex-col justify-center px-6 transition-all duration-700 hidden">
+        <div id="auth-wrapper" class="w-full max-w-sm mx-auto relative z-10">
+            <button id="auth-close-btn" onclick="closeAuthModal()" class="absolute -top-12 right-0 w-10 h-10 bg-white rounded-[12px] border-[2.5px] border-shop-dark shadow-[3px_3px_0_#0f172a] flex items-center justify-center hidden"><i data-lucide="x" class="w-5 h-5 stroke-[3]"></i></button>
+            
+            <div class="mb-8 text-center relative z-10 flex flex-col items-center">
+                <div class="w-24 h-24 mx-auto bg-white border-cartoon shadow-cartoon rounded-[20px] flex items-center justify-center p-3 mb-5 transform -rotate-3 hover:rotate-0 transition-transform">
+                    <img src="https://i.ibb.co/9mxQm0VZ/pngtree-hindu-god-sri-krishna-png-image-19768469.png" alt="Logo" class="w-full h-full object-contain">
+                </div>
+                <h1 class="text-3xl font-black text-shop-dark mb-2 tracking-tight uppercase">/*STORE_NAME*/</h1>
+                <p class="text-shop-primary font-black border-cartoon shadow-[2px_2px_0px_#0f172a] bg-[#dbeafe] inline-block px-4 py-1 rounded-[12px] text-[10px] uppercase tracking-widest">Login to Continue</p>
+            </div>
+
+            <div id="auth-step-1" class="relative z-10 w-full">
+                <div class="bg-white p-6 rounded-[20px] border-cartoon shadow-cartoon mb-4">
+                    <label class="text-[11px] font-black uppercase tracking-widest text-shop-muted mb-3 block">Mobile Number</label>
+                    <div class="flex items-center input-cartoon px-4 py-3 mb-6">
+                        <span class="text-lg font-black mr-3 text-shop-muted border-r-[2.5px] border-shop-dark pr-3">+91</span>
+                        <input type="tel" id="login-phone" class="w-full text-xl font-black outline-none bg-transparent placeholder-gray-300 tracking-wide text-shop-dark" placeholder="0000000000" maxlength="10">
+                    </div>
+                    <button onclick="sendOTP()" class="w-full btn-cartoon py-4 text-sm font-black tracking-widest">Get OTP</button>
+                </div>
+                
+                <!-- Google Auth UI via Builder Toggle -->
+                <div id="google-auth-container" class="/*GOOGLE_DISPLAY*/ bg-white p-5 rounded-[20px] border-cartoon shadow-cartoon flex-col items-center justify-center">
+                    <p class="text-[10px] font-black uppercase text-shop-muted mb-4 tracking-widest">Or Login Instantly</p>
+                    <button onclick="signInWithGoogle()" class="w-full bg-white border-[2.5px] border-shop-dark shadow-[3px_3px_0_#0f172a] rounded-[12px] py-3 flex items-center justify-center gap-3 active:translate-y-[2px] active:shadow-none font-black text-[13px] uppercase tracking-wide transition-all text-shop-dark">
+                        <svg class="w-5 h-5" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+                        Continue with Google
+                    </button>
+                </div>
+            </div>
+
+            <div id="auth-step-2" class="hidden relative z-10 w-full">
+                 <div class="bg-white p-6 rounded-[20px] border-cartoon shadow-cartoon">
+                     <div class="mb-6">
+                        <label class="text-[11px] font-black uppercase tracking-widest text-shop-muted mb-3 block text-center">Enter OTP</label>
+                        <input type="text" id="login-otp" class="w-full text-center text-3xl font-black tracking-[0.5em] input-cartoon py-3" maxlength="4" placeholder="••••">
+                        <p id="otp-hint" class="text-[11px] text-shop-muted mt-3 text-center font-bold">/*OTP_HINT*/</p>
+                    </div>
+                    <div class="mb-6">
+                        <label class="text-[11px] font-black uppercase tracking-widest text-shop-muted mb-3 block">Your Name</label>
+                        <input type="text" id="login-name" class="w-full text-base font-black input-cartoon px-4 py-3 text-shop-dark" placeholder="Ex. Rahul Gupta">
+                    </div>
+                    <button onclick="verifyOTP()" class="w-full btn-cartoon py-4 text-sm font-black tracking-widest">Verify & Login</button>
+                    <button onclick="backToPhone()" class="w-full text-shop-muted hover:text-shop-primary text-xs uppercase tracking-widest font-black mt-5 py-2 transition-colors">Change Number</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main App View -->
+    <div id="app-view" class="hidden min-h-screen relative bg-[#f8fafc]">
+        
+        <!-- Solid Header -->
+        <header class="fixed top-3 left-3 right-3 h-[65px] bg-white border-[2.5px] border-shop-dark rounded-[20px] shadow-cartoon z-30 flex items-center justify-between px-4 transition-all">
+            <div class="flex items-center gap-3">
+                <button onclick="toggleSidebar()" class="w-10 h-10 bg-white rounded-[12px] flex items-center justify-center btn-3d-white">
+                    <i data-lucide="menu" class="w-5 h-5 text-shop-dark stroke-[3]"></i>
+                </button>
+                <div class="flex flex-col justify-center">
+                    <h1 class="text-[18px] font-black text-shop-primary uppercase leading-none tracking-tight">/*STORE_NAME*/</h1>
+                    <p class="text-[9px] text-shop-muted font-black uppercase tracking-widest mt-0.5">Premium Quality</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-3">
+                <button onclick="toggleSearch()" class="w-10 h-10 bg-white rounded-[12px] flex items-center justify-center btn-3d-white">
+                    <i data-lucide="search" class="w-5 h-5 text-shop-dark stroke-[3]"></i>
+                </button>
+                <button onclick="authGuard(openCart)" class="w-10 h-10 bg-white rounded-[12px] flex items-center justify-center btn-3d-white relative">
+                    <i data-lucide="shopping-bag" class="w-5 h-5 text-shop-dark stroke-[3]"></i>
+                    <span id="nav-cart-badge" class="absolute -top-2 -right-2 bg-shop-primary border-[2px] border-shop-dark shadow-[1px_1px_0px_#0f172a] text-white text-[10px] font-black h-6 w-6 rounded-full flex items-center justify-center scale-0 transition-transform">0</span>
+                </button>
+            </div>
+        </header>
+
+        <!-- Search Bar -->
+        <div id="search-bar" class="fixed top-[85px] left-3 right-3 z-20 hidden animate-fade-in">
+            <div class="bg-white rounded-[16px] shadow-cartoon border-cartoon flex items-center px-4 py-3">
+                <i data-lucide="search" class="w-5 h-5 text-shop-dark mr-3 stroke-[3]"></i>
+                <input type="text" id="search-input" onkeyup="handleSearch()" class="bg-transparent w-full text-sm font-black outline-none placeholder-gray-400 text-shop-dark" placeholder="Search items...">
+                <button onclick="toggleSearch()" class="text-shop-dark bg-gray-100 rounded-[8px] p-1 border border-shop-dark"><i data-lucide="x" class="w-4 h-4 stroke-[3]"></i></button>
+            </div>
+        </div>
+
+        <!-- Sidebar -->
+        <div id="sidebar-overlay" onclick="toggleSidebar()" class="fixed inset-0 bg-shop-dark/60 backdrop-blur-sm z-40 hidden transition-opacity opacity-0"></div>
+        <aside id="sidebar" class="fixed top-0 left-0 bottom-0 w-[85%] max-w-sm bg-[#f8fafc] z-50 transform -translate-x-full transition-transform duration-300 border-r-[2.5px] border-shop-dark shadow-[10px_0_0_rgba(15,23,42,0.1)] flex flex-col overflow-hidden">
+            <div class="p-8 bg-white border-b-[2.5px] border-shop-dark shadow-[0_4px_0_#0f172a] relative">
+                <div class="w-16 h-16 bg-[#dbeafe] border-cartoon rounded-[16px] shadow-[4px_4px_0_#0f172a] flex items-center justify-center mb-4 text-3xl font-black text-shop-primary transform -rotate-3">/*INITIAL*/</div>
+                <h2 id="sidebar-username" class="font-black text-2xl tracking-tight text-shop-dark uppercase">Guest User</h2>
+                <p id="sidebar-phone" class="text-xs text-shop-muted font-bold mt-1 tracking-wider">Login for full access</p>
+            </div>
+            <div class="flex-grow py-6 overflow-y-auto px-4 space-y-3">
+                <a onclick="switchView('home'); toggleSidebar()" class="flex items-center px-4 py-4 rounded-[16px] bg-white border-cartoon shadow-[3px_3px_0_#0f172a] active:translate-y-[2px] active:shadow-[1px_1px_0_#0f172a] cursor-pointer transition-all">
+                    <i data-lucide="home" class="w-6 h-6 text-shop-primary mr-4 stroke-[3]"></i>
+                    <span class="font-black text-sm uppercase text-shop-dark">Home Store</span>
+                </a>
+                <a onclick="authGuard(() => { switchView('profile'); toggleSidebar(); })" class="flex items-center px-4 py-4 rounded-[16px] bg-white border-cartoon shadow-[3px_3px_0_#0f172a] active:translate-y-[2px] active:shadow-[1px_1px_0_#0f172a] cursor-pointer transition-all">
+                    <i data-lucide="user" class="w-6 h-6 text-shop-primary mr-4 stroke-[3]"></i>
+                    <span class="font-black text-sm uppercase text-shop-dark">My Profile</span>
+                </a>
+                <a onclick="authGuard(() => { switchView('orders'); toggleSidebar(); })" class="flex items-center px-4 py-4 rounded-[16px] bg-white border-cartoon shadow-[3px_3px_0_#0f172a] active:translate-y-[2px] active:shadow-[1px_1px_0_#0f172a] cursor-pointer transition-all">
+                    <i data-lucide="package" class="w-6 h-6 text-shop-primary mr-4 stroke-[3]"></i>
+                    <span class="font-black text-sm uppercase text-shop-dark">My Orders</span>
+                </a>
+                <div class="border-t-[2.5px] border-dashed border-shop-dark/20 my-4 mx-2"></div>
+                <a id="logout-btn" onclick="logout()" class="flex items-center px-4 py-4 rounded-[16px] bg-[#fee2e2] border-cartoon shadow-[3px_3px_0_#0f172a] active:translate-y-[2px] cursor-pointer text-[#991b1b] hidden">
+                    <i data-lucide="log-out" class="w-6 h-6 mr-4 stroke-[3]"></i>
+                    <span class="font-black text-sm uppercase">Logout</span>
+                </a>
+                <a id="login-nav-btn" onclick="showAuthModal(); toggleSidebar()" class="flex items-center px-4 py-4 rounded-[16px] bg-shop-primary border-cartoon shadow-[3px_3px_0_#0f172a] active:translate-y-[2px] cursor-pointer text-white hidden">
+                    <i data-lucide="log-in" class="w-6 h-6 mr-4 stroke-[3]"></i>
+                    <span class="font-black text-sm uppercase">Login</span>
+                </a>
+            </div>
+        </aside>
+
+        <!-- Home View -->
+        <main id="view-home" class="view-section active px-4 safe-pt safe-pb">
+            <!-- Ad Banner -->
+            <div id="dynamic-ad-container" class="hidden w-full mb-8 relative animate-fade-in">
+                <div class="bg-white rounded-[20px] border-cartoon shadow-cartoon aspect-[21/9] overflow-hidden relative">
+                    <div id="ad-loader" class="absolute inset-0 flex items-center justify-center text-shop-dark z-10 bg-white"><i data-lucide="loader-2" class="w-8 h-8 animate-spin stroke-[3]"></i></div>
+                    <a id="ad-click-link" href="#" target="_blank" class="w-full h-full block">
+                        <img id="ad-display-img" src="" alt="Advertisement" class="w-full h-full object-cover transition-opacity duration-700 opacity-0">
+                    </a>
+                    <span class="absolute top-3 right-3 bg-[#dbeafe] border-[1.5px] border-shop-dark shadow-[2px_2px_0px_#0f172a] text-shop-primary text-[9px] px-2.5 py-1 rounded-[12px] font-black z-20 uppercase tracking-widest">Ad</span>
+                </div>
+            </div>
+
+            <!-- Categories -->
+            <h3 class="text-[16px] font-black mb-4 text-shop-dark flex items-center gap-2 uppercase tracking-wide">
+                <i data-lucide="layers" class="w-5 h-5 text-shop-primary stroke-[3]"></i> Categories
+            </h3>
+            <div id="category-container" class="flex gap-3 overflow-x-auto hide-scroll mb-8 pb-3 px-1">
+                <button onclick="filterProducts('All', event)" class="cat-btn bg-[#dbeafe] text-shop-primary shadow-[2px_2px_0px_#0f172a] translate-y-[2px] border-cartoon px-4 py-2.5 rounded-[12px] text-[12px] font-black whitespace-nowrap uppercase tracking-wide flex items-center gap-2">
+                    <i data-lucide="grid" class="w-4 h-4 stroke-[3]"></i> All Items
+                </button>
+                <button onclick="filterProducts('Electronics', event)" class="cat-btn bg-white text-shop-dark shadow-cartoon border-cartoon px-4 py-2.5 rounded-[12px] text-[12px] font-black whitespace-nowrap uppercase tracking-wide flex items-center gap-2">Electronics</button>
+                <button onclick="filterProducts('Fashion', event)" class="cat-btn bg-white text-shop-dark shadow-cartoon border-cartoon px-4 py-2.5 rounded-[12px] text-[12px] font-black whitespace-nowrap uppercase tracking-wide flex items-center gap-2">Fashion</button>
+                <button onclick="filterProducts('Home', event)" class="cat-btn bg-white text-shop-dark shadow-cartoon border-cartoon px-4 py-2.5 rounded-[12px] text-[12px] font-black whitespace-nowrap uppercase tracking-wide flex items-center gap-2">Home</button>
+            </div>
+
+            <!-- Products Grid -->
+            <h3 class="text-[16px] font-black mb-4 text-shop-dark flex items-center gap-2 uppercase tracking-wide">
+                <i data-lucide="zap" class="w-5 h-5 text-shop-primary stroke-[3]"></i> Products
+            </h3>
+            <div id="products-grid" class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                <div class="col-span-full py-16 flex flex-col items-center justify-center text-shop-dark bg-white rounded-[20px] border-[2.5px] border-dashed border-shop-dark/30">
+                    <i data-lucide="loader" class="w-10 h-10 animate-spin mb-3 text-shop-primary stroke-[3]"></i>
+                    <span class="text-[12px] uppercase tracking-widest font-black">Loading Database...</span>
+                </div>
+            </div>
+        </main>
+
+        <!-- Profile View -->
+        <div id="view-profile" class="view-section px-4 safe-pt safe-pb">
+            <h2 class="text-[20px] font-black mb-6 text-shop-dark uppercase tracking-tight flex items-center gap-2">
+                <i data-lucide="user-circle" class="w-6 h-6 stroke-[3]"></i> My Profile
+            </h2>
+            
+            <div class="bg-white p-6 rounded-[20px] border-cartoon shadow-cartoon mb-8">
+                <div class="flex items-center gap-4 mb-6 pb-6 border-b-[2.5px] border-dashed border-shop-dark/20">
+                    <div class="w-16 h-16 bg-[#dbeafe] rounded-[16px] border-cartoon shadow-[3px_3px_0_#0f172a] flex items-center justify-center">
+                        <i data-lucide="smile" class="w-8 h-8 text-shop-primary stroke-[3]"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-[10px] font-black text-shop-muted uppercase tracking-widest mb-1">Personal Info</h3>
+                        <p class="font-black text-shop-dark text-sm uppercase">Update your details</p>
+                    </div>
+                </div>
+                <div class="space-y-5">
+                    <div><label class="text-[10px] font-black text-shop-dark uppercase block mb-2 pl-1">Full Name</label><input id="profile-name" type="text" class="w-full input-cartoon px-4 py-3 font-black text-sm text-shop-dark"></div>
+                    <div><label class="text-[10px] font-black text-shop-dark uppercase block mb-2 pl-1">Phone Number</label><input id="profile-phone" type="text" class="w-full input-cartoon px-4 py-3 font-black text-sm text-shop-muted bg-gray-50 cursor-not-allowed" disabled></div>
+                </div>
+                <button onclick="updateProfile()" class="mt-6 w-full btn-cartoon py-4 text-xs font-black tracking-widest">Save Changes</button>
+            </div>
+
+            <div class="flex justify-between items-end mb-4">
+                <h3 class="text-[16px] font-black text-shop-dark uppercase tracking-wide">Saved Addresses</h3>
+                <button onclick="openAddressModal()" class="text-shop-primary text-[10px] uppercase font-black bg-[#dbeafe] border-[2px] border-shop-dark shadow-[2px_2px_0px_#0f172a] px-3 py-1.5 rounded-[8px] active:translate-y-[2px] active:shadow-none transition-all">+ Add New</button>
+            </div>
+            <div id="address-list" class="space-y-4"></div>
+        </div>
+
+        <!-- Orders View -->
+        <div id="view-orders" class="view-section px-4 safe-pt safe-pb">
+            <h2 class="text-[20px] font-black mb-6 text-shop-dark uppercase tracking-tight flex items-center gap-2">
+                <i data-lucide="package-search" class="w-6 h-6 stroke-[3]"></i> My Orders
+            </h2>
+            <div id="orders-list" class="space-y-5 pb-10"></div>
+        </div>
+    </div>
+
+    <!-- Cartoon Bottom Navigation -->
+    <nav class="fixed bottom-3 left-3 right-3 h-[65px] bg-white border-cartoon shadow-cartoon rounded-[20px] z-40 flex items-center justify-around px-2" id="bottom-nav">
+        <div onclick="switchView('home')" class="nav-btn flex flex-col items-center justify-center w-full h-full cursor-pointer transition-all group">
+            <div class="p-1.5 rounded-[12px] border-[2px] bg-[#dbeafe] shadow-[2px_2px_0_#0f172a] border-shop-dark -translate-y-1 transition-all flex flex-col items-center gap-0.5">
+                <i data-lucide="store" class="w-5 h-5 text-shop-primary stroke-[2.5] nav-icon"></i>
+                <span class="text-[9px] font-black tracking-widest uppercase text-shop-primary nav-text">Shop</span>
+            </div>
+        </div>
+        <div onclick="authGuard(() => switchView('orders'))" class="nav-btn flex flex-col items-center justify-center w-full h-full cursor-pointer transition-all group">
+            <div class="p-1.5 rounded-[12px] border-[2px] border-transparent transition-all flex flex-col items-center gap-0.5">
+                <i data-lucide="package-search" class="w-5 h-5 text-shop-muted stroke-[2.5] nav-icon"></i>
+                <span class="text-[9px] font-black tracking-widest uppercase text-shop-muted nav-text">Orders</span>
+            </div>
+        </div>
+        <div onclick="authGuard(() => switchView('profile'))" class="nav-btn flex flex-col items-center justify-center w-full h-full cursor-pointer transition-all group">
+            <div class="p-1.5 rounded-[12px] border-[2px] border-transparent transition-all flex flex-col items-center gap-0.5">
+                <i data-lucide="user-circle" class="w-5 h-5 text-shop-muted stroke-[2.5] nav-icon"></i>
+                <span class="text-[9px] font-black tracking-widest uppercase text-shop-muted nav-text">Profile</span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Product Detail Overlay -->
+    <div id="product-overlay" class="fixed inset-0 z-[100] bg-shop-bg/90 backdrop-blur-sm hidden flex-col justify-end transition-all">
+        <div class="h-[90vh] bg-white rounded-t-[32px] border-[2.5px] border-b-0 border-shop-dark flex flex-col relative animate-slide-up shadow-[0_-10px_0_#0f172a] overflow-hidden">
+            <div class="absolute top-4 left-4 right-4 flex justify-between z-20">
+                <button onclick="closeProduct()" class="w-12 h-12 bg-white rounded-[16px] border-cartoon shadow-[3px_3px_0_#0f172a] flex items-center justify-center active:translate-y-[2px] active:shadow-none transition-all">
+                    <i data-lucide="chevron-down" class="w-6 h-6 text-shop-dark stroke-[3]"></i>
+                </button>
+            </div>
+            <div class="h-2/5 bg-[#dbeafe] relative w-full shrink-0 p-4 pt-20 border-b-[2.5px] border-shop-dark">
+                 <div class="w-full h-full bg-white rounded-[20px] shadow-[inset_0_4px_10px_rgba(0,0,0,0.05)] border-[2.5px] border-shop-dark overflow-hidden p-4">
+                    <img id="detail-img" src="" class="w-full h-full object-contain drop-shadow-xl" onerror="this.src='https://placehold.co/600x400?text=No+Image'">
+                 </div>
+            </div>
+            <div class="flex-grow p-6 flex flex-col bg-[#f8fafc] overflow-y-auto pb-24">
+                <span id="detail-cat" class="text-[9px] font-black bg-white border-[2px] border-shop-dark shadow-[2px_2px_0_#0f172a] text-shop-primary px-3 py-1 rounded-[8px] uppercase tracking-widest w-fit mb-3">Category</span>
+                <h1 id="detail-title" class="text-[22px] font-black text-shop-dark mb-2 leading-tight uppercase">Product Name</h1>
+                <span id="detail-price" class="text-3xl font-black text-shop-primary mb-6 block drop-shadow-sm">₹0</span>
+                <div class="mb-6">
+                     <h3 class="text-[12px] font-black text-shop-dark mb-3 uppercase tracking-wider flex items-center gap-2"><i data-lucide="info" class="w-4 h-4 stroke-[3]"></i> About Product</h3>
+                     <p id="detail-desc" class="text-[13px] text-shop-text leading-relaxed font-semibold bg-white border-[2.5px] border-shop-dark p-4 rounded-[20px] shadow-[3px_3px_0_#0f172a]">...</p>
+                </div>
+            </div>
+            <div class="absolute bottom-0 left-0 right-0 p-5 bg-white border-t-[2.5px] border-shop-dark">
+                <button id="detail-add-btn" class="w-full btn-cartoon py-4 text-sm font-black flex items-center justify-center gap-3">
+                    <i data-lucide="shopping-cart" class="w-5 h-5 stroke-[3]"></i> Add to Cart
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cart Modal -->
+    <div id="cart-modal" class="fixed inset-0 z-[110] bg-shop-bg/90 backdrop-blur-sm hidden flex-col justify-end">
+        <div class="h-[95vh] bg-[#f8fafc] rounded-t-[32px] border-[2.5px] border-b-0 border-shop-dark flex flex-col relative animate-slide-up shadow-[0_-10px_0_#0f172a] overflow-hidden">
+            <div class="px-5 py-4 bg-white border-b-[2.5px] border-shop-dark flex items-center justify-between sticky top-0 z-10">
+                <h2 class="font-black text-[20px] tracking-tight text-shop-dark uppercase flex items-center gap-2"><i data-lucide="shopping-bag" class="w-6 h-6 stroke-[3]"></i> My Cart</h2>
+                <button onclick="closeCart()" class="w-10 h-10 bg-white rounded-[12px] border-[2px] border-shop-dark shadow-[2px_2px_0_#0f172a] flex items-center justify-center active:translate-y-[2px] active:shadow-none"><i data-lucide="x" class="w-5 h-5 stroke-[3]"></i></button>
+            </div>
+            
+            <div class="flex-grow overflow-y-auto p-4 space-y-5" id="cart-content">
+                <div id="cart-items" class="space-y-4 mb-4"></div>
+                
+                <div id="cart-address-section" class="bg-white p-5 rounded-[20px] border-cartoon shadow-cartoon hidden mb-4">
+                    <h3 class="text-[12px] font-black mb-4 flex justify-between items-center text-shop-dark uppercase tracking-wider">
+                        Delivery Address 
+                        <span onclick="openAddressModal()" class="text-shop-primary text-[10px] cursor-pointer bg-[#dbeafe] border-[2px] border-shop-dark shadow-[2px_2px_0px_#0f172a] px-3 py-1.5 rounded-[8px]">+ New</span>
+                    </h3>
+                    <div id="checkout-addresses" class="space-y-3"></div>
+                </div>
+
+                <div id="cart-payment-section" class="bg-white p-5 rounded-[20px] border-cartoon shadow-cartoon mb-4 hidden">
+                    <h3 class="text-[12px] font-black mb-4 text-shop-dark uppercase tracking-wider">Payment Method</h3>
+                    <label class="flex items-center p-4 border-[2.5px] border-shop-dark bg-[#dbeafe] rounded-[16px] shadow-[1px_1px_0_#0f172a] cursor-pointer transform translate-y-[2px]">
+                        <input type="radio" name="payment_method" value="COD" class="w-5 h-5 accent-shop-primary" checked>
+                        <div class="ml-4 flex flex-col"><span class="text-[13px] font-black text-shop-dark uppercase">Cash on Delivery / WA Order</span><span class="text-[10px] text-shop-muted font-black uppercase mt-0.5">Pay when you receive</span></div>
+                    </label>
+                </div>
+
+                <div class="bg-white p-5 rounded-[20px] border-cartoon shadow-cartoon mb-24" id="bill-card">
+                    <div class="flex justify-between text-[13px] mb-3 font-black text-shop-muted uppercase"><span>Subtotal</span><span id="bill-subtotal" class="text-shop-dark">₹0</span></div>
+                    <div class="flex justify-between text-[13px] mb-5 font-black text-shop-muted uppercase"><span>Delivery Fee</span><span class="text-[#16a34a] bg-[#dcfce7] border-[1.5px] border-shop-dark px-2 rounded-[6px] shadow-[1px_1px_0_#0f172a]">Free</span></div>
+                    <div class="border-t-[2.5px] border-dashed border-shop-dark/20 pt-4 flex justify-between items-center">
+                        <span class="font-black text-[16px] text-shop-dark uppercase tracking-wide">Total Amount</span>
+                        <span id="bill-total" class="font-black text-2xl text-shop-primary drop-shadow-sm">₹0</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="absolute bottom-0 left-0 right-0 p-4 bg-white border-t-[2.5px] border-shop-dark">
+                <button onclick="processCheckout()" class="w-full btn-cartoon py-4 text-sm font-black tracking-widest flex items-center justify-center gap-2">
+                    Place Order <i data-lucide="arrow-right" class="w-5 h-5 stroke-[3]"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Address Modal -->
+    <div id="address-modal" class="fixed inset-0 z-[120] bg-shop-bg/90 hidden items-end sm:items-center justify-center backdrop-blur-sm">
+        <div class="bg-white w-full sm:w-[400px] p-6 rounded-t-[32px] sm:rounded-[32px] border-[2.5px] border-b-0 sm:border-b-[2.5px] border-shop-dark animate-slide-up pb-10 shadow-[0_-10px_0_#0f172a] sm:shadow-cartoon">
+            <div class="w-12 h-1.5 bg-shop-dark rounded-full mx-auto mb-6"></div>
+            <h3 class="font-black text-[20px] mb-6 text-shop-dark tracking-tight text-center uppercase">Add Address</h3>
+            <div class="space-y-4 mb-8">
+                <input type="text" id="addr-name" placeholder="Title (e.g. Home, Office)" class="w-full input-cartoon py-4 px-5 text-sm font-black text-shop-dark">
+                <input type="text" id="addr-text" placeholder="House No, Street Name" class="w-full input-cartoon py-4 px-5 text-sm font-black text-shop-dark">
+                <div class="flex gap-4">
+                    <input type="number" id="addr-pincode" placeholder="PIN Code" oninput="verifyPincode()" class="w-1/2 input-cartoon py-4 px-5 text-sm font-black text-shop-dark">
+                    <input type="text" id="addr-city" placeholder="City" class="w-1/2 input-cartoon py-4 px-5 text-sm font-black text-shop-dark bg-gray-50">
+                </div>
+                <input type="text" id="addr-state" placeholder="State" class="w-full input-cartoon py-4 px-5 text-sm font-black text-shop-dark bg-gray-50">
+            </div>
+            <div class="flex gap-3">
+                <button onclick="document.getElementById('address-modal').classList.add('hidden')" class="flex-1 py-4 bg-white border-[2.5px] border-shop-dark shadow-[3px_3px_0_#0f172a] rounded-[12px] font-black text-shop-dark uppercase text-sm active:translate-y-[2px] active:shadow-none transition-all">Cancel</button>
+                <button onclick="saveAddress()" class="flex-1 py-4 btn-cartoon font-black text-sm">Save</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div id="toast" class="fixed top-24 left-1/2 transform -translate-x-1/2 bg-white text-shop-dark px-5 py-3 rounded-[16px] border-[2.5px] border-shop-dark shadow-[4px_4px_0px_#0f172a] flex items-center gap-3 z-[200] transition-all duration-300 opacity-0 pointer-events-none translate-y-[-20px]">
+        <div class="w-6 h-6 bg-shop-primary rounded-[6px] border-[2px] border-shop-dark flex items-center justify-center"><i data-lucide="check" class="w-4 h-4 text-white stroke-[3]"></i></div>
+        <span id="toast-msg" class="text-[11px] font-black tracking-widest uppercase">Notification</span>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "firebase/app";
+        import { getAuth, signInAnonymously, onAuthStateChanged, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+        import { getFirestore, collection, onSnapshot, query, setDoc, doc, getDoc, updateDoc, arrayUnion, arrayRemove, where, getDocs } from "firebase/firestore";
+
+        // SaaS injected configurations
+        const firebaseConfig = /*FIREBASE_CONFIG*/;
+        const LOGIN_FLOW = "/*LOGIN_FLOW*/";
+        const WA_OTP_ENABLED = /*WA_OTP_ENABLED*/;
+        const WA_API_URL = "/*WA_API_URL*/";
+        
+        let app, db, auth;
+        try {
+            app = initializeApp(firebaseConfig);
+            db = getFirestore(app);
+            auth = getAuth(app);
+        } catch(e) { console.error("Firebase Initialization Failed - Setup your real keys"); }
+
+        let userProfile = null;
+        let allProducts = [];
+        let cart = [];
+        let selectedAddressIndex = null;
+        window.activeAdsList = [];
+        let adInterval = null;
+        window.currentOtp = "1234";
+
+        // Core Auth System & Guards
+        if(auth) {
+            onAuthStateChanged(auth, async (user) => {
+                if(user) {
+                    const userRef = doc(db, "users", user.uid);
+                    const docSnap = await getDoc(userRef);
+                    if(docSnap.exists()) {
+                        userProfile = docSnap.data();
+                        updateAuthUI(true);
+                    }
+                } else {
+                    updateAuthUI(false);
+                }
+            });
+        }
+
+        function updateAuthUI(isLoggedIn) {
+            if(isLoggedIn) {
+                document.getElementById('auth-view').classList.add('hidden');
+                document.getElementById('app-view').classList.remove('hidden');
+                document.getElementById('bottom-nav').classList.remove('hidden');
+                
+                document.getElementById('sidebar-username').innerText = userProfile.name || 'User';
+                document.getElementById('sidebar-phone').innerText = userProfile.phone || 'Google Login';
+                document.getElementById('profile-name').value = userProfile.name || '';
+                document.getElementById('profile-phone').value = userProfile.phone || '';
+                
+                document.getElementById('logout-btn').classList.remove('hidden');
+                document.getElementById('login-nav-btn').classList.add('hidden');
+                
+                loadAddresses();
+                if(document.getElementById('view-orders').classList.contains('active')) loadOrders();
+            } else {
+                userProfile = null;
+                if(LOGIN_FLOW === 'mandatory') {
+                    document.getElementById('auth-view').classList.remove('hidden');
+                    document.getElementById('auth-view').classList.remove('auth-overlay-mode');
+                    document.getElementById('auth-close-btn').classList.add('hidden');
+                    document.getElementById('app-view').classList.add('hidden');
+                    document.getElementById('bottom-nav').classList.add('hidden');
+                } else {
+                    document.getElementById('app-view').classList.remove('hidden');
+                    document.getElementById('bottom-nav').classList.remove('hidden');
+                }
+                document.getElementById('sidebar-username').innerText = 'Guest User';
+                document.getElementById('sidebar-phone').innerText = 'Login to access features';
+                document.getElementById('logout-btn').classList.add('hidden');
+                document.getElementById('login-nav-btn').classList.remove('hidden');
+            }
+        }
+
+        window.authGuard = (callback) => {
+            if(userProfile) { 
+                callback(); 
+            } else { 
+                showAuthModal(); 
+            }
+        }
+
+        window.showAuthModal = () => {
+            const v = document.getElementById('auth-view');
+            v.classList.remove('hidden');
+            v.classList.add('auth-overlay-mode');
+            document.getElementById('auth-close-btn').classList.remove('hidden');
+            document.getElementById('auth-step-1').classList.remove('hidden');
+            document.getElementById('auth-step-2').classList.add('hidden');
+        }
+        
+        window.closeAuthModal = () => { document.getElementById('auth-view').classList.add('hidden'); }
+
+        // Login Logic
+        window.sendOTP = async () => {
+            const phone = document.getElementById('login-phone').value;
+            if(phone.length < 10) return showToast("Enter valid 10-digit number");
+            
+            if(WA_OTP_ENABLED && WA_API_URL) {
+                window.currentOtp = Math.floor(1000 + Math.random() * 9000).toString();
+                let fetchUrl = WA_API_URL.replace('{phone}', '91'+phone).replace('{otp}', window.currentOtp);
+                try {
+                    await fetch(fetchUrl);
+                    showToast("OTP sent to WhatsApp!");
+                } catch(e) { console.error("WA API Error", e); showToast("OTP Gateway Error. Use Demo 1234"); window.currentOtp = "1234"; }
+            } else {
+                window.currentOtp = "1234";
+            }
+
+            document.getElementById('auth-step-1').classList.add('hidden');
+            document.getElementById('auth-step-2').classList.remove('hidden');
+        }
+
+        window.backToPhone = () => { 
+            document.getElementById('auth-step-2').classList.add('hidden'); 
+            document.getElementById('auth-step-1').classList.remove('hidden'); 
+        }
+
+        window.verifyOTP = async () => {
+            const otp = document.getElementById('login-otp').value;
+            const name = document.getElementById('login-name').value;
+            const phone = "+91 " + document.getElementById('login-phone').value;
+
+            if(otp !== window.currentOtp) return showToast("Invalid OTP");
+            if(name.length < 2) return showToast("Please enter your name");
+
+            document.querySelector('#auth-step-2 button').innerText = "VERIFYING...";
+            try {
+                const cred = await signInAnonymously(auth);
+                const userRef = doc(db, "users", cred.user.uid);
+                const snap = await getDoc(userRef);
+                if(!snap.exists()) {
+                    userProfile = { name, phone, addresses: [], createdAt: Date.now() };
+                    await setDoc(userRef, userProfile);
+                } else {
+                    userProfile = snap.data();
+                }
+                closeAuthModal(); 
+                updateAuthUI(true);
+            } catch(e) { 
+                showToast("Login failed"); 
+                document.querySelector('#auth-step-2 button').innerText = "VERIFY & LOGIN";
+            }
+        }
+
+        window.signInWithGoogle = async () => {
+            try {
+                const provider = new GoogleAuthProvider();
+                const result = await signInWithPopup(auth, provider);
+                const userRef = doc(db, "users", result.user.uid);
+                const snap = await getDoc(userRef);
+                if(!snap.exists()) {
+                    userProfile = { name: result.user.displayName, phone: result.user.email, addresses: [], createdAt: Date.now() };
+                    await setDoc(userRef, userProfile);
+                } else {
+                    userProfile = snap.data();
+                }
+                closeAuthModal(); 
+                updateAuthUI(true);
+            } catch(e) { 
+                console.error(e);
+                showToast("Google Login Failed / Cancelled"); 
+            }
+        }
+
+        window.logout = () => { auth.signOut().then(() => { location.reload(); }); }
+        
+        window.updateProfile = async () => {
+            const newName = document.getElementById('profile-name').value;
+            if(!auth.currentUser) return;
+            try {
+                await updateDoc(doc(db, "users", auth.currentUser.uid), { name: newName });
+                userProfile.name = newName;
+                document.getElementById('sidebar-username').innerText = newName;
+                showToast("Profile updated!");
+            } catch(e) { showToast("Error updating profile"); }
+        };
+
+        // UI Fetchers
+        window.fetchAds = async () => {
+            if(!db) return;
+            const adContainer = document.getElementById('dynamic-ad-container');
+            const loader = document.getElementById('ad-loader');
+            try {
+                const q = query(collection(db, "ads"), where("isActive", "==", true));
+                const snap = await getDocs(q);
+                window.activeAdsList = [];
+                snap.forEach(doc => window.activeAdsList.push(doc.data()));
+                
+                if (window.activeAdsList.length > 0) {
+                    adContainer.classList.remove('hidden'); loader.classList.add('hidden');
+                    let i = 0;
+                    const img = document.getElementById('ad-display-img');
+                    const link = document.getElementById('ad-click-link');
+                    const render = () => {
+                        img.style.opacity = '0';
+                        setTimeout(() => {
+                            img.src = window.activeAdsList[i].mediaUrl;
+                            link.href = window.activeAdsList[i].targetUrl || "#";
+                            img.onload = () => img.style.opacity = '1';
+                        }, 350);
+                    };
+                    render();
+                    if(window.activeAdsList.length > 1) adInterval = setInterval(() => { i = (i+1)%window.activeAdsList.length; render(); }, 4000);
+                } else adContainer.classList.add('hidden');
+            } catch (err) { adContainer.classList.add('hidden'); }
+        };
+
+        const fetchProducts = () => {
+            if(!db) return;
+            const q = query(collection(db, "products"));
+            onSnapshot(q, (snapshot) => {
+                allProducts = [];
+                snapshot.forEach(doc => allProducts.push({id: doc.id, ...doc.data()}));
+                renderProducts(allProducts);
+            });
+        };
+
+        window.renderProducts = (items) => {
+            const grid = document.getElementById('products-grid');
+            grid.innerHTML = "";
+            if(items.length === 0) {
+                grid.innerHTML = `<div class="col-span-full py-16 flex flex-col items-center justify-center text-shop-dark bg-white rounded-[20px] border-[2.5px] border-dashed border-shop-dark/30"><i data-lucide="package-x" class="w-12 h-12 mb-3 stroke-[2.5]"></i><span class="text-[12px] font-black uppercase tracking-widest">No products found</span></div>`;
+                lucide.createIcons(); return;
+            }
+            items.forEach(p => {
+                const el = document.createElement('div');
+                el.className = "group flex flex-col bg-white rounded-[20px] border-cartoon shadow-cartoon hover:-translate-y-[2px] hover:shadow-[6px_6px_0_#0f172a] active:translate-y-[2px] active:shadow-[1px_1px_0_#0f172a] transition-all duration-200 cursor-pointer overflow-hidden relative p-0";
+                el.onclick = () => openProduct(p);
+                el.innerHTML = `
+                    <div class="relative w-full aspect-[4/3] bg-[#dbeafe] overflow-hidden border-b-[2.5px] border-shop-dark">
+                        <img src="${p.image}" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-300 ease-out" onerror="this.src='https://placehold.co/400x400?text=No+Image'">
+                        <div class="absolute top-2 left-2 z-10 flex flex-col gap-1">
+                            <span class="bg-white border-[2px] border-shop-dark shadow-[2px_2px_0px_#0f172a] text-[8px] font-black px-2 py-1 rounded-[6px] uppercase tracking-widest text-shop-primary w-fit">${p.category || 'Item'}</span>
+                        </div>
+                    </div>
+                    <div class="flex flex-col flex-grow p-3">
+                        <h3 class="font-black text-[13px] text-shop-dark leading-snug line-clamp-2 mb-2 uppercase">${p.title || p.name}</h3>
+                        <div class="mt-auto flex items-center justify-between pt-1 border-t-[2.5px] border-dashed border-shop-dark/10">
+                            <span class="text-[15px] md:text-[17px] font-black text-shop-dark tracking-tight">₹${p.price}</span>
+                            <button class="w-8 h-8 bg-shop-primary text-white border-[2px] border-shop-dark rounded-[8px] flex items-center justify-center shadow-[2px_2px_0_#0f172a] transition-all">
+                                <i data-lucide="plus" class="w-4 h-4 stroke-[3]"></i>
+                            </button>
+                        </div>
+                    </div>`;
+                grid.appendChild(el);
+            });
+            lucide.createIcons();
+        };
+
+        window.filterProducts = (cat, event) => {
+            const defClasses = ['bg-white', 'text-shop-dark', 'shadow-cartoon', 'translate-y-0'];
+            const actClasses = ['bg-[#dbeafe]', 'text-shop-primary', 'shadow-[2px_2px_0px_#0f172a]', 'translate-y-[2px]'];
+            document.querySelectorAll('.cat-btn').forEach(b => { b.classList.remove(...actClasses); b.classList.add(...defClasses); });
+            if(event) { event.currentTarget.classList.remove(...defClasses); event.currentTarget.classList.add(...actClasses); }
+            if(cat === 'All') renderProducts(allProducts); else renderProducts(allProducts.filter(p => p.category === cat));
+        };
+
+        window.handleSearch = () => {
+            const term = document.getElementById('search-input').value.toLowerCase();
+            renderProducts(allProducts.filter(p => (p.title||p.name).toLowerCase().includes(term) || (p.category||'').toLowerCase().includes(term)));
+        };
+
+        // Addresses & Cart Checkout Logic
+        window.verifyPincode = () => {
+            let pin = document.getElementById("addr-pincode").value;
+            if (pin.length === 6) {
+                fetch(`https://api.postalpincode.in/pincode/${pin}`).then(r => r.json()).then(d => {
+                    if (d[0].Status === "Success") {
+                        document.getElementById("addr-city").value = d[0].PostOffice[0].District;
+                        document.getElementById("addr-state").value = d[0].PostOffice[0].State;
+                    }
+                }).catch(e => console.error(e));
+            }
+        };
+
+        window.openProduct = (p) => {
+            document.getElementById('detail-img').src = p.image;
+            document.getElementById('detail-title').innerText = p.title || p.name;
+            document.getElementById('detail-price').innerText = `₹${p.price}`;
+            document.getElementById('detail-cat').innerText = p.category || 'Item';
+            document.getElementById('detail-desc').innerText = p.desc || "Premium quality product directly from our store.";
+            document.getElementById('detail-add-btn').onclick = () => { addToCart(p); closeProduct(); };
+            document.getElementById('product-overlay').classList.remove('hidden'); document.getElementById('product-overlay').classList.add('flex');
+        };
+        window.closeProduct = () => document.getElementById('product-overlay').classList.add('hidden');
+
+        window.addToCart = (p) => {
+            const idx = cart.findIndex(i => i.id === p.id);
+            if (idx !== -1) cart[idx].quantity += 1;
+            else cart.push({ id: p.id, title: p.title||p.name, price: p.price, image: p.image, quantity: 1 });
+            updateCartBadge(); showToast("Added to Cart!");
+        };
+
+        function updateCartBadge() {
+            const b = document.getElementById('nav-cart-badge');
+            const total = cart.reduce((s, i) => s + i.quantity, 0);
+            b.innerText = total;
+            total > 0 ? b.classList.remove('scale-0') : b.classList.add('scale-0');
+            b.parentElement.classList.add('animate-bounce'); setTimeout(() => b.parentElement.classList.remove('animate-bounce'), 500);
+        }
+
+        window.openCart = () => {
+            const c = document.getElementById('cart-items'); c.innerHTML = ""; let total = 0;
+            if(cart.length === 0) {
+                c.innerHTML = `<div class="text-center py-16 text-shop-dark font-black uppercase tracking-widest bg-white rounded-[20px] border-[2.5px] border-dashed border-shop-dark/30">Your cart is empty</div>`;
+                document.getElementById('cart-address-section').classList.add('hidden');
+                document.getElementById('cart-payment-section').classList.add('hidden');
+                document.getElementById('bill-card').classList.add('hidden');
+            } else {
+                document.getElementById('cart-address-section').classList.remove('hidden');
+                document.getElementById('cart-payment-section').classList.remove('hidden');
+                document.getElementById('bill-card').classList.remove('hidden');
+                renderCheckoutAddresses();
+                cart.forEach((i, idx) => {
+                    const itotal = parseInt(i.price) * i.quantity; total += itotal;
+                    c.innerHTML += `
+                        <div class="flex justify-between items-center bg-white p-3 rounded-[16px] border-cartoon shadow-[3px_3px_0_#0f172a] mb-3">
+                            <div class="flex items-center gap-3 flex-1">
+                                <div class="bg-[#dbeafe] border-[2px] border-shop-dark p-0.5 rounded-[12px]">
+                                    <img src="${i.image}" class="w-12 h-12 rounded-[8px] object-cover" onerror="this.src='https://placehold.co/50'">
+                                </div>
+                                <div class="flex flex-col justify-center">
+                                    <h4 class="font-black text-[12px] text-shop-dark line-clamp-1 uppercase">${i.title}</h4>
+                                    <span class="text-[13px] text-shop-primary font-black mt-0.5">₹${itotal}</span>
+                                </div>
+                            </div>
+                            <div class="flex flex-col items-end gap-2 pr-1">
+                                <button onclick="cart.splice(${idx},1);updateCartBadge();openCart();" class="text-[#991b1b] bg-[#fee2e2] border-[1.5px] border-shop-dark shadow-[1px_1px_0_#0f172a] p-1.5 rounded-[8px]"><i data-lucide="trash-2" class="w-3.5 h-3.5 stroke-[3]"></i></button>
+                                <div class="flex items-center bg-white border-[2px] border-shop-dark rounded-[8px] overflow-hidden">
+                                    <button onclick="cart[${idx}].quantity--;if(cart[${idx}].quantity<=0)cart.splice(${idx},1);updateCartBadge();openCart();" class="w-6 h-6 font-black text-shop-dark bg-gray-100 hover:bg-gray-200">-</button>
+                                    <span class="w-6 text-center text-[12px] font-black text-shop-dark border-l-[2px] border-r-[2px] border-shop-dark">${i.quantity}</span>
+                                    <button onclick="cart[${idx}].quantity++;updateCartBadge();openCart();" class="w-6 h-6 font-black text-shop-dark bg-gray-100 hover:bg-gray-200">+</button>
+                                </div>
+                            </div>
+                        </div>`;
+                });
+            }
+            document.getElementById('bill-subtotal').innerText = `₹${total}`; document.getElementById('bill-total').innerText = `₹${total}`;
+            document.getElementById('cart-modal').classList.remove('hidden'); document.getElementById('cart-modal').classList.add('flex'); lucide.createIcons();
+        };
+        window.closeCart = () => document.getElementById('cart-modal').classList.add('hidden');
+
+        // Address Handlers
+        window.openAddressModal = () => { document.getElementById('address-modal').classList.remove('hidden'); document.getElementById('address-modal').classList.add('flex'); };
+        window.saveAddress = async () => {
+            const title = document.getElementById('addr-name').value; const text = document.getElementById('addr-text').value;
+            const pincode = document.getElementById('addr-pincode').value; const city = document.getElementById('addr-city').value; const state = document.getElementById('addr-state').value;
+            if(!title || !text || !pincode || !city || !state) return showToast("Fill all address fields");
+            const newAddr = { title, text, pincode, city, state, id: Date.now() };
+            try {
+                await updateDoc(doc(db, "users", auth.currentUser.uid), { addresses: arrayUnion(newAddr) });
+                if(!userProfile.addresses) userProfile.addresses = []; userProfile.addresses.push(newAddr);
+                document.getElementById('address-modal').classList.add('hidden');
+                loadAddresses(); renderCheckoutAddresses(); showToast("Address Saved!");
+            } catch(e) { showToast("Failed to save address"); }
+        };
+
+        function loadAddresses() {
+            const list = document.getElementById('address-list'); list.innerHTML = "";
+            if(!userProfile.addresses?.length) { list.innerHTML = `<p class="text-[11px] text-shop-dark font-black uppercase text-center py-6 bg-white rounded-[20px] border-[2.5px] border-dashed border-shop-dark/30">No addresses saved.</p>`; return; }
+            userProfile.addresses.forEach(addr => {
+                list.innerHTML += `<div class="bg-white p-4 rounded-[16px] border-cartoon shadow-cartoon flex justify-between items-center mb-3"><div><span class="text-[9px] font-black text-shop-primary border-[1.5px] border-shop-dark bg-[#dbeafe] shadow-[1px_1px_0_#0f172a] px-2 py-1 rounded-[6px] uppercase tracking-widest">${addr.title}</span><p class="text-[12px] text-shop-dark font-black mt-2 leading-tight">${addr.text}, ${addr.city}</p></div><button class="text-[#991b1b] bg-[#fee2e2] border-[2px] border-shop-dark p-2 rounded-[10px] shadow-[2px_2px_0_#0f172a] active:translate-y-[2px] active:shadow-none"><i data-lucide="trash" class="w-4 h-4 stroke-[3]"></i></button></div>`;
+            }); lucide.createIcons();
+        }
+
+        function renderCheckoutAddresses() {
+            const list = document.getElementById('checkout-addresses'); list.innerHTML = "";
+            if(!userProfile.addresses?.length) { list.innerHTML = `<p class="text-[11px] text-[#991b1b] font-black uppercase bg-[#fee2e2] p-4 rounded-[16px] text-center border-[2.5px] border-dashed border-[#991b1b]/30">Please add an address.</p>`; return; }
+            userProfile.addresses.forEach((addr, idx) => {
+                const isSel = selectedAddressIndex === idx;
+                list.innerHTML += `
+                    <div onclick="selectedAddressIndex=${idx}; renderCheckoutAddresses();" class="p-4 rounded-[16px] border-[2.5px] border-shop-dark cursor-pointer flex gap-4 items-start transition-all mb-3 ${isSel ? 'bg-[#dbeafe] shadow-[1px_1px_0_#0f172a] translate-y-[2px]' : 'bg-white shadow-[3px_3px_0_#0f172a]'}">
+                        <div class="mt-0.5 w-5 h-5 rounded-full border-[2.5px] ${isSel ? 'border-shop-dark bg-shop-primary shadow-[inset_0_0_0_2px_#dbeafe]' : 'border-shop-dark bg-white'} flex items-center justify-center"></div>
+                        <div><span class="text-[11px] font-black text-shop-dark uppercase tracking-widest block mb-1">${addr.title}</span><p class="text-[12px] text-shop-dark font-semibold leading-snug">${addr.text}, ${addr.city}, ${addr.state} - ${addr.pincode}</p></div>
+                    </div>`;
+            });
+        }
+
+        window.processCheckout = async () => {
+            if (cart.length === 0) return showToast("Your cart is empty");
+            if (!userProfile.addresses || userProfile.addresses.length === 0) return showToast("Add a delivery address");
+            if (selectedAddressIndex === null) return showToast("Select a delivery address");
+
+            const address = userProfile.addresses[selectedAddressIndex];
+            const total = cart.reduce((sum, item) => sum + (parseInt(item.price) * item.quantity), 0);
+            const orderId = `ORD${Date.now()}`;
+            const orderData = { orderId, userId: auth.currentUser.uid, items: cart, totalAmount: total, address, createdAt: Date.now(), paymentMethod: 'COD/WhatsApp', orderStatus: 'placed' };
+
+            try {
+                if(db) await setDoc(doc(db, "orders", orderId), orderData);
+                cart = []; selectedAddressIndex = null; updateCartBadge(); closeCart();
+                
+                // WhatsApp Forwarding Logic
+                let productList = orderData.items.map((i, idx) => `${idx + 1}. ${i.title} (x${i.quantity}) - ₹${i.price * i.quantity}`).join('\n');
+                const message = `*New Order Placed!* 🛍️\n\n*Order ID:* ${orderData.orderId}\n*Customer:* ${userProfile.name} (${userProfile.phone})\n\n*Address:*\n${address.title.toUpperCase()}\n${address.text}, ${address.city} - ${address.pincode}\n\n*Items:*\n${productList}\n\n*Total:* ₹${orderData.totalAmount}`;
+                const storePhone = "+919771164088"; 
+                window.location.href = `https://wa.me/${storePhone}?text=${encodeURIComponent(message)}`;
+                
+                switchView('orders');
+            } catch (e) { showToast("Error processing order (Firebase missing). Order forwarded to WhatsApp anyway."); }
+        };
+
+        window.loadOrders = () => {
+            if(!auth.currentUser || !db) return;
+            const container = document.getElementById('orders-list');
+            const q = query(collection(db, "orders"), where("userId", "==", auth.currentUser.uid)); 
+            onSnapshot(q, (snapshot) => {
+                container.innerHTML = ""; const myOrders = [];
+                snapshot.forEach(doc => myOrders.push({id: doc.id, ...doc.data()}));
+                myOrders.sort((a,b) => b.createdAt - a.createdAt); 
+
+                if(myOrders.length === 0) {
+                    container.innerHTML = `<div class="text-center py-16 text-shop-dark font-black uppercase tracking-widest flex flex-col items-center bg-white rounded-[20px] border-[2.5px] border-dashed border-shop-dark/30"><i data-lucide="package-open" class="w-12 h-12 mb-3 stroke-[2.5]"></i>No past orders</div>`;
+                    lucide.createIcons(); return;
+                }
+                myOrders.forEach(order => {
+                    const date = new Date(order.createdAt).toLocaleDateString();
+                    let itemSummary = order.items ? order.items.map(i => `${i.title} <span class="text-shop-muted">(x${i.quantity})</span>`).join(', ') : "Items unavailable";
+                    container.innerHTML += `
+                        <div class="bg-white p-5 rounded-[20px] border-cartoon shadow-cartoon mb-5">
+                            <div class="flex justify-between items-center mb-4 pb-4 border-b-[2.5px] border-dashed border-shop-dark/20">
+                                <div><span class="text-[9px] font-black bg-white border-[2px] border-shop-dark shadow-[2px_2px_0_#0f172a] text-shop-dark px-3 py-1 rounded-[8px] tracking-widest">#${order.orderId}</span><p class="text-[10px] text-shop-muted mt-2.5 font-black uppercase tracking-widest ml-1">${date}</p></div>
+                                <span class="text-[9px] font-black uppercase px-2.5 py-1 rounded-[8px] border-[2px] shadow-[2px_2px_0_#0f172a] text-[#ea580c] bg-[#ffedd5] border-[#ea580c]">Placed</span>
+                            </div>
+                            <p class="text-[13px] font-black text-shop-dark mb-4 leading-snug uppercase">${itemSummary}</p>
+                            <div class="flex justify-between items-center pt-2"><span class="text-[10px] text-shop-muted font-black uppercase tracking-widest">Total Amount</span><span class="font-black text-xl text-shop-primary">₹${order.totalAmount || 0}</span></div>
+                        </div>`;
+                }); lucide.createIcons();
+            });
+        };
+
+        // Navigation utils
+        window.switchView = (viewName) => {
+            document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
+            document.getElementById(`view-${viewName}`).classList.add('active');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            
+            // Highlight Nav
+            document.querySelectorAll('.nav-btn div').forEach(d => {
+                d.classList.remove('bg-[#dbeafe]', 'shadow-[2px_2px_0_#0f172a]', 'border-shop-dark', '-translate-y-1'); d.classList.add('border-transparent');
+            });
+            document.querySelectorAll('.nav-text, .nav-icon').forEach(t => { t.classList.remove('text-shop-primary'); t.classList.add('text-shop-muted'); });
+
+            const activeBtns = { 'home': 0, 'orders': 1, 'profile': 2 };
+            const btn = document.querySelectorAll('.nav-btn')[activeBtns[viewName]];
+            if(btn) {
+                const div = btn.querySelector('div'); div.classList.remove('border-transparent'); div.classList.add('bg-[#dbeafe]', 'shadow-[2px_2px_0_#0f172a]', 'border-shop-dark', '-translate-y-1');
+                btn.querySelectorAll('.nav-text, .nav-icon').forEach(t => { t.classList.remove('text-shop-muted'); t.classList.add('text-shop-primary'); });
+            }
+        };
+
+        window.toggleSidebar = () => {
+            const sidebar = document.getElementById('sidebar'); const overlay = document.getElementById('sidebar-overlay');
+            if(sidebar.classList.contains('-translate-x-full')) { sidebar.classList.remove('-translate-x-full'); overlay.classList.remove('hidden'); setTimeout(() => overlay.classList.remove('opacity-0'), 10); } 
+            else { sidebar.classList.add('-translate-x-full'); overlay.classList.add('opacity-0'); setTimeout(() => overlay.classList.add('hidden'), 300); }
+        };
+        window.toggleSearch = () => { const bar = document.getElementById('search-bar'); bar.classList.toggle('hidden'); if(!bar.classList.contains('hidden')) document.getElementById('search-input').focus(); };
+        window.showToast = (msg) => { const t = document.getElementById('toast'); document.getElementById('toast-msg').innerText = msg; t.classList.remove('opacity-0', 'translate-y-[-20px]'); setTimeout(() => { t.classList.add('opacity-0', 'translate-y-[-20px]'); }, 3000); };
+
+        lucide.createIcons();
+        
+        // Initial setup for checkout flow
+        if(LOGIN_FLOW === 'checkout') { 
+            fetchProducts(); fetchAds(); 
+            updateAuthUI(false); 
+        } else {
+            fetchProducts(); fetchAds(); 
+        }
+
+    </script>
+</body>
+</html>
+</textarea>
+
+
+    <!-- =================================================================================== -->
+    <!-- BUILDER LOGIC -->
+    <!-- =================================================================================== -->
+    <script>
+        let finalGeneratedHTML = "";
+
+        // Toggle visibility of WhatsApp settings based on checkbox
+        function toggleWaSettings() {
+            const checked = document.getElementById('enable-wa').checked;
+            const box = document.getElementById('wa-settings');
+            if(checked) box.classList.remove('hidden');
+            else box.classList.add('hidden');
+        }
+
+        function generatePreview() {
+            const storeName = document.getElementById('store-name').value || "Guptaji Shop";
+            const loginFlow = document.getElementById('login-flow').value;
+            const enableGoogle = document.getElementById('enable-google').checked;
+            const enableWa = document.getElementById('enable-wa').checked;
+            const waApiUrl = document.getElementById('wa-url').value;
+            
+            let fbConfigStr = document.getElementById('fb-config').value.trim();
+            if (!fbConfigStr || fbConfigStr.includes("...")) {
+                fbConfigStr = `{ apiKey: "DEMO", authDomain: "demo.firebaseapp.com", projectId: "demo" }`;
+            }
+            
+            // Extract pure HTML code from the hidden textarea container
+            let template = document.getElementById('ecommerce-template').value;
+            
+            // Perform Replacements securely
+            template = template.replace(/\/\*STORE_NAME\*\//g, storeName);
+            template = template.replace(/\/\*INITIAL\*\//g, storeName.charAt(0).toUpperCase());
+            template = template.replace(/\/\*FIREBASE_CONFIG\*\//g, fbConfigStr);
+            template = template.replace(/\/\*LOGIN_FLOW\*\//g, loginFlow);
+            
+            // Auth Configs Logic
+            if(enableGoogle) {
+                template = template.replace(/\/\*GOOGLE_DISPLAY\*\//g, 'flex');
+            } else {
+                template = template.replace(/\/\*GOOGLE_DISPLAY\*\//g, 'hidden');
+            }
+
+            if(enableWa && waApiUrl) {
+                template = template.replace(/\/\*WA_OTP_ENABLED\*\//g, "true");
+                template = template.replace(/\/\*WA_API_URL\*\//g, waApiUrl);
+                template = template.replace(/\/\*OTP_HINT\*\//g, "Check your WhatsApp for the OTP");
+            } else {
+                template = template.replace(/\/\*WA_OTP_ENABLED\*\//g, "false");
+                template = template.replace(/\/\*WA_API_URL\*\//g, "");
+                template = template.replace(/\/\*OTP_HINT\*\//g, "Demo Mode: Use 1234");
+            }
+
+            finalGeneratedHTML = template;
+
+            // Inject constructed HTML securely into the iframe for Live Preview
+            const iframe = document.getElementById('preview-iframe');
+            iframe.srcdoc = finalGeneratedHTML;
+        }
+
+        // Export Modal Management
+        function openExportModal() {
+            if(!finalGeneratedHTML) {
+                generatePreview(); 
+            }
+            document.getElementById('export-modal').style.display = 'flex';
+            document.getElementById('generated-code-box').innerText = finalGeneratedHTML;
+        }
+
+        function closeExportModal() {
+            document.getElementById('export-modal').style.display = 'none';
+        }
+
+        // Code Copy and Download
+        function copySourceCode() {
+            navigator.clipboard.writeText(finalGeneratedHTML).then(() => {
+                alert("HTML Code copied to clipboard successfully!");
+            }).catch(err => {
+                alert("Failed to copy code. Please manually select and copy from the box.");
+            });
+        }
+
+        function downloadHTML() {
+            const storeName = document.getElementById('store-name').value || "store";
+            const blob = new Blob([finalGeneratedHTML], { type: "text/html" });
+            const link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            link.download = storeName.replace(/\s+/g, '-').toLowerCase() + ".html";
+            link.click();
+        }
+
+        // Generate the preview once on load
+        window.onload = () => {
+            generatePreview();
+        };
+    </script>
+</body>
+</html>
+
+```
