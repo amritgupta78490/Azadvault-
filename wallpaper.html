@@ -113,12 +113,34 @@
 
         /* Mobile Mode - Sleek Phone Bezel */
         .mode-mobile {
-            width: 280px; aspect-ratio: 9 / 19.5;
-            background: #111; border: 8px solid #000000;
+            width: 250px; /* Made slightly smaller (was 280px) */
+            aspect-ratio: 9 / 19.5;
+            background: #111; 
+            border: 8px solid #000000;
             border-radius: 36px; 
             box-shadow: 0 20px 40px rgba(2, 132, 199, 0.15);
+            position: relative; /* Needed for camera positioning */
         }
-        .mode-mobile img { border-radius: 28px; }
+        
+        /* Modern Mobile Camera Cutout (Dynamic Island style) */
+        .mode-mobile::before {
+            content: '';
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 70px;
+            height: 20px;
+            background: #000000;
+            border-radius: 20px;
+            z-index: 5;
+        }
+
+        .mode-mobile img { 
+            border-radius: 28px; 
+            position: relative;
+            z-index: 1; /* Ensures wallpaper stays under the camera notch */
+        }
 
         /* Desktop Mode - Sleek Monitor Bezel */
         .mode-desktop {
