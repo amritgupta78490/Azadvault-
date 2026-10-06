@@ -1,229 +1,328 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Wallpaper Preview - Azad Vault</title>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@800&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Dynamic SEO Meta Tags -->
+    <title>Download 4K Wallpaper - Azad Vault</title>
+    <meta name="description" content="Download high-quality 4K, HD, Anime, Nature, and Desktop mobile wallpapers for free. Custom designed backgrounds for your device.">
+    <meta name="keywords" content="HD wallpaper download, 4K wallpapers, desktop wallpapers, mobile background, free wallpaper">
+    <meta name="author" content="Azad Vault">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://azadvault.com/wallpaper.html">
+
+    <!-- Open Graph / Social Media SEO -->
+    <meta property="og:locale" content="en_US">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Azad Vault - High Quality 4K Wallpaper">
+    <meta property="og:description" content="Explore and download stunning ultra-HD 4K wallpapers for mobile & desktop.">
+    <meta property="og:url" content="https://azadvault.com/wallpaper.html">
+    <meta property="og:site_name" content="Azad Vault">
+    <meta property="og:image" id="og-image" content="https://i.ibb.co/Xrv2gsf2/In-Shot-20260424-163905408.png">
+
+    <!-- Schema.org Structured Data (JSON-LD) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "ImageObject",
+      "name": "4K High Resolution Wallpaper",
+      "author": {
+        "@type": "Organization",
+        "name": "Azad Vault"
+      },
+      "license": "https://azadvault.com/privacy-policy.html",
+      "acquireLicensePage": "https://azadvault.com/"
+    }
+    </script>
+    
+    <link rel="icon" type="image/png" href="https://i.ibb.co/Xrv2gsf2/In-Shot-20260424-163905408.png">
+
+    <!-- Google Fonts Matching Main Theme -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800;900&family=Syne:wght@700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
     <style>
+        /* === LIGHT CLEAN THEME DESIGN SYSTEM === */
         :root {
-            --bg-dark: #0A0A0C;
-            --surface-dark: #1E1E24;
-            --text-primary: #FFFFFF;
-            --text-secondary: #A0A0B0;
-            --theme-accent: #E63946; 
-            --glass-bg: rgba(30, 30, 36, 0.75);
-            --glass-border: rgba(255, 255, 255, 0.08);
-            --theme-maroon: #8B0000;
-            --theme-maroon-dark: #4A0000;
+            --bg-body: #F8FAFC; 
+            --bg-surface: #FFFFFF;
+            
+            /* High-Contrast Bold Black Typography Colors */
+            --text-black: #000000; 
+            --text-title: #09090B; 
+            --text-subtle: #475569;
+            
+            /* Dynamic Blue Accent */
+            --accent-blue: #0284C7;
+            --border-blue: #0284C7;
+            
+            /* Curves */
+            --curve-pill: 9999px;
+            --curve-btn: 12px;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
-        body { background-color: var(--bg-dark); color: var(--text-primary); padding-bottom: 90px; overflow-x: hidden; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Outfit', 'Inter', sans-serif; -webkit-tap-highlight-color: transparent; }
+        body { background-color: var(--bg-body); color: var(--text-black); padding-bottom: 90px; overflow-x: hidden; }
 
-        /* Header */
+        h1, h2, h3, .logo-text { font-family: 'Syne', 'Outfit', sans-serif; }
+
+        /* Clean Header */
         header {
             position: sticky; top: 0; z-index: 100;
-            padding: 15px 5%;
-            background: var(--glass-bg);
+            padding: 16px 6%;
+            background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
-            border-bottom: 1px solid var(--glass-border);
+            border-bottom: 1px solid rgba(2, 132, 199, 0.2);
             display: flex; align-items: center; justify-content: space-between;
         }
-        .back-btn { color: white; text-decoration: none; font-size: 18px; cursor: pointer; }
-        .brand-small { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 800; }
-        .brand-small span { color: var(--theme-accent); }
+        
+        .header-left { display: flex; align-items: center; gap: 16px; }
+
+        .back-btn { 
+            color: #0284C7; 
+            background: #F1F5F9;
+            width: 36px; height: 36px; 
+            display: flex; justify-content: center; align-items: center;
+            border-radius: 50%;
+            text-decoration: none; font-size: 16px; cursor: pointer; 
+            transition: 0.2s;
+        }
+        .back-btn:hover { background: #0284C7; color: #FFFFFF; }
+
+        .brand { display: flex; align-items: center; gap: 8px; cursor: pointer; user-select: none; }
+        .text-logo { font-size: 22px; font-weight: 900; color: #000000; letter-spacing: -1px; text-transform: uppercase; line-height: 1; }
+        .text-logo span { color: #0284C7; font-weight: 900; }
+        .brand-badge { background: #0284C7; color: #FFFFFF; font-size: 10px; font-weight: 900; padding: 4px 10px; border-radius: var(--curve-pill); letter-spacing: 0.8px; text-transform: uppercase; }
 
         /* Preview Container */
-        .container { padding: 30px 5%; display: flex; flex-direction: column; align-items: center; }
-        #dynamic-preview-title { margin-bottom: 25px; font-size: 22px; font-weight: 600; text-align: center; }
+        .container { padding: 30px 6%; display: flex; flex-direction: column; align-items: center; max-width: 1200px; margin: auto; }
+        #dynamic-preview-title { 
+            margin-bottom: 25px; font-size: 24px; font-weight: 800; text-align: center; color: #000000; line-height: 1.2;
+        }
         
-        /* New Static Description Box */
-        .static-desc-container {
-            background: var(--surface-dark);
-            border: 1px solid var(--glass-border);
-            border-radius: 16px;
-            padding: 20px;
-            margin-top: 30px;
-            max-width: 500px;
-            width: 100%;
-        }
-        .static-desc-title {
-            color: var(--theme-accent);
-            font-weight: 700;
-            font-size: 16px;
-            margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .static-desc-text {
-            color: var(--text-secondary);
-            font-size: 13px;
-            line-height: 1.8;
-            text-align: justify;
-        }
-
         /* Smart Device Frames */
-        .device-container { position: relative; margin-bottom: 40px; transition: 0.5s; }
+        .device-container { 
+            position: relative; margin-bottom: 30px; transition: 0.5s;
+            display: flex; justify-content: center; align-items: center;
+        }
         .device-container img { width: 100%; height: 100%; object-fit: cover; display: none; }
 
-        /* Mobile Mode */
+        /* Mobile Mode - Sleek Phone Bezel */
         .mode-mobile {
             width: 280px; aspect-ratio: 9 / 19.5;
-            background: #000; border: 10px solid #1a1a1a;
-            border-radius: 40px; box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+            background: #111; border: 8px solid #000000;
+            border-radius: 36px; 
+            box-shadow: 0 20px 40px rgba(2, 132, 199, 0.15);
         }
-        .mode-mobile img { border-radius: 30px; }
+        .mode-mobile img { border-radius: 28px; }
 
-        /* Desktop Mode */
+        /* Desktop Mode - Sleek Monitor Bezel */
         .mode-desktop {
-            width: 100%; max-width: 600px; aspect-ratio: 16 / 10;
-            background: #000; border: 12px solid #1a1a1a;
-            border-radius: 15px 15px 5px 5px; box-shadow: 0 30px 60px rgba(0,0,0,0.6);
+            width: 100%; max-width: 700px; aspect-ratio: 16 / 9;
+            background: #111; 
+            border: 12px solid #000000; border-bottom: 24px solid #000000;
+            border-radius: 12px 12px 4px 4px; 
+            box-shadow: 0 24px 50px rgba(2, 132, 199, 0.2);
         }
-        .mode-desktop img { border-radius: 4px; }
+        .mode-desktop img { border-radius: 2px; }
 
-        /* Buttons */
-        .button-group { display: flex; flex-direction: column; align-items: center; gap: 15px; width: 100%; }
+        /* Buttons matching new theme */
+        .button-group { display: flex; flex-direction: column; align-items: center; gap: 12px; width: 100%; max-width: 400px; }
+        
         .btn-download {
-            background: linear-gradient(135deg, var(--theme-maroon), var(--theme-maroon-dark));
-            color: white; border: none; padding: 16px 50px; border-radius: 50px;
-            font-weight: 700; cursor: pointer; width: 100%; max-width: 320px;
+            background: #0284C7; color: #FFFFFF; 
+            border: none; padding: 16px 24px; border-radius: var(--curve-pill);
+            font-size: 16px; font-weight: 800; cursor: pointer; width: 100%;
             display: flex; align-items: center; justify-content: center; gap: 10px;
-            box-shadow: 0 10px 20px rgba(139,0,0,0.3); transition: 0.3s;
+            box-shadow: 0 8px 24px rgba(2, 132, 199, 0.3); transition: 0.3s;
         }
+        .btn-download:hover { background: #0369a1; transform: translateY(-2px); }
+        
         .btn-share {
-            background: rgba(255,255,255,0.05); color: white; border: 1px solid var(--glass-border);
-            padding: 14px 50px; border-radius: 50px; font-weight: 600; cursor: pointer;
-            width: 100%; max-width: 320px; display: flex; align-items: center; justify-content: center; gap: 10px;
+            background: #FFFFFF; color: #0284C7; 
+            border: 2px solid #0284C7; padding: 14px 24px; border-radius: var(--curve-pill); 
+            font-size: 15px; font-weight: 800; cursor: pointer; width: 100%; 
+            display: flex; align-items: center; justify-content: center; gap: 10px;
+            transition: 0.3s;
         }
-        .success-bg { background: #28a745 !important; }
+        .btn-share:hover { background: #F1F5F9; }
+        
+        .success-bg { background: #16a34a !important; box-shadow: 0 8px 24px rgba(22, 163, 74, 0.3) !important; }
+
+        /* Clean White Static Description Box */
+        .static-desc-container {
+            background: #FFFFFF;
+            border: 1.5px solid #0284C7;
+            border-radius: 18px;
+            padding: 24px;
+            margin-top: 40px;
+            width: 100%;
+            box-shadow: 0 8px 24px rgba(2, 132, 199, 0.05);
+        }
+        .static-desc-title {
+            color: #000000;
+            font-weight: 900;
+            font-size: 18px;
+            margin-bottom: 12px;
+            display: flex; align-items: center; gap: 8px;
+        }
+        .static-desc-title i { color: #0284C7; }
+        
+        .static-desc-text {
+            color: #475569;
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            line-height: 1.7;
+            text-align: justify;
+            font-weight: 500;
+            max-height: 250px;
+            overflow-y: auto;
+            padding-right: 10px;
+        }
+        
+        /* Custom scrollbar for desc text */
+        .static-desc-text::-webkit-scrollbar { width: 4px; }
+        .static-desc-text::-webkit-scrollbar-track { background: #F1F5F9; }
+        .static-desc-text::-webkit-scrollbar-thumb { background: #94A3B8; border-radius: 10px; }
 
         /* Bottom Nav */
         .bottom-nav {
-            position: fixed; bottom: 0; left: 0; width: 100%;
-            background: var(--glass-bg); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
-            border-top: 1px solid var(--glass-border);
-            display: flex; justify-content: space-around; padding: 12px 0; z-index: 1000;
+            position: fixed; bottom: 16px; left: 50%; transform: translateX(-50%);
+            width: 90%; max-width: 380px;
+            background: rgba(255, 255, 255, 0.96); 
+            backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+            border: 2px solid #0284C7; 
+            box-shadow: 0 12px 32px rgba(2, 132, 199, 0.2);
+            border-radius: var(--curve-pill);
+            display: flex; justify-content: space-around; padding: 8px 12px; z-index: 1000;
         }
-        .nav-item { display: flex; flex-direction: column; align-items: center; color: var(--text-secondary); text-decoration: none; font-size: 10px; gap: 4px; }
-        .nav-item i { font-size: 20px; }
+        .nav-item { 
+            display: flex; flex-direction: column; align-items: center; color: #64748B; 
+            text-decoration: none; font-size: 10px; font-weight: 800; gap: 2px; cursor: pointer; transition: 0.2s ease; 
+        }
+        .nav-item i { font-size: 18px; }
+        .nav-item:hover, .nav-item.active { color: #0284C7; }
     </style>
 </head>
 <body>
 
     <header>
-        <div class="back-btn" onclick="goBack()"><i class="fa-solid fa-chevron-left"></i></div>
-        <div class="brand-small">Azad<span>Vault</span></div>
-        <div style="width:20px;"></div>
+        <div class="header-left">
+            <div class="back-btn" onclick="goBack()"><i class="fa-solid fa-arrow-left"></i></div>
+            <div class="brand" onclick="window.location.href='index.html'">
+                <h1 class="text-logo">AZAD<span>VAULT</span></h1>
+                <span class="brand-badge">4K</span>
+            </div>
+        </div>
     </header>
 
     <div class="container">
         <h2 id="dynamic-preview-title">Wallpaper Preview</h2>
         
         <div id="device-switcher" class="device-container mode-mobile">
-            <img id="dynamic-preview-img" src="" alt="Preview">
+            <img id="dynamic-preview-img" src="" alt="4K Wallpaper Preview">
         </div>
 
         <div class="button-group">
             <button id="dynamic-download-btn" class="btn-download">
-                <i class="fas fa-cloud-download-alt"></i> Download Image
+                <i class="fa-solid fa-download"></i> Download High Quality
             </button>
             <button id="dynamic-share-btn" class="btn-share">
-                <i class="fas fa-share-nodes"></i> Share Image
+                <i class="fa-solid fa-share-nodes"></i> Share Wallpaper
             </button>
         </div>
 
         <div class="static-desc-container">
             <div class="static-desc-title">
-                <i class="fa-solid fa-circle-info"></i> Welcome to Azad Vault
+                <i class="fa-solid fa-bolt"></i> About Azad Vault Wallpapers
             </div>
             <div class="static-desc-text">
                 Welcome to Azad Vault – Your Ultimate Wallpaper Destination. 
-Discover an endless collection of high-quality HD, 4K, and mobile wallpapers designed to transform your device into a visual masterpiece.
-Our wallpapers are optimized for smartphones, tablets, and desktops to ensure a crystal-clear, immersive experience.
-Explore stunning categories including nature, anime, abstract art, minimalistic designs, and exclusive creations by top designers.
-Enhance your home screen and lock screen with vibrant, high-resolution wallpapers that reflect your personality.
-Every wallpaper is carefully curated to provide unique styles, colors, and themes for every mood and preference.
-We update our collection daily with fresh designs to keep your device looking modern and trendy.
-From breathtaking landscapes to cute characters, explore a variety of options for all wallpaper enthusiasts.
-Easily download wallpapers in just a few clicks and enjoy fast-loading, high-quality images without compromise.
-Customize your device with exclusive wallpapers that you won’t find anywhere else.
-Our website offers a seamless browsing experience with intuitive navigation and search functionality.
-Discover trending wallpapers based on popularity and download counts to stay ahead of the style curve.
-Use our dynamic tags and categories to quickly find wallpapers that match your taste.
-All wallpapers are free to download and safe for personal use.
-Enjoy smooth animations, minimalistic backgrounds, and visually striking designs for all types of devices.
-Follow top creators and explore their exclusive collections for unique wallpaper inspiration.
-Optimize your device aesthetics with wallpapers that enhance colors, contrast, and screen clarity.
-Experience effortless downloads and instant access to your favorite wallpapers anytime, anywhere.
-Join a community of wallpaper enthusiasts and share your favorite designs with friends.
-Our platform supports all device resolutions, ensuring perfect fit and quality for every screen size.
-Discover wallpapers for different moods – energetic, calm, playful, or artistic.
-Update your device daily with fresh, premium wallpapers curated by expert designers.
-Enjoy a diverse mix of themes: nature, abstract, space, cityscapes, anime, minimalistic, and artistic creations.
-Our wallpapers are created to enrich your device experience and express your individuality.
-Search by category, creator, or keyword to find wallpapers that resonate with your personal style.
-Experience a modern UI that makes browsing and downloading wallpapers simple and enjoyable.
-All images are optimized for fast loading without losing high-definition quality.
-Get inspired by trending designs and elevate the look of your smartphone or tablet.
-Our website is mobile-friendly and designed for easy navigation on small screens.
-Enjoy wallpapers that perfectly balance aesthetics, color harmony, and visual appeal.
-Find wallpapers for seasonal events, festivals, and special occasions.
-Explore a vast collection of abstract art, digital creations, and visually captivating designs.
-Download your favorite wallpapers without registration or hidden fees.
-Stay updated with the latest design trends in mobile wallpaper art.
-Filter wallpapers by category, color, and style for a personalized experience.
-Our platform encourages creators to share high-quality wallpapers for global audiences.
-Discover unique artwork and photography tailored for mobile screens.
-Enjoy wallpapers that are visually striking, colorful, and dynamic.
-Our library includes free-to-use wallpapers for personal devices.
-Experience smooth scrolling, fast search, and responsive design.
-Our wallpapers are compatible with both Android and iOS devices.
-Find wallpapers that suit different themes: futuristic, natural, artistic, or minimalistic.
-Enhance your device with wallpapers that improve the look of icons and widgets.
-Explore trending and popular wallpapers curated weekly by our editorial team.
-Enjoy vibrant, HD wallpapers for backgrounds, lock screens, or social media visuals.
-Create a personalized home screen experience with our diverse collection.
-All wallpapers are reviewed for quality, resolution, and originality.
-Our search engine suggests trending keywords and related designs for easy discovery.
-Use filters and categories to quickly access wallpapers matching your style.
-Enjoy smooth, glitch-free downloads and hassle-free browsing experience.
-Discover wallpapers from international designers and trending global artists.
-Optimize device appearance with high-quality HD and 4K images.
-Update your wallpaper collection with daily additions from our curated library.
-Enjoy exclusive wallpaper designs available only on Azad Vault.
-Explore wallpaper collections based on color schemes and aesthetic preferences.
-Search, browse, and download without ads interfering with your experience.
-Our wallpapers are ideal for all device types, including smartphones, tablets, and desktops.
-Discover wallpapers for gaming, anime, movies, and pop culture themes.
-Enhance your device’s visual appeal with a wide range of artistic designs.
-Download wallpapers instantly without losing resolution or clarity.
-Our platform features trending collections, top-rated downloads, and popular creators.
-Stay inspired with wallpapers reflecting art, nature, creativity, and innovation.
-Find wallpapers that suit different screen orientations – portrait and landscape.
-Enjoy minimalistic, abstract, and futuristic wallpapers for a modern look.
-Optimize your device’s display with images that highlight color, contrast, and brightness.
-Follow top designers and explore their exclusive wallpaper collections.
-Experience easy navigation, fast search, and responsive browsing on all devices.
-Download wallpapers safely with just one click and enjoy instant access.
-Discover wallpapers for special themes, occasions, and seasonal moods.
-Our wallpapers are designed to make your device truly unique.
-Explore vibrant, high-resolution images that bring your screen to life.
-Update your device frequently with fresh, premium wallpapers curated daily.
-All images are optimized for speed, clarity, and device compatibility.
-Find wallpapers for personalization, social media, or digital art inspiration.
-Enhance the aesthetics of your home and lock screens effortlessly.
-Our platform encourages creativity, exploration, and self-expression through wallpapers.
-Enjoy seamless browsing, trending suggestions, and top downloads in one place.
-Discover wallpapers that match your personality, mood, and style preferences.
-Access high-quality wallpapers anytime, anywhere with no hassle.
-Create a visually appealing and personalized device experience.
-Our library is constantly growing with exclusive, high-quality images for all users.
-Experience fast, simple, and enjoyable wallpaper discovery like never before.
+                Discover an endless collection of high-quality HD, 4K, and mobile wallpapers designed to transform your device into a visual masterpiece.
+                Our wallpapers are optimized for smartphones, tablets, and desktops to ensure a crystal-clear, immersive experience.
+                Explore stunning categories including nature, anime, abstract art, minimalistic designs, and exclusive creations by top designers.
+                Enhance your home screen and lock screen with vibrant, high-resolution wallpapers that reflect your personality.
+                Every wallpaper is carefully curated to provide unique styles, colors, and themes for every mood and preference.
+                We update our collection daily with fresh designs to keep your device looking modern and trendy.
+                From breathtaking landscapes to cute characters, explore a variety of options for all wallpaper enthusiasts.
+                Easily download wallpapers in just a few clicks and enjoy fast-loading, high-quality images without compromise.
+                Customize your device with exclusive wallpapers that you won’t find anywhere else.
+                Our website offers a seamless browsing experience with intuitive navigation and search functionality.
+                Discover trending wallpapers based on popularity and download counts to stay ahead of the style curve.
+                Use our dynamic tags and categories to quickly find wallpapers that match your taste.
+                All wallpapers are free to download and safe for personal use.
+                Enjoy smooth animations, minimalistic backgrounds, and visually striking designs for all types of devices.
+                Follow top creators and explore their exclusive collections for unique wallpaper inspiration.
+                Optimize your device aesthetics with wallpapers that enhance colors, contrast, and screen clarity.
+                Experience effortless downloads and instant access to your favorite wallpapers anytime, anywhere.
+                Join a community of wallpaper enthusiasts and share your favorite designs with friends.
+                Our platform supports all device resolutions, ensuring perfect fit and quality for every screen size.
+                Discover wallpapers for different moods – energetic, calm, playful, or artistic.
+                Update your device daily with fresh, premium wallpapers curated by expert designers.
+                Enjoy a diverse mix of themes: nature, abstract, space, cityscapes, anime, minimalistic, and artistic creations.
+                Our wallpapers are created to enrich your device experience and express your individuality.
+                Search by category, creator, or keyword to find wallpapers that resonate with your personal style.
+                Experience a modern UI that makes browsing and downloading wallpapers simple and enjoyable.
+                All images are optimized for fast loading without losing high-definition quality.
+                Get inspired by trending designs and elevate the look of your smartphone or tablet.
+                Our website is mobile-friendly and designed for easy navigation on small screens.
+                Enjoy wallpapers that perfectly balance aesthetics, color harmony, and visual appeal.
+                Find wallpapers for seasonal events, festivals, and special occasions.
+                Explore a vast collection of abstract art, digital creations, and visually captivating designs.
+                Download your favorite wallpapers without registration or hidden fees.
+                Stay updated with the latest design trends in mobile wallpaper art.
+                Filter wallpapers by category, color, and style for a personalized experience.
+                Our platform encourages creators to share high-quality wallpapers for global audiences.
+                Discover unique artwork and photography tailored for mobile screens.
+                Enjoy wallpapers that are visually striking, colorful, and dynamic.
+                Our library includes free-to-use wallpapers for personal devices.
+                Experience smooth scrolling, fast search, and responsive design.
+                Our wallpapers are compatible with both Android and iOS devices.
+                Find wallpapers that suit different themes: futuristic, natural, artistic, or minimalistic.
+                Enhance your device with wallpapers that improve the look of icons and widgets.
+                Explore trending and popular wallpapers curated weekly by our editorial team.
+                Enjoy vibrant, HD wallpapers for backgrounds, lock screens, or social media visuals.
+                Create a personalized home screen experience with our diverse collection.
+                All wallpapers are reviewed for quality, resolution, and originality.
+                Our search engine suggests trending keywords and related designs for easy discovery.
+                Use filters and categories to quickly access wallpapers matching your style.
+                Enjoy smooth, glitch-free downloads and hassle-free browsing experience.
+                Discover wallpapers from international designers and trending global artists.
+                Optimize device appearance with high-quality HD and 4K images.
+                Update your wallpaper collection with daily additions from our curated library.
+                Enjoy exclusive wallpaper designs available only on Azad Vault.
+                Explore wallpaper collections based on color schemes and aesthetic preferences.
+                Search, browse, and download without ads interfering with your experience.
+                Our wallpapers are ideal for all device types, including smartphones, tablets, and desktops.
+                Discover wallpapers for gaming, anime, movies, and pop culture themes.
+                Enhance your device’s visual appeal with a wide range of artistic designs.
+                Download wallpapers instantly without losing resolution or clarity.
+                Our platform features trending collections, top-rated downloads, and popular creators.
+                Stay inspired with wallpapers reflecting art, nature, creativity, and innovation.
+                Find wallpapers that suit different screen orientations – portrait and landscape.
+                Enjoy minimalistic, abstract, and futuristic wallpapers for a modern look.
+                Optimize your device’s display with images that highlight color, contrast, and brightness.
+                Follow top designers and explore their exclusive wallpaper collections.
+                Experience easy navigation, fast search, and responsive browsing on all devices.
+                Download wallpapers safely with just one click and enjoy instant access.
+                Discover wallpapers for special themes, occasions, and seasonal moods.
+                Our wallpapers are designed to make your device truly unique.
+                Explore vibrant, high-resolution images that bring your screen to life.
+                Update your device frequently with fresh, premium wallpapers curated daily.
+                All images are optimized for speed, clarity, and device compatibility.
+                Find wallpapers for personalization, social media, or digital art inspiration.
+                Enhance the aesthetics of your home and lock screens effortlessly.
+                Our platform encourages creativity, exploration, and self-expression through wallpapers.
+                Enjoy seamless browsing, trending suggestions, and top downloads in one place.
+                Discover wallpapers that match your personality, mood, and style preferences.
+                Access high-quality wallpapers anytime, anywhere with no hassle.
+                Create a visually appealing and personalized device experience.
+                Our library is constantly growing with exclusive, high-quality images for all users.
+                Experience fast, simple, and enjoyable wallpaper discovery like never before.
             </div>
         </div>
     </div>
@@ -231,24 +330,31 @@ Experience fast, simple, and enjoyable wallpaper discovery like never before.
     <nav class="bottom-nav">
         <a class="nav-item" href="index.html"><i class="fa-solid fa-house"></i>Home</a>
         <a class="nav-item" href="search.html"><i class="fa-solid fa-magnifying-glass"></i>Search</a>
-        <a class="nav-item" href="biodata.html"><i class="fa-solid fa-file-contract"></i>Biodata</a>
+        <a class="nav-item" href="biodata.html"><i class="fa-solid fa-file-signature"></i>Biodata</a>
         <a class="nav-item" href="about.html"><i class="fa-solid fa-circle-info"></i>About</a>
     </nav>
 
     <script>
         const urlParams = new URLSearchParams(window.location.search);
         const imageUrl = urlParams.get('url') ? decodeURIComponent(urlParams.get('url')) : '';
-        const imageTitle = urlParams.get('title') ? decodeURIComponent(urlParams.get('title')) : 'Wallpaper Preview';
+        const imageTitle = urlParams.get('title') ? decodeURIComponent(urlParams.get('title')) : '4K Wallpaper';
 
         document.addEventListener('DOMContentLoaded', () => {
             const frame = document.getElementById('device-switcher');
             const imgElement = document.getElementById('dynamic-preview-img');
             const titleElement = document.getElementById('dynamic-preview-title');
             
+            // Dynamic SEO Injection based on clicked wallpaper
+            document.title = `${imageTitle} - Download 4K Wallpaper | Azad Vault`;
+            document.querySelector('meta[name="description"]').setAttribute("content", `Download ${imageTitle} in Ultra HD 4K resolution for free on Azad Vault.`);
+            document.getElementById('og-image').setAttribute("content", imageUrl || "https://i.ibb.co/Xrv2gsf2/In-Shot-20260424-163905408.png");
+
             titleElement.innerText = imageTitle;
 
-            // Desktop Frame Checker
-            const isDesktop = imageTitle.toLowerCase().includes('desktop') || imageUrl.toLowerCase().includes('desktop');
+            // Desktop Frame Checker (Matches logic from index.html)
+            const checkStr = imageTitle.toLowerCase() + " " + imageUrl.toLowerCase();
+            const isDesktop = checkStr.includes('desktop') || checkStr.includes('pc') || checkStr.includes('laptop') || checkStr.includes('landscape');
+            
             if(isDesktop) {
                 frame.classList.replace('mode-mobile', 'mode-desktop');
             }
@@ -260,26 +366,34 @@ Experience fast, simple, and enjoyable wallpaper discovery like never before.
             }
         });
 
-        function goBack() { window.history.length > 1 ? window.history.back() : window.location.href = 'index.html'; }
+        function goBack() { 
+            if(document.referrer && document.referrer.includes(window.location.hostname)) {
+                window.history.back();
+            } else {
+                window.location.href = 'index.html';
+            }
+        }
 
         async function downloadImage(url, title) {
             const btn = document.getElementById('dynamic-download-btn');
             const originalHTML = btn.innerHTML;
 
             try {
-                btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Downloading...';
+                btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Processing...';
                 const response = await fetch(url);
                 const blob = await response.blob();
                 const objectUrl = window.URL.createObjectURL(blob);
                 
                 const a = document.createElement('a');
                 a.href = objectUrl;
-                a.download = `${title.replace(/\s+/g, '_')}_AzadVault.png`;
+                // Generate a clean filename based on title
+                const cleanFileName = title.replace(/[^a-zA-Z0-9]/g, '_').replace(/_+/g, '_').replace(/^_|_$/g, '');
+                a.download = `${cleanFileName}_AzadVault.png`;
                 document.body.appendChild(a);
                 a.click();
                 document.body.removeChild(a);
                 
-                btn.innerHTML = '<i class="fas fa-check-circle"></i> Downloaded!';
+                btn.innerHTML = '<i class="fa-solid fa-circle-check"></i> Download Complete!';
                 btn.classList.add('success-bg');
                 
                 setTimeout(() => {
@@ -287,8 +401,12 @@ Experience fast, simple, and enjoyable wallpaper discovery like never before.
                     btn.classList.remove('success-bg');
                 }, 3000);
             } catch (error) {
-                btn.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Open in Tab';
+                console.error("Direct download failed, opening in new tab", error);
+                btn.innerHTML = '<i class="fa-solid fa-arrow-up-right-from-square"></i> Open to Save';
                 window.open(url, '_blank');
+                setTimeout(() => {
+                    btn.innerHTML = originalHTML;
+                }, 3000);
             }
         }
 
@@ -296,13 +414,19 @@ Experience fast, simple, and enjoyable wallpaper discovery like never before.
             if (navigator.share) {
                 try {
                     await navigator.share({
-                        title: `Azad Vault - ${imageTitle}`,
-                        text: 'Check out this amazing wallpaper on Azad Vault!',
+                        title: `${imageTitle} - Azad Vault 4K`,
+                        text: `Check out this amazing 4K wallpaper: ${imageTitle} on Azad Vault!`,
                         url: window.location.href
                     });
-                } catch (err) { console.log("Share failed"); }
+                } catch (err) { console.log("Share cancelled or failed", err); }
             } else {
-                alert("Sharing not supported on this browser.");
+                // Fallback for browsers that don't support native sharing
+                navigator.clipboard.writeText(window.location.href).then(() => {
+                    const btn = document.getElementById('dynamic-share-btn');
+                    const origHtml = btn.innerHTML;
+                    btn.innerHTML = '<i class="fa-solid fa-check"></i> Link Copied!';
+                    setTimeout(() => btn.innerHTML = origHtml, 2000);
+                });
             }
         };
     </script>
