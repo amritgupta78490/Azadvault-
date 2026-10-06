@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -109,6 +108,7 @@
                     const animationDelay = (index % 10) * 0.03; 
                     
                     const safeTitle = data.title ? String(data.title).replace(/'/g, "\\'") : 'Wallpaper';
+                    const titleLower = String(data.title || "").toLowerCase(); // Check title for desktop keyword
                     const keywords = Array.isArray(data.keywords) ? data.keywords.join(" ").toLowerCase() : String(data.keywords || "").toLowerCase();
                     const category = String(data.category || "other").toLowerCase();
                     const creator = String(data.creator || "").toLowerCase();
@@ -127,14 +127,17 @@
 
                     if (!imageUrl) return; 
 
-                    // Check Desktop/Widescreen flag to automatically render in 16:9
+                    // Check Desktop/Widescreen flag to automatically render in 16:9 (now includes title check)
                     const isDesktop = data.isDesktop === true || 
                                       data.orientation === 'desktop' || 
                                       data.orientation === 'landscape' || 
                                       category.includes('desktop') || 
                                       category.includes('pc') || 
                                       category.includes('laptop') ||
-                                      keywords.includes('desktop');
+                                      keywords.includes('desktop') ||
+                                      titleLower.includes('desktop') ||
+                                      titleLower.includes('pc') ||
+                                      titleLower.includes('laptop');
 
                     const cardClass = isDesktop ? "item-card search-item desktop-card" : "item-card search-item";
 
@@ -620,7 +623,6 @@
 
         <!-- Dynamic Navigation Pills -->
         <section class="nav-container">
-            <!-- REMOVED: Desktop Mode, Exclusives, and Biodata Maker from top scroll -->
             <div class="category-nav" id="category-nav">
                 <button class="cat-pill active" onclick="filterMainCategory('all', this)"><i class="fa-solid fa-border-all"></i> All Wallpapers</button>
             </div>
@@ -635,7 +637,6 @@
                 <!-- Sort Switch -->
                 <div class="sort-container">
                     <span class="sort-btn active" id="btn-sort-latest" onclick="sortGrid('latest', this)"><i class="fa-solid fa-clock"></i> Latest</span>
-                    <!-- Trending button is here but visually functional only based on mock count / no real sorting impact -->
                     <span class="sort-btn" id="btn-sort-trending" onclick="sortGrid('trending', this)"><i class="fa-solid fa-fire"></i> Trending</span>
                 </div>
             </div>
@@ -734,7 +735,6 @@
 
             items.sort((a, b) => {
                 if (type === 'trending') {
-                    // Although requested not to strictly work, it just sorts by the mock downloads to look like it does something
                     let dlA = parseInt(a.getAttribute('data-downloads')) || 0;
                     let dlB = parseInt(b.getAttribute('data-downloads')) || 0;
                     if (dlB === dlA) {
@@ -744,7 +744,6 @@
                     }
                     return dlB - dlA;
                 } else {
-                    // Latest default behavior
                     let idxA = parseInt(a.getAttribute('data-index')) || 0;
                     let idxB = parseInt(b.getAttribute('data-index')) || 0;
                     return idxA - idxB;
