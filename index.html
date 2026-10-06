@@ -5,20 +5,64 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     
+    <!-- Powerful SEO Meta Tags -->
     <title>Azad Vault - Free 4K & HD Wallpapers | Online Biodata Maker</title>
-    <meta name="description" content="Download premium high-quality 4K, HD, Anime, and Nature mobile wallpapers for free. Create professional biodata online easily. Fast tools by Azad Vault.">
-    <meta name="keywords" content="HD wallpapers, 4K wallpapers, mobile wallpapers, anime wallpapers, nature wallpapers, biodata maker, free wallpaper download, wallpaper app India, best wallpaper">
+    <meta name="description" content="Download high-quality 4K, HD, Anime, and Nature mobile wallpapers for free. Create professional biodata online easily. Fast & free tools by Azad Vault.">
+    <meta name="keywords" content="HD wallpapers, 4K wallpapers, mobile wallpapers, anime wallpapers, nature wallpapers, biodata maker, free wallpaper download, aesthetic wallpaper, best wallpaper app">
     <meta name="author" content="Azad Vault">
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+    <link rel="canonical" href="https://azadvault.com/">
+
+    <!-- Open Graph / Social Media SEO -->
+    <meta property="og:locale" content="en_US">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Azad Vault - Free 4K Wallpapers & Online Biodata Maker">
+    <meta property="og:description" content="Explore thousands of ultra-HD 4K mobile wallpapers and generate elegant biodata online instantly.">
+    <meta property="og:url" content="https://azadvault.com/">
+    <meta property="og:site_name" content="Azad Vault">
+    <meta property="og:image" content="https://i.ibb.co/Xrv2gsf2/In-Shot-20260424-163905408.png">
+
+    <!-- Twitter Card SEO -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Azad Vault - Free 4K Wallpapers & Biodata Creator">
+    <meta name="twitter:description" content="Download high-resolution 4K mobile wallpapers and create professional biodata easily.">
+    <meta name="twitter:image" content="https://i.ibb.co/Xrv2gsf2/In-Shot-20260424-163905408.png">
+
+    <!-- Schema.org Structured Data (JSON-LD) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "WebSite",
+          "@id": "https://azadvault.com/#website",
+          "url": "https://azadvault.com/",
+          "name": "Azad Vault",
+          "description": "Free 4K Wallpapers & Online Biodata Maker",
+          "potentialAction": {
+            "@type": "SearchAction",
+            "target": "https://azadvault.com/?s={search_term_string}",
+            "query-input": "required name=search_term_string"
+          }
+        },
+        {
+          "@type": "ImageGallery",
+          "name": "4K Mobile Wallpapers Gallery",
+          "description": "Curated HD and 4K wallpapers for mobile devices."
+        }
+      ]
+    }
+    </script>
     
     <link rel="icon" type="image/png" href="https://i.ibb.co/Xrv2gsf2/In-Shot-20260424-163905408.png">
 
-    <!-- Fonts: Plus Jakarta Sans for a highly professional, modern app look + Poppins -->
+    <!-- Google Fonts - Added Syne & Outfit for stylish black typography & sleek UI -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;700;800&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Syne:wght@700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
+    <!-- Firebase SDK -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
         import { getFirestore, collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
@@ -51,9 +95,9 @@
                     const data = doc.data();
                     window.allDesignsData.push(data); 
 
-                    const animationDelay = (index % 10) * 0.05; 
+                    const animationDelay = (index % 10) * 0.03; 
                     
-                    const safeTitle = data.title ? String(data.title).replace(/'/g, "\\'") : 'Design';
+                    const safeTitle = data.title ? String(data.title).replace(/'/g, "\\'") : 'Wallpaper';
                     const keywords = Array.isArray(data.keywords) ? data.keywords.join(" ").toLowerCase() : String(data.keywords || "").toLowerCase();
                     const category = String(data.category || "other").toLowerCase();
                     const creator = String(data.creator || "").toLowerCase();
@@ -65,11 +109,13 @@
                     gridHTML += `
                         <div class="item-card search-item" data-index="${index}" data-downloads="${downloads}" data-category="${category}" data-keywords="${keywords}" data-creator="${creator}" style="animation-delay: ${animationDelay}s" onclick="openImagePreview('${encodeURIComponent(imageUrl)}', '${encodeURIComponent(safeTitle)}')">
                             <div class="card-img-wrap">
-                                <img src="${imageUrl}" alt="${safeTitle} - 4K HD Wallpaper" title="${safeTitle} wallpaper" loading="lazy">
+                                <img src="${imageUrl}" alt="${safeTitle} - 4K Wallpaper" title="${safeTitle}" loading="lazy">
+                                <div class="card-overlay">
+                                    <span class="preview-btn"><i class="fa-solid fa-expand"></i> View</span>
+                                </div>
                             </div>
                             <div class="card-content">
                                 <h3>${safeTitle}</h3>
-                                <div class="downloads-badge"><i class="fa-solid fa-arrow-down"></i> ${downloads}</div>
                             </div>
                         </div>
                     `;
@@ -96,13 +142,13 @@
                     const data = doc.data();
                     const name = data.name || "Creator";
                     const safeName = name.replace(/'/g, "\\'");
-                    const dpImage = data.dpImage || `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=random&color=fff`;
+                    const dpImage = data.dpImage || `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=0F172A&color=fff`;
                     const instaLink = data.instagramLink || "#";
 
                     creatorHTML += `
                         <div class="creator-item" onclick="openCreatorProfile('${safeName}', '${dpImage}', '${instaLink}')">
                             <div class="story-ring">
-                                <img src="${dpImage}" alt="${name} Profile" loading="lazy" onerror="this.src='https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=random'">
+                                <img src="${dpImage}" alt="${name} Profile" loading="lazy" onerror="this.src='https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=0F172A&color=fff'">
                             </div>
                             <span class="creator-name">${name}</span>
                         </div>
@@ -132,380 +178,423 @@
     </script>
 
     <style>
-        /* === THEME VARIABLES - White & Soft Premium Blue, Tactile 3D Look === */
+        /* === WHITE LIGHT THEME VARIABLES & ULTRA-MODERN CURVES === */
         :root {
-            --bg-body: #F0F4FA; 
+            --bg-body: #FAFAFC; 
             --bg-surface: #FFFFFF;
-            --text-primary: #1E293B; 
-            --text-secondary: #64748B;
-            --accent-main: #3B82F6; 
-            --accent-light: #E0EBFD;
-            --soft-blue-3d: #EBF3FF;
+            --bg-surface-elevated: #F1F5F9;
+            --text-primary: #09090B; /* Deep Black for high readability */
+            --text-secondary: #52525B;
+            --accent-main: #0284C7; 
+            --accent-glow: rgba(2, 132, 199, 0.16);
+            --accent-gradient: linear-gradient(135deg, #0F172A 0%, #0284C7 100%);
+            --brand-gradient: linear-gradient(135deg, #09090B 0%, #1E293B 100%);
             
-            /* Curved UI borders */
-            --curve-pill: 50px;
-            --curve-extreme: 32px;
-            --curve-large: 24px;
-            --curve-medium: 16px;
+            /* Curved Borders & Organic Fluid Radii */
+            --curve-pill: 9999px;
+            --curve-header: 28px;
+            --curve-extreme: 26px;
+            --curve-large: 20px;
+            --curve-medium: 14px;
             
-            /* High Fidelity 3D Soft Shadows & Highlights */
-            --shadow-3d-raised: 0 10px 24px rgba(164, 185, 215, 0.35), inset 0 2px 0 #FFFFFF, 0 2px 4px rgba(0,0,0,0.02);
-            --shadow-3d-inset: inset 0 3px 6px rgba(164, 185, 215, 0.4), inset 0 -2px 4px rgba(255,255,255,0.8);
-            --shadow-card: 0 12px 28px rgba(164, 185, 215, 0.28), inset 0 -4px 0 rgba(164, 185, 215, 0.2), inset 0 2px 0 #FFFFFF;
-            --shadow-card-hover: 0 20px 36px rgba(59, 130, 246, 0.16), inset 0 -4px 0 rgba(59, 130, 246, 0.2), inset 0 2px 0 #FFFFFF;
-            --glass-bg: rgba(255, 255, 255, 0.85);
+            /* Compact Tight Grid Tokens */
+            --grid-gap: 12px;
+            
+            /* Elevation & Light Shadows */
+            --shadow-subtle: 0 4px 20px rgba(0, 0, 0, 0.03);
+            --shadow-card: 0 4px 16px rgba(9, 9, 11, 0.05);
+            --shadow-card-hover: 0 14px 32px rgba(9, 9, 11, 0.12);
+            --border-light: 1px solid rgba(9, 9, 11, 0.07);
+            --border-focus: 1px solid rgba(2, 132, 199, 0.4);
+            --backdrop-blur: blur(20px);
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; -webkit-tap-highlight-color: transparent; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Outfit', 'Inter', sans-serif; -webkit-tap-highlight-color: transparent; }
         
         body { 
-            background-color: var(--bg-body); 
+            background-color: var(--bg-body);
             color: var(--text-primary); 
             overflow-x: hidden; 
             scroll-behavior: smooth;
-            padding-bottom: 100px; 
+            padding-bottom: 110px; 
+            min-height: 100vh;
+            position: relative;
         }
 
-        h1, h2, h3, .logo-text { font-family: 'Plus Jakarta Sans', sans-serif; }
+        /* Continuous subtle curved ambient backdrop */
+        body::before {
+            content: '';
+            position: fixed;
+            top: -20%;
+            left: -20%;
+            width: 140%;
+            height: 140%;
+            background: 
+                radial-gradient(circle at 50% 10%, rgba(2, 132, 199, 0.05), transparent 50%),
+                radial-gradient(circle at 85% 60%, rgba(224, 231, 255, 0.6), transparent 50%),
+                radial-gradient(circle at 15% 85%, rgba(241, 245, 249, 0.8), transparent 50%);
+            z-index: -1;
+            pointer-events: none;
+            animation: subtleShine 14s ease-in-out infinite alternate;
+        }
 
-        ::-webkit-scrollbar { width: 8px; height: 8px; }
-        ::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 10px; }
-        ::-webkit-scrollbar-thumb:hover { background: #94A3B8; }
+        @keyframes subtleShine {
+            0% { transform: scale(1) translate(0, 0); opacity: 0.8; }
+            50% { transform: scale(1.03) translate(-8px, 8px); opacity: 1; }
+            100% { transform: scale(1.01) translate(8px, -4px); opacity: 0.85; }
+        }
+
+        h1, h2, h3, .text-logo { font-family: 'Outfit', sans-serif; }
+
+        ::-webkit-scrollbar { width: 5px; height: 5px; }
+        ::-webkit-scrollbar-track { background: #F1F5F9; }
+        ::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 99px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--text-primary); }
 
         @keyframes popIn { 
-            0% { opacity: 0; transform: translateY(20px) scale(0.95); } 
+            0% { opacity: 0; transform: translateY(10px) scale(0.98); } 
             100% { opacity: 1; transform: translateY(0) scale(1); } 
         }
 
-        /* === PREMIUM HALF-CURVE 3D HEADER === */
+        /* */
+        /* === CURVED STYLISH HEADER WITH BLACK TYPOGRAPHY === */
         header {
             position: sticky; top: 0; z-index: 100;
-            padding: 18px 5% 28px;
-            background: linear-gradient(180deg, #FFFFFF 0%, #F5F9FD 100%);
-            border-bottom-left-radius: var(--curve-extreme);
-            border-bottom-right-radius: var(--curve-extreme);
-            border-bottom: 3px solid #D0E1F9;
-            box-shadow: 0 10px 30px rgba(164, 185, 215, 0.25), inset 0 -3px 6px rgba(255,255,255,0.5);
+            padding: 16px 6%;
+            background: rgba(255, 255, 255, 0.88);
+            backdrop-filter: var(--backdrop-blur);
+            -webkit-backdrop-filter: var(--backdrop-blur);
+            border-bottom: var(--border-light);
+            border-radius: 0 0 var(--curve-header) var(--curve-header);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.02);
             display: flex; justify-content: space-between; align-items: center;
         }
 
-        .brand { display: flex; align-items: center; gap: 10px; }
-        .text-logo { font-size: 26px; font-weight: 800; color: var(--text-primary); letter-spacing: -0.5px; }
-        .text-logo span { color: var(--accent-main); text-shadow: 0 2px 4px rgba(59, 130, 246, 0.15); }
-        
-        /* 3D Header Grid Icon */
-        .header-grid-icon {
-            font-size: 22px; color: var(--text-primary);
-            cursor: pointer; transition: 0.3s;
-            background: #F0F6FF; padding: 10px; border-radius: var(--curve-medium);
-            border: 2px solid #FFFFFF;
-            box-shadow: 0 4px 10px rgba(164, 185, 215, 0.3), inset 0 -2px 0 rgba(164, 185, 215, 0.15);
+        .brand { 
+            display: flex; 
+            align-items: center; 
+            gap: 10px; 
+            cursor: pointer;
         }
-        .header-grid-icon:hover { color: var(--accent-main); transform: translateY(-2px); box-shadow: 0 6px 15px rgba(59, 130, 246, 0.2), inset 0 -2px 0 rgba(59, 130, 246, 0.15); }
+
+        /* Stylish Pure Black Logo */
+        .text-logo { 
+            font-family: 'Syne', sans-serif; 
+            font-size: 28px; 
+            font-weight: 800; 
+            color: #09090B; /* Deep Pure Black */
+            letter-spacing: -1.2px; 
+            text-transform: uppercase;
+            line-height: 1;
+            display: flex;
+            align-items: center;
+        }
+        
+        .text-logo span { 
+            color: #0284C7;
+            font-weight: 800;
+        }
+
+        .brand-badge {
+            background: #09090B;
+            color: #FFFFFF;
+            font-size: 10px;
+            font-weight: 800;
+            padding: 3px 8px;
+            border-radius: var(--curve-pill);
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
 
         /* === MAIN SEARCH SECTION === */
         .main-search-section {
-            padding: 25px 5% 0; max-width: 1600px; margin: 0 auto;
+            padding: 22px 6% 0; max-width: 1600px; margin: 0 auto;
         }
         .search-container { width: 100%; position: relative; }
         
-        /* Premium 3D Search Bar */
+        /* Floating Light Curved Search Bar */
         .header-search {
             display: flex; align-items: center; 
-            background: var(--bg-surface);
-            border: 2px solid #D1E2FA;
-            box-shadow: 0 8px 20px rgba(164, 185, 215, 0.2), inset 0 -3px 0 rgba(209, 226, 250, 0.5);
-            border-radius: var(--curve-pill); padding: 14px 24px; width: 100%;
-            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            background: #FFFFFF;
+            border: var(--border-light);
+            box-shadow: 0 6px 24px rgba(0, 0, 0, 0.04);
+            border-radius: var(--curve-pill); 
+            padding: 14px 22px; width: 100%;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
         }
         .header-search:focus-within { 
-            border-color: var(--accent-main);
-            box-shadow: 0 0 0 4px var(--accent-light), 0 8px 25px rgba(59, 130, 246, 0.15); 
-            transform: translateY(-2px);
+            border-color: #09090B;
+            background: #FFFFFF;
+            box-shadow: 0 10px 30px rgba(9, 9, 11, 0.1);
+            transform: translateY(-1px);
         }
-        .header-search i { color: var(--accent-main); font-size: 18px; }
+        .header-search i { color: #09090B; font-size: 16px; }
         .header-search input { 
             border: none; outline: none; width: 100%; background: transparent; 
-            margin-left: 14px; font-size: 15px; font-weight: 500; color: var(--text-primary); 
+            margin-left: 12px; font-size: 15px; font-weight: 600; color: var(--text-primary); 
         }
-        .header-search input::placeholder { color: #94A3B8; font-weight: 400; }
+        .header-search input::placeholder { color: #A1A1AA; font-weight: 400; }
 
-        /* Search Suggestions */
+        /* Search Suggestions Box */
         .suggestions-box {
-            position: absolute; top: calc(100% + 12px); left: 0; right: 0;
-            background: var(--bg-surface); border: 2px solid #E2EEFF;
-            border-radius: var(--curve-large); box-shadow: 0 20px 40px rgba(164, 185, 215, 0.3);
-            max-height: 280px; overflow-y: auto; z-index: 1000; display: none; padding: 10px;
+            position: absolute; top: calc(100% + 10px); left: 0; right: 0;
+            background: #FFFFFF; backdrop-filter: var(--backdrop-blur);
+            border: var(--border-light);
+            border-radius: var(--curve-large); box-shadow: 0 20px 40px rgba(0,0,0,0.12);
+            max-height: 280px; overflow-y: auto; z-index: 1000; display: none; padding: 8px;
         }
         .suggestion-item {
             padding: 12px 16px; cursor: pointer; display: flex; align-items: center; justify-content: space-between; 
-            border-radius: var(--curve-medium); transition: 0.2s; margin-bottom: 4px;
+            border-radius: var(--curve-medium); transition: 0.2s; margin-bottom: 2px;
         }
-        .suggestion-item:hover { background: var(--accent-light); transform: translateX(4px); }
-        .suggestion-text { color: var(--text-primary); font-size: 14px; font-weight: 500;}
-        .suggestion-type { font-size: 11px; color: var(--accent-main); background: var(--bg-surface); border: 1px solid #D1E2FA; padding: 4px 10px; border-radius: var(--curve-pill); font-weight: 700; text-transform: uppercase; }
+        .suggestion-item:hover { background: #F4F4F5; }
+        .suggestion-text { color: var(--text-primary); font-size: 14px; font-weight: 600;}
+        .suggestion-type { 
+            font-size: 10px; color: #09090B; 
+            background: #F4F4F5; border: 1px solid #E4E4E7; 
+            padding: 3px 8px; border-radius: var(--curve-pill); font-weight: 800; text-transform: uppercase; 
+        }
 
         /* === CREATORS SECTION === */
-        .creator-section { padding: 25px 5% 5px; max-width: 1600px; margin: auto; }
-        .section-title { font-size: 18px; font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 800; color: var(--text-primary); margin-bottom: 15px; letter-spacing: -0.3px; display: flex; align-items: center; gap: 8px; }
-        .creator-scroll { display: flex; gap: 20px; overflow-x: auto; padding-bottom: 15px; scrollbar-width: none; }
-        .creator-item { display: flex; flex-direction: column; align-items: center; cursor: pointer; min-width: 76px; transition: 0.3s; }
+        .creator-section { padding: 22px 6% 10px; max-width: 1600px; margin: auto; }
+        .section-title { 
+            font-size: 18px; font-family: 'Outfit', sans-serif; font-weight: 800; 
+            color: var(--text-primary); margin-bottom: 14px; letter-spacing: -0.3px; 
+            display: flex; align-items: center; gap: 8px; 
+        }
+        .creator-scroll { display: flex; gap: 16px; overflow-x: auto; padding-bottom: 8px; scrollbar-width: none; }
+        .creator-item { display: flex; flex-direction: column; align-items: center; cursor: pointer; min-width: 72px; transition: 0.25s; }
         .creator-item:hover { transform: translateY(-3px); }
         .story-ring {
-            width: 72px; height: 72px; border-radius: 50%;
-            background: linear-gradient(135deg, #93C5FD 0%, #3B82F6 100%);
-            padding: 3px; display: flex; justify-content: center; align-items: center; margin-bottom: 8px;
-            box-shadow: 0 8px 15px rgba(59, 130, 246, 0.2), inset 0 2px 2px rgba(255,255,255,0.4);
-            border: 1px solid #FFFFFF;
+            width: 66px; height: 66px; border-radius: 50%;
+            background: linear-gradient(135deg, #09090B 0%, #0284C7 100%);
+            padding: 3px; display: flex; justify-content: center; align-items: center; margin-bottom: 6px;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+            transition: 0.25s;
         }
-        .story-ring img { width: 100%; height: 100%; border-radius: 50%; border: 3px solid #fff; object-fit: cover; }
-        .creator-name { font-size: 13px; font-weight: 600; color: var(--text-primary); text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 74px; }
+        .creator-item:hover .story-ring { box-shadow: 0 0 18px var(--accent-glow); transform: scale(1.05); }
+        .story-ring img { width: 100%; height: 100%; border-radius: 50%; border: 2px solid #FFFFFF; object-fit: cover; }
+        .creator-name { font-size: 12px; font-weight: 700; color: var(--text-secondary); text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 72px; }
 
-        /* === NAVIGATION PILLS === */
-        .nav-container { padding: 10px 5%; max-width: 1600px; margin: auto; }
+        /* === CURVED NAVIGATION PILLS === */
+        .nav-container { padding: 10px 6%; max-width: 1600px; margin: auto; }
         
-        .category-nav { display: flex; gap: 12px; overflow-x: auto; scrollbar-width: none; margin-bottom: 20px; padding: 5px 0; }
+        .category-nav { display: flex; gap: 10px; overflow-x: auto; scrollbar-width: none; margin-bottom: 12px; padding: 2px 0; }
         .cat-pill { 
-            padding: 12px 28px; background: var(--bg-surface); 
-            border: 2px solid #FFFFFF; box-shadow: var(--shadow-3d-raised);
-            border-radius: var(--curve-pill); color: var(--text-secondary); font-weight: 600; font-size: 14px;
-            cursor: pointer; transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1); white-space: nowrap;
+            padding: 10px 22px; background: #FFFFFF; 
+            border: var(--border-light);
+            border-radius: var(--curve-pill); color: var(--text-secondary); font-weight: 700; font-size: 14px;
+            cursor: pointer; transition: all 0.25s ease; white-space: nowrap;
+            display: flex; align-items: center; gap: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.02);
         }
-        .cat-pill:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(164, 185, 215, 0.4), var(--shadow-3d-raised); color: var(--text-primary); }
+        .cat-pill:hover { transform: translateY(-2px); color: var(--text-primary); background: #F8FAFC; }
         .cat-pill.active { 
-            background: var(--accent-main); color: white; border-color: var(--accent-main);
-            box-shadow: 0 8px 20px rgba(59, 130, 246, 0.3), inset 0 -4px 0 rgba(0,0,0,0.15); 
-            transform: translateY(-2px);
+            background: #09090B; color: #FFFFFF; border-color: #09090B;
+            box-shadow: 0 6px 20px rgba(9, 9, 11, 0.25); 
         }
         
-        .keyword-nav { display: flex; gap: 10px; overflow-x: auto; scrollbar-width: none; padding-bottom: 10px; }
+        .keyword-nav { display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; padding-bottom: 8px; }
         .kw-tag {
-            padding: 8px 18px; background: var(--bg-surface); border: 2px solid #FFFFFF;
-            box-shadow: var(--shadow-3d-raised);
-            border-radius: var(--curve-large); color: var(--text-secondary); font-size: 13px;
+            padding: 7px 16px; background: #FFFFFF; border: var(--border-light);
+            border-radius: var(--curve-pill); color: var(--text-secondary); font-size: 13px;
             cursor: pointer; transition: 0.2s; white-space: nowrap; font-weight: 600;
         }
-        .kw-tag:hover, .kw-tag.active { background: var(--accent-light); color: var(--accent-main); border-color: #BFDBFE; box-shadow: var(--shadow-3d-inset); }
+        .kw-tag:hover, .kw-tag.active { 
+            background: #09090B; color: #FFFFFF; border-color: #09090B; 
+        }
 
         /* === GALLERY HEADER & SORT === */
-        .container { padding: 15px 5%; max-width: 1600px; margin: auto; }
-        .gallery-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 10px; }
+        .container { padding: 12px 6%; max-width: 1600px; margin: auto; }
+        .gallery-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 10px; }
         
         .sort-container { 
-            display: flex; background: var(--bg-surface); border-radius: var(--curve-pill); padding: 4px; 
-            box-shadow: var(--shadow-3d-raised); border: 2px solid #FFFFFF;
+            display: flex; background: #FFFFFF; border-radius: var(--curve-pill); padding: 4px; 
+            border: var(--border-light); box-shadow: 0 2px 10px rgba(0,0,0,0.02);
         }
         .sort-btn { 
-            cursor: pointer; font-size: 13px; font-weight: 600; color: var(--text-secondary); 
-            padding: 8px 18px; border-radius: var(--curve-pill); transition: 0.3s; display: flex; align-items: center; gap: 6px;
+            cursor: pointer; font-size: 12px; font-weight: 700; color: var(--text-secondary); 
+            padding: 6px 18px; border-radius: var(--curve-pill); transition: 0.25s; display: flex; align-items: center; gap: 6px;
         }
         .sort-btn.active { 
-            background: var(--accent-main); color: #fff; box-shadow: 0 4px 10px rgba(59, 130, 246, 0.25);
+            background: #09090B; color: #FFFFFF; box-shadow: 0 4px 12px rgba(9, 9, 11, 0.15);
         }
 
-        /* === MASONRY GRID & 3D APP CARDS (Arranged by Native Proportion) === */
+        /* === TIGHT "GATHERED" MASONRY GRID === */
         .masonry-grid { 
-            column-count: 2; 
-            column-gap: 15px; 
+            column-count: 4; 
+            column-gap: var(--grid-gap); 
             padding-bottom: 40px; 
         }
-        @media (min-width: 600px) { .masonry-grid { column-count: 3; } }
-        @media (min-width: 900px) { .masonry-grid { column-count: 4; column-gap: 20px;} }
-        @media (min-width: 1200px) { .masonry-grid { column-count: 5; } }
+        @media (max-width: 1200px) { .masonry-grid { column-count: 3; } }
+        @media (max-width: 680px) { .masonry-grid { column-count: 2; column-gap: 10px; } }
 
-        /* 3D App Cards with dynamic size containment */
+        /* Compact Ultra-Neat Pinterest Cards ("Gather hoke rahe") */
         .item-card { 
-            background: var(--bg-surface); 
+            background: #FFFFFF; 
             border-radius: var(--curve-large); 
-            padding: 10px; 
-            margin-bottom: 18px; 
+            padding: 4px; 
+            margin-bottom: var(--grid-gap); 
             break-inside: avoid; 
             cursor: pointer; 
-            animation: popIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; 
-            opacity: 0; 
+            animation: popIn 0.35s ease forwards; 
             box-shadow: var(--shadow-card);
-            transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
-            border: 2px solid #FFFFFF;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            border: var(--border-light);
             display: inline-block;
             width: 100%;
+            overflow: hidden;
+            position: relative;
         }
         .item-card:hover { 
-            transform: translateY(-6px) scale(1.01); 
+            transform: translateY(-4px) scale(1.01); 
             box-shadow: var(--shadow-card-hover); 
-            border-color: #BFDBFE; 
+            border-color: rgba(9, 9, 11, 0.2); 
         }
         
-        /* Correct arrangement based on native wallpaper proportions (Horizontal Desktop & Vertical Mobile) */
         .card-img-wrap {
             border-radius: var(--curve-medium);
             overflow: hidden;
             width: 100%;
-            background: #EBF3FF;
+            background: #F1F5F9;
             position: relative;
         }
         .card-img-wrap img { 
             width: 100%; 
             height: auto; 
             display: block; 
-            object-fit: contain; /* Keeps native aspect ratio exactly, no squash/crop */
-            transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1); 
+            object-fit: cover;
+            transition: transform 0.5s ease; 
         }
-        .item-card:hover .card-img-wrap img { transform: scale(1.06); }
+        .item-card:hover .card-img-wrap img { transform: scale(1.05); }
         
+        /* Sleek Card Overlay */
+        .card-overlay {
+            position: absolute; inset: 0;
+            background: linear-gradient(to top, rgba(9, 9, 11, 0.7) 0%, transparent 60%);
+            display: flex; align-items: flex-end; justify-content: center;
+            padding-bottom: 12px; opacity: 0; transition: opacity 0.25s ease;
+        }
+        .item-card:hover .card-overlay { opacity: 1; }
+        .preview-btn {
+            background: #FFFFFF;
+            color: #09090B; font-size: 11px; font-weight: 800; padding: 6px 14px;
+            border-radius: var(--curve-pill);
+            display: flex; align-items: center; gap: 6px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
         .card-content {
-            padding: 12px 6px 4px;
-            display: flex; justify-content: space-between; align-items: center; gap: 10px;
+            padding: 8px 6px 4px;
+            display: flex; justify-content: space-between; align-items: center; gap: 8px;
         }
         .card-content h3 { 
             font-size: 13px; font-weight: 700; color: var(--text-primary); margin: 0; 
-            white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-family: 'Plus Jakarta Sans', sans-serif;
-        }
-        
-        /* 3D Badge */
-        .downloads-badge { 
-            font-size: 11px; font-weight: 700; background: #F0F6FF; 
-            padding: 6px 12px; border-radius: var(--curve-pill); color: var(--accent-main); 
-            display: flex; align-items: center; gap: 4px; 
-            box-shadow: var(--shadow-3d-inset); border: 1px solid #FFFFFF;
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-family: 'Outfit', sans-serif;
         }
 
-        .no-results { text-align: center; padding: 60px 20px; color: var(--text-secondary); font-size: 16px; font-weight: 500; }
-        .no-results i { font-size: 40px; margin-bottom: 15px; color: #CBD5E1; }
+        .no-results { text-align: center; padding: 60px 20px; color: var(--text-secondary); font-size: 15px; font-weight: 600; }
+        .no-results i { font-size: 40px; margin-bottom: 12px; color: #A1A1AA; }
 
-        /* === BOTTOM NAV - 3D Floating Pill in Soft Light Blue === */
+        /* === FLOATING GLASS PILL BOTTOM NAV === */
         .bottom-nav {
             position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
-            width: 90%; max-width: 420px;
-            background: linear-gradient(135deg, #F3F8FF 0%, #E6EFFF 100%); 
-            border: 3px solid #FFFFFF; 
-            box-shadow: 0 12px 32px rgba(164, 185, 215, 0.55), 
-                        inset 0 3px 0 #FFFFFF, 
-                        inset 0 -3px 3px rgba(59, 130, 246, 0.05);
+            width: 90%; max-width: 380px;
+            background: rgba(9, 9, 11, 0.92); 
+            backdrop-filter: var(--backdrop-blur);
+            -webkit-backdrop-filter: var(--backdrop-blur);
+            border: 1px solid rgba(255, 255, 255, 0.15); 
+            box-shadow: 0 16px 36px rgba(0, 0, 0, 0.25);
             border-radius: var(--curve-pill);
-            display: none; justify-content: space-around; padding: 12px 10px; z-index: 1000;
+            display: none; justify-content: space-around; padding: 10px 12px; z-index: 1000;
         }
         .nav-item { 
-            display: flex; flex-direction: column; align-items: center; color: #7F97B4; text-decoration: none; font-size: 10px; font-weight: 700; gap: 5px; cursor: pointer; transition: 0.2s cubic-bezier(0.2, 0.8, 0.2, 1); 
+            display: flex; flex-direction: column; align-items: center; color: #A1A1AA; text-decoration: none; font-size: 10px; font-weight: 700; gap: 3px; cursor: pointer; transition: 0.25s ease; 
         }
-        .nav-item i { font-size: 20px; transition: 0.2s; }
-        .nav-item:hover { color: var(--accent-main); }
-        .nav-item.active { color: var(--accent-main); }
-        
-        /* Active nav item physically pressed up */
-        .nav-item.active i { transform: translateY(-4px); color: var(--accent-main); text-shadow: 0 4px 8px rgba(59, 130, 246, 0.2); }
+        .nav-item i { font-size: 18px; }
+        .nav-item:hover, .nav-item.active { color: #FFFFFF; transform: translateY(-2px); }
 
         @media (max-width: 768px) {
             .bottom-nav { display: flex; }
-            header { padding-top: 15px; padding-bottom: 22px; }
+            header { padding-top: 14px; padding-bottom: 14px; }
             .text-logo { font-size: 24px; }
-            .item-card { border-radius: var(--curve-medium); padding: 8px; }
-            .main-search-section { padding-top: 15px; }
+            .main-search-section { padding-top: 14px; }
+            .masonry-grid { column-gap: 10px; }
+            .item-card { margin-bottom: 10px; }
         }
-
-        /* === LANDING SCREEN - Pure White & Blue Professional === */
-        #landing-screen {
-            position: fixed; inset: 0; background: #FFFFFF; display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 99999; overflow: hidden; padding: 20px; transition: opacity 0.8s ease, visibility 0.8s;
-        }
-        #landing-screen::before {
-            content: ''; position: absolute; width: 50vw; height: 50vw; max-width: 500px; max-height: 500px;
-            background: radial-gradient(circle, rgba(59, 130, 246, 0.15) 0%, rgba(255,255,255,0) 70%);
-            border-radius: 50%; filter: blur(40px); animation: floatBlob 8s ease-in-out infinite alternate;
-        }
-        @keyframes floatBlob { 0% { transform: translate(-30px, -30px) scale(1); } 100% { transform: translate(30px, 30px) scale(1.1); } }
-        
-        .landing-content { position: relative; z-index: 10; text-align: center; animation: popIn 1s cubic-bezier(0.2, 0.8, 0.2, 1); }
-        .landing-logo { font-size: 72px; line-height: 1; font-weight: 800; color: var(--text-primary); margin-bottom: 10px; letter-spacing: -2px; }
-        .landing-logo span { color: var(--accent-main); }
-        .landing-tagline { color: var(--text-secondary); font-size: 18px; font-weight: 500; letter-spacing: 0.5px; margin-bottom: 40px; }
-        
-        .loader-pill {
-            width: 180px; height: 6px; background: #F1F5F9; border-radius: 10px; margin: 0 auto; overflow: hidden; position: relative;
-            box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
-        }
-        .loader-progress {
-            position: absolute; top: 0; left: 0; height: 100%; width: 40%; background: var(--accent-main); border-radius: 10px;
-            animation: loadingSlide 1.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
-        }
-        @keyframes loadingSlide { 0% { left: -40%; } 100% { left: 100%; } }
-
-        .skip-btn { 
-            position: absolute; top: 30px; right: 30px; background: #F0F6FF; color: var(--text-primary); border: 2px solid #FFFFFF; 
-            padding: 10px 20px; border-radius: var(--curve-pill); cursor: pointer; font-size: 14px; font-weight: 700;
-            box-shadow: var(--shadow-3d-raised); z-index: 20; transition: 0.3s;
-        }
-        .skip-btn:hover { background: var(--accent-light); color: var(--accent-main); transform: translateY(-2px); }
-
-        @media(max-width: 600px){ .landing-logo { font-size: 50px; } .landing-tagline { font-size: 15px; } .skip-btn { top: 20px; right: 20px; } }
 
         /* === FOOTER === */
         .site-footer {
-            width: 100%; padding: 40px 5% 100px; text-align: center; background: var(--bg-body); border-top: 2px solid #E2EEFF; margin-top: 40px;
+            width: 100%; padding: 40px 6% 110px; text-align: center; border-top: var(--border-light); margin-top: 40px;
+            background: #FFFFFF; border-radius: var(--curve-header) var(--curve-header) 0 0;
         }
-        .site-footer p { color: var(--text-secondary); font-size: 14px; margin-bottom: 15px; font-weight: 500; }
-        .footer-links { display: flex; justify-content: center; align-items: center; gap: 20px; flex-wrap: wrap; }
-        .footer-links a { color: var(--text-primary); text-decoration: none; font-size: 14px; font-weight: 600; transition: 0.3s; background: var(--bg-surface); border: 2px solid #FFFFFF; padding: 10px 20px; border-radius: var(--curve-pill); box-shadow: var(--shadow-3d-raised); }
-        .footer-links a:hover { color: var(--accent-main); background: var(--accent-light); border-color: #BFDBFE; transform: translateY(-2px); }
+        .site-footer p { color: var(--text-secondary); font-size: 13px; margin-bottom: 16px; font-weight: 600; }
+        .footer-links { display: flex; justify-content: center; align-items: center; gap: 12px; flex-wrap: wrap; }
+        .footer-links a { 
+            color: var(--text-primary); text-decoration: none; font-size: 13px; font-weight: 700; transition: 0.25s; 
+            background: #F4F4F5; border: var(--border-light); padding: 8px 18px; border-radius: var(--curve-pill); 
+        }
+        .footer-links a:hover { color: #FFFFFF; background: #09090B; }
         
     </style>
 </head>
 <body>
 
-    <div id="landing-screen">
-        <button class="skip-btn" onclick="dismissLanding()">Skip <i class="fa-solid fa-arrow-right" style="margin-left: 5px;"></i></button>
-        <div class="landing-content">
-            <h1 class="landing-logo">Azad<span>Vault</span></h1>
-            <p class="landing-tagline">Premium Wallpapers & Biodata</p>
-            <div class="loader-pill"><div class="loader-progress"></div></div>
-        </div>
-    </div>
-    
-    <!-- Beautiful Half-Curve 3D Header -->
+    <!-- Header with Stylish Jet Black Logo & Curved Border -->
     <header>
-        <div class="brand"><h1 class="text-logo">Azad<span>Vault</span></h1></div>
-        <i class="fa-solid fa-grip header-grid-icon"></i>
+        <div class="brand" onclick="window.location.reload()">
+            <h1 class="text-logo">AZAD<span>VAULT</span></h1>
+            <span class="brand-badge">4K</span>
+        </div>
     </header>
 
     <main>
-        <!-- Premium 3D Search Slot -->
+        <!-- Curved Search Bar Section -->
         <section class="main-search-section">
             <div class="search-container">
                 <div class="header-search">
                     <i class="fa-solid fa-magnifying-glass"></i>
-                    <input type="text" id="global-search" placeholder="Find amazing wallpapers, art, creators..." autocomplete="off">
+                    <input type="text" id="global-search" placeholder="Search 4K wallpapers, tags, creators..." autocomplete="off">
                 </div>
                 <div id="search-suggestions" class="suggestions-box"></div>
             </div>
         </section>
 
+        <!-- Creators Section -->
         <section class="creator-section">
-            <div class="section-title"><i class="fa-solid fa-crown" style="color: #EAB308;"></i> Top Creators</div>
+            <div class="section-title"><i class="fa-solid fa-crown" style="color: #D97706;"></i> Top Creators</div>
             <div class="creator-scroll" id="creator-grid"></div>
         </section>
 
+        <!-- Curved Navigation Pills -->
         <section class="nav-container">
             <div class="category-nav" id="category-nav">
-                <button class="cat-pill active" onclick="filterMainCategory('all', this)">All Wallpapers</button>
-                <button class="cat-pill" onclick="filterMainCategory('wallpaper', this)">Exclusives</button>
-                <button class="cat-pill" onclick="openBiodataPage()"><i class="fa-solid fa-file-lines" style="margin-right:6px;"></i> Biodata Maker</button>
+                <button class="cat-pill active" onclick="filterMainCategory('all', this)"><i class="fa-solid fa-border-all"></i> All Wallpapers</button>
+                <button class="cat-pill" onclick="filterMainCategory('wallpaper', this)"><i class="fa-solid fa-sparkles"></i> Exclusives</button>
+                <button class="cat-pill" onclick="openBiodataPage()"><i class="fa-solid fa-id-card"></i> Biodata Maker</button>
             </div>
             <div class="keyword-nav" id="dynamic-keyword-tags"><button class="kw-tag"><i class="fa-solid fa-spinner fa-spin"></i> Loading trends...</button></div>
         </section>
 
+        <!-- Gallery Grid (Compact Gathered Masonry) -->
         <section class="container">
             <div class="gallery-header">
-                <div class="section-title" id="gallery-title" style="margin:0;"><i class="fa-solid fa-sparkles" style="color: #3B82F6;"></i> Discover Updates</div>
+                <div class="section-title" id="gallery-title" style="margin:0;"><i class="fa-solid fa-bolt" style="color: #0284C7;"></i> Discover Updates</div>
                 <div class="sort-container">
                     <span class="sort-btn active" onclick="sortGrid('latest', this)"><i class="fa-solid fa-clock"></i> Latest</span>
                     <span class="sort-btn" onclick="sortGrid('trending', this)"><i class="fa-solid fa-fire"></i> Trending</span>
                 </div>
             </div>
-            <div class="no-results" id="no-results-msg" style="display:none;"><i class="fa-solid fa-box-open"></i><br><span>No designs found. Try another search.</span></div>
+            <div class="no-results" id="no-results-msg" style="display:none;"><i class="fa-solid fa-box-open"></i><br><span>No designs found. Try another search query.</span></div>
             <div class="masonry-grid" id="main-grid"></div>
         </section>
     </main>
 
+    <!-- Site Footer -->
     <footer class="site-footer">
-        <p>© 2026 Azad Vault. Crafted with precision.</p>
+        <p>© 2026 Azad Vault. High quality wallpapers & online tools.</p>
         <div class="footer-links">
             <a href="privacy-policy.html">Privacy Policy</a>
             <a href="about.html">About Us</a>
@@ -513,9 +602,9 @@
         </div>
     </footer>
 
-    <!-- Tactile 3D Soft Light Blue Bottom Nav -->
+    <!-- Curved Bottom Nav Dock -->
     <nav class="bottom-nav">
-        <a class="nav-item active" href="#" onclick="window.scrollTo(0,0)"><i class="fa-solid fa-house"></i>Home</a>
+        <a class="nav-item active" href="#" onclick="window.scrollTo({top: 0, behavior: 'smooth'})"><i class="fa-solid fa-house"></i>Home</a>
         <a class="nav-item" href="search.html"><i class="fa-solid fa-magnifying-glass"></i>Search</a>
         <a class="nav-item" href="biodata.html"><i class="fa-solid fa-file-signature"></i>Biodata</a>
         <a class="nav-item" href="about.html"><i class="fa-solid fa-circle-info"></i>About</a>
@@ -574,7 +663,6 @@
         
         window.openBiodataPage = function() { window.location.href = "biodata.html"; }
 
-        // Highly Accurate Native Sort Logic (Trending dynamically sorts by true numeric download count)
         window.sortGrid = function(type, btnElement) {
             document.querySelectorAll('.sort-btn').forEach(btn => btn.classList.remove('active'));
             if(btnElement) btnElement.classList.add('active');
@@ -584,13 +672,13 @@
                 items.sort((a, b) => {
                     let dlA = parseInt(a.getAttribute('data-downloads')) || 0;
                     let dlB = parseInt(b.getAttribute('data-downloads')) || 0;
-                    return dlB - dlA; // Descending (high to low downloads)
+                    return dlB - dlA;
                 });
             } else {
                 items.sort((a, b) => {
                     let idxA = parseInt(a.getAttribute('data-index')) || 0;
                     let idxB = parseInt(b.getAttribute('data-index')) || 0;
-                    return idxA - idxB; // Matches natural descending creation date
+                    return idxA - idxB;
                 });
             }
             grid.innerHTML = "";
@@ -631,7 +719,7 @@
                 });
                 let uniqueSuggestions = Array.from(new Set(matchedSuggestions.map(s => s.text))).map(text => matchedSuggestions.find(s => s.text === text)).slice(0, 5);
                 if (uniqueSuggestions.length > 0) {
-                    suggestionsBox.innerHTML = uniqueSuggestions.map(s => `<div class="suggestion-item" onclick="applySearch('${s.text.replace(/'/g, "\\'")}')"><span class="suggestion-text"><i class="fa-solid fa-search" style="margin-right:10px; color:#94A3B8;"></i> ${s.text}</span><span class="suggestion-type">${s.type}</span></div>`).join('');
+                    suggestionsBox.innerHTML = uniqueSuggestions.map(s => `<div class="suggestion-item" onclick="applySearch('${s.text.replace(/'/g, "\\'")}')"><span class="suggestion-text"><i class="fa-solid fa-magnifying-glass" style="margin-right:8px; color:#94A3B8;"></i> ${s.text}</span><span class="suggestion-type">${s.type}</span></div>`).join('');
                     suggestionsBox.style.display = 'block';
                 } else { suggestionsBox.style.display = 'none'; }
             } else { suggestionsBox.style.display = 'none'; }
@@ -639,23 +727,7 @@
 
         document.addEventListener('click', (e) => { if (!searchInput.contains(e.target) && !suggestionsBox.contains(e.target)) suggestionsBox.style.display = 'none'; });
         window.applySearch = function(text) { searchInput.value = text; suggestionsBox.style.display = 'none'; searchInput.dispatchEvent(new Event('input')); };
-
-        function dismissLanding() {
-            const landing = document.getElementById("landing-screen");
-            if (landing) { 
-                landing.style.opacity = "0"; 
-                landing.style.visibility = "hidden";
-                setTimeout(() => { landing.style.display = "none"; }, 800); 
-                sessionStorage.setItem("landingShown", "true"); 
-            }
-        }
-        
-        window.addEventListener("DOMContentLoaded", () => {
-            if (sessionStorage.getItem("landingShown") === "true") { document.getElementById("landing-screen").style.display = "none"; }
-            else { setTimeout(dismissLanding, 4000); }
-        });
     </script>
 </body>
 </html>
-
 ```
