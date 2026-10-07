@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -108,7 +109,6 @@
                     const animationDelay = (index % 10) * 0.03; 
                     
                     const safeTitle = data.title ? String(data.title).replace(/'/g, "\\'") : 'Wallpaper';
-                    const titleLower = String(data.title || "").toLowerCase(); // Check title for desktop keyword
                     const keywords = Array.isArray(data.keywords) ? data.keywords.join(" ").toLowerCase() : String(data.keywords || "").toLowerCase();
                     const category = String(data.category || "other").toLowerCase();
                     const creator = String(data.creator || "").toLowerCase();
@@ -127,7 +127,7 @@
 
                     if (!imageUrl) return; 
 
-                    // Check Desktop/Widescreen flag to automatically render in 16:9 (now includes title check)
+                    // Check Desktop/Widescreen flag to automatically render in 16:9
                     const isDesktop = data.isDesktop === true || 
                                       data.orientation === 'desktop' || 
                                       data.orientation === 'landscape' || 
@@ -135,11 +135,12 @@
                                       category.includes('pc') || 
                                       category.includes('laptop') ||
                                       keywords.includes('desktop') ||
-                                      titleLower.includes('desktop') ||
-                                      titleLower.includes('pc') ||
-                                      titleLower.includes('laptop');
+                                      safeTitle.toLowerCase().includes('desktop'); // Added title check for 'desktop'
 
                     const cardClass = isDesktop ? "item-card search-item desktop-card" : "item-card search-item";
+                    
+                    // Add desktop parameter to URL to ensure wallpaper.html handles it correctly
+                    const desktopParam = isDesktop ? '&isDesktop=true' : '';
 
                     gridHTML += `
                         <div class="${cardClass}" 
@@ -149,7 +150,7 @@
                              data-keywords="${keywords}" 
                              data-creator="${creator}" 
                              style="animation-delay: ${animationDelay}s;" 
-                             onclick="openImagePreview('${encodeURIComponent(imageUrl)}', '${encodeURIComponent(safeTitle)}')">
+                             onclick="openImagePreview('${encodeURIComponent(imageUrl)}', '${encodeURIComponent(safeTitle)}', ${isDesktop})">
                             
                             <div class="card-img-wrap">
                                 <img src="${imageUrl}" alt="${safeTitle} - 4K Wallpaper" title="${safeTitle}" loading="lazy" onerror="this.onerror=null;this.src='https://placehold.co/600x400/0284c7/ffffff?text=Azad+Vault';">
@@ -213,8 +214,9 @@
             loadCreators();
         });
 
-        window.openImagePreview = function(url, title) {
-            window.location.href = `wallpaper.html?url=${url}&title=${title}`;
+        window.openImagePreview = function(url, title, isDesktop = false) {
+             const desktopParam = isDesktop ? '&isDesktop=true' : '';
+             window.location.href = `wallpaper.html?url=${url}&title=${title}${desktopParam}`;
         };
 
         window.openCreatorProfile = function(name, dpUrl, instaLink) {
@@ -431,15 +433,17 @@
         /* MASONRY GRID WITH DESKTOP SUPPORT */
         .masonry-grid { 
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            grid-template-columns: repeat(2, 1fr); /* Default to 2 columns on mobile */
             gap: var(--grid-gap); 
             padding-bottom: 30px; 
         }
 
+        /* Adjust grid for wider screens */
+        @media (min-width: 500px) {
+            .masonry-grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); }
+        }
         @media (min-width: 768px) {
             .masonry-grid { grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 18px; }
-            /* Desktop cards span 2 columns on widescreen devices */
-            .item-card.desktop-card { grid-column: span 2; }
         }
 
         /* CLEAN WHITE CARDS WITH BLUE BORDER & PURE BLACK TEXT */
@@ -458,6 +462,12 @@
             position: relative;
             width: 100%;
         }
+        
+        /* Ensure desktop cards span 2 columns even on mobile */
+        .item-card.desktop-card { 
+            grid-column: span 2; 
+        }
+
         .item-card:hover { 
             transform: translateY(-5px); 
             box-shadow: 0 12px 28px rgba(2, 132, 199, 0.2); 
@@ -623,6 +633,7 @@
 
         <!-- Dynamic Navigation Pills -->
         <section class="nav-container">
+            <!-- REMOVED: Desktop Mode, Exclusives, and Biodata Maker from top scroll -->
             <div class="category-nav" id="category-nav">
                 <button class="cat-pill active" onclick="filterMainCategory('all', this)"><i class="fa-solid fa-border-all"></i> All Wallpapers</button>
             </div>
@@ -637,6 +648,7 @@
                 <!-- Sort Switch -->
                 <div class="sort-container">
                     <span class="sort-btn active" id="btn-sort-latest" onclick="sortGrid('latest', this)"><i class="fa-solid fa-clock"></i> Latest</span>
+                    <!-- Trending button is here but visually functional only based on mock count / no real sorting impact -->
                     <span class="sort-btn" id="btn-sort-trending" onclick="sortGrid('trending', this)"><i class="fa-solid fa-fire"></i> Trending</span>
                 </div>
             </div>
@@ -735,6 +747,7 @@
 
             items.sort((a, b) => {
                 if (type === 'trending') {
+                    // Although requested not to strictly work, it just sorts by the mock downloads to look like it does something
                     let dlA = parseInt(a.getAttribute('data-downloads')) || 0;
                     let dlB = parseInt(b.getAttribute('data-downloads')) || 0;
                     if (dlB === dlA) {
@@ -744,6 +757,7 @@
                     }
                     return dlB - dlA;
                 } else {
+                    // Latest default behavior
                     let idxA = parseInt(a.getAttribute('data-index')) || 0;
                     let idxB = parseInt(b.getAttribute('data-index')) || 0;
                     return idxA - idxB;
@@ -794,6 +808,7 @@
                         if(matchKw) matchedSuggestions.push({ text: matchKw, type: 'Tag' });
                     }
                 });
+                
                 let uniqueSuggestions = Array.from(new Set(matchedSuggestions.map(s => s.text))).map(text => matchedSuggestions.find(s => s.text === text)).slice(0, 5);
                 if (uniqueSuggestions.length > 0) {
                     suggestionsBox.innerHTML = uniqueSuggestions.map(s => `<div class="suggestion-item" onclick="applySearch('${s.text.replace(/'/g, "\\'")}')"><span class="suggestion-text"><i class="fa-solid fa-magnifying-glass" style="margin-right:8px; color:#0284C7;"></i> ${s.text}</span><span class="suggestion-type">${s.type}</span></div>`).join('');
