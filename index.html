@@ -139,7 +139,6 @@
                                       keywords.includes('desktop') ||
                                       safeTitle.toLowerCase().includes('desktop'); 
 
-                    // BUG FIX: Inject 'desktop' keyword so filtering shows ALL desktop images
                     let finalKeywords = keywords;
                     if (isDesktop && !finalKeywords.includes('desktop')) {
                         finalKeywords += " desktop";
@@ -248,12 +247,12 @@
             /* Curves */
             --curve-pill: 9999px;
             --curve-header: 20px;
-            --curve-card: 18px;
-            --curve-img: 14px;
+            --curve-card: 14px; /* Slightly reduced for smaller cards */
+            --curve-img: 10px;  /* Reduced for smaller images */
             --curve-btn: 12px;
             
-            /* Grid Gap */
-            --grid-gap: 14px;
+            /* Grid Gap - Tighter for 'Chota' Walloxy Style */
+            --grid-gap: 8px; 
         }
 
         * { 
@@ -436,9 +435,9 @@
             background: #0284C7; color: #FFFFFF;
         }
 
-        /* TRUE MASONRY GRID USING CSS COLUMNS */
+        /* TRUE MASONRY GRID - 3 COLUMNS FOR SMALL COMPACT LOOK */
         .masonry-grid { 
-            column-count: 2; /* Default to 2 columns on mobile */
+            column-count: 3; /* Set to 3 Columns to match the Walloxy grid style */
             column-gap: var(--grid-gap); 
             padding-bottom: 30px; 
             width: 100%;
@@ -446,38 +445,36 @@
 
         /* Adjust columns for wider screens */
         @media (min-width: 500px) {
-            .masonry-grid { column-count: 3; }
+            .masonry-grid { column-count: 4; }
         }
         @media (min-width: 768px) {
-            .masonry-grid { column-count: 4; column-gap: 18px; }
+            .masonry-grid { column-count: 5; column-gap: 12px; }
         }
         @media (min-width: 1024px) {
-            .masonry-grid { column-count: 5; }
+            .masonry-grid { column-count: 6; }
         }
 
         /* CLEAN WHITE CARDS WITH BLUE BORDER & PURE BLACK TEXT */
         .item-card { 
             background: #FFFFFF; 
             border-radius: var(--curve-card); 
-            padding: 8px; 
-            display: inline-block; /* Essential for Masonry */
+            padding: 4px; /* Reduced Padding for tighter 3-column fit */
+            display: inline-block; 
             cursor: pointer; 
             animation: popIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards; 
-            box-shadow: 0 4px 15px rgba(2, 132, 199, 0.08);
+            box-shadow: 0 4px 10px rgba(2, 132, 199, 0.08);
             transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-            border: 1.5px solid #0284C7; /* Blue Border */
+            border: 1.5px solid #0284C7; 
             overflow: hidden;
             position: relative;
             width: 100%;
-
-            /* Masonry critical properties */
             break-inside: avoid;
             margin-bottom: var(--grid-gap);
         }
 
         .item-card:hover { 
-            transform: translateY(-5px); 
-            box-shadow: 0 12px 28px rgba(2, 132, 199, 0.2); 
+            transform: translateY(-4px); 
+            box-shadow: 0 10px 24px rgba(2, 132, 199, 0.2); 
             border-color: #0284C7; 
         }
         
@@ -508,11 +505,11 @@
         
         /* Simple Inside Download Count Badge */
         .card-badge-dl {
-            position: absolute; top: 8px; right: 8px; z-index: 2;
+            position: absolute; top: 4px; right: 4px; z-index: 2; /* Adjusted for smaller card */
             background: rgba(2, 132, 199, 0.88); backdrop-filter: blur(6px);
-            color: #FFFFFF; font-size: 11px; font-weight: 800;
-            padding: 4px 10px; border-radius: var(--curve-pill);
-            display: flex; align-items: center; gap: 5px;
+            color: #FFFFFF; font-size: 9px; font-weight: 800; /* Scaled down for 3 columns */
+            padding: 3px 6px; border-radius: var(--curve-pill);
+            display: flex; align-items: center; gap: 3px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.15);
         }
 
@@ -526,29 +523,29 @@
         .item-card:hover .card-overlay { opacity: 1; }
         .preview-btn {
             background: #FFFFFF;
-            color: #0284C7; font-size: 11px; font-weight: 900; padding: 6px 14px;
+            color: #0284C7; font-size: 9px; font-weight: 900; padding: 5px 10px; /* Scaled down */
             border-radius: var(--curve-pill);
-            display: flex; align-items: center; gap: 5px;
+            display: flex; align-items: center; gap: 4px;
             text-transform: uppercase;
             letter-spacing: 0.5px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.15);
         }
 
         .card-content {
-            padding: 8px 4px 2px;
+            padding: 6px 2px 2px; /* Tighter padding */
             display: flex; 
             flex-direction: column;
-            gap: 2px;
+            gap: 1px;
         }
         
         /* Text inside grid is strictly BLACK */
         .card-title { 
-            font-size: 14px; font-weight: 800; color: #000000; margin: 0; 
+            font-size: 10px; font-weight: 800; color: #000000; margin: 0; /* Adjusted for 3 columns */
             white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-family: 'Outfit', sans-serif;
             line-height: 1.2;
         }
         .card-category-tag {
-            font-size: 11px; font-weight: 700; color: #0284C7; text-transform: uppercase; letter-spacing: 0.5px;
+            font-size: 8px; font-weight: 700; color: #0284C7; text-transform: uppercase; letter-spacing: 0.5px; /* Adjusted */
         }
 
         .no-results { text-align: center; padding: 50px 20px; color: #64748B; font-size: 15px; font-weight: 700; grid-column: 1 / -1; }
@@ -735,7 +732,6 @@
                     match = tags.includes(keyword);
                 }
 
-                // Inline-block keeps Masonry layout intact during filtering
                 item.style.display = match ? 'inline-block' : 'none'; 
                 if (match) hasResults = true;
             });
