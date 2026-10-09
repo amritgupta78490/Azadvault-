@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -81,15 +80,13 @@
         const db = getFirestore(app);
 
         window.allDesignsData = [];
-        window.currentSort = 'latest'; // Default sort state
+        window.currentSort = 'latest'; 
 
-        // Helper function to generate a pseudo-random mock download count based on string hash
         function generateMockDownloads(str) {
             let hash = 0;
             for (let i = 0; i < str.length; i++) {
                 hash = str.charCodeAt(i) + ((hash << 5) - hash);
             }
-            // Generate a number between 50 and 5000 based on the hash
             const mockVal = Math.abs(hash) % 4950 + 50; 
             return mockVal;
         }
@@ -115,11 +112,9 @@
                     const creator = String(data.creator || "").toLowerCase();
                     const imageUrl = data.imageUrl || "";
                     
-                    // Mock Download Count Logic
                     let dbDownloads = parseInt(data.downloads) || 0;
                     let displayDownloads = dbDownloads;
                     
-                    // If count is 0 or falsy, generate a mock number based on title to keep it consistent on reload
                     if (dbDownloads === 0) {
                         displayDownloads = generateMockDownloads(safeTitle + imageUrl);
                     }
@@ -128,7 +123,6 @@
 
                     if (!imageUrl) return; 
 
-                    // Check Desktop/Widescreen flag to automatically render in 16:9
                     const isDesktop = data.isDesktop === true || 
                                       data.orientation === 'desktop' || 
                                       data.orientation === 'landscape' || 
@@ -136,11 +130,10 @@
                                       category.includes('pc') || 
                                       category.includes('laptop') ||
                                       keywords.includes('desktop') ||
-                                      safeTitle.toLowerCase().includes('desktop'); // Added title check for 'desktop'
+                                      safeTitle.toLowerCase().includes('desktop'); 
 
                     const cardClass = isDesktop ? "item-card search-item desktop-card" : "item-card search-item";
                     
-                    // Add desktop parameter to URL to ensure wallpaper.html handles it correctly
                     const desktopParam = isDesktop ? '&isDesktop=true' : '';
 
                     gridHTML += `
@@ -232,7 +225,7 @@
             --bg-surface: #FFFFFF;
             
             /* High-Contrast Bold Black Typography Colors */
-            --text-black: #000000; /* Strict Pure Black */
+            --text-black: #000000; 
             --text-title: #09090B; 
             --text-subtle: #475569;
             
@@ -431,20 +424,23 @@
             background: #0284C7; color: #FFFFFF;
         }
 
-        /* MASONRY GRID WITH DESKTOP SUPPORT */
+        /* TRUE MASONRY GRID USING CSS COLUMNS */
         .masonry-grid { 
-            display: grid;
-            grid-template-columns: repeat(2, 1fr); /* Default to 2 columns on mobile */
-            gap: var(--grid-gap); 
+            column-count: 2; /* Default to 2 columns on mobile */
+            column-gap: var(--grid-gap); 
             padding-bottom: 30px; 
+            width: 100%;
         }
 
-        /* Adjust grid for wider screens */
+        /* Adjust columns for wider screens */
         @media (min-width: 500px) {
-            .masonry-grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); }
+            .masonry-grid { column-count: 3; }
         }
         @media (min-width: 768px) {
-            .masonry-grid { grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 18px; }
+            .masonry-grid { column-count: 4; column-gap: 18px; }
+        }
+        @media (min-width: 1024px) {
+            .masonry-grid { column-count: 5; }
         }
 
         /* CLEAN WHITE CARDS WITH BLUE BORDER & PURE BLACK TEXT */
@@ -452,8 +448,7 @@
             background: #FFFFFF; 
             border-radius: var(--curve-card); 
             padding: 8px; 
-            display: flex;
-            flex-direction: column;
+            display: inline-block; /* Updated for Masonry */
             cursor: pointer; 
             animation: popIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards; 
             box-shadow: 0 4px 15px rgba(2, 132, 199, 0.08);
@@ -462,11 +457,10 @@
             overflow: hidden;
             position: relative;
             width: 100%;
-        }
-        
-        /* Ensure desktop cards span 2 columns even on mobile */
-        .item-card.desktop-card { 
-            grid-column: span 2; 
+
+            /* Masonry critical properties */
+            break-inside: avoid;
+            margin-bottom: var(--grid-gap);
         }
 
         .item-card:hover { 
@@ -483,9 +477,11 @@
             aspect-ratio: 9 / 14; 
             background: #F1F5F9;
             position: relative;
+            display: block;
         }
 
-        /* Desktop Wallpapers Mode (16:9 Aspect Ratio) */
+        /* Desktop Wallpapers Mode (16:9 Aspect Ratio) 
+           Fixed: Now contained in normal columns instead of taking full width */
         .item-card.desktop-card .card-img-wrap {
             aspect-ratio: 16 / 9;
         }
@@ -571,7 +567,6 @@
         }
 
         /* === SIMPLE CLEAR FOOTER === */
-        /* Removed all box styles, borders, and margins to make it simple text at the bottom */
         .site-footer {
             width: 100%; 
             padding: 40px 6% 100px; 
@@ -634,7 +629,6 @@
 
         <!-- Dynamic Navigation Pills -->
         <section class="nav-container">
-            <!-- REMOVED: Desktop Mode, Exclusives, and Biodata Maker from top scroll -->
             <div class="category-nav" id="category-nav">
                 <button class="cat-pill active" onclick="filterMainCategory('all', this)"><i class="fa-solid fa-border-all"></i> All Wallpapers</button>
             </div>
@@ -649,7 +643,6 @@
                 <!-- Sort Switch -->
                 <div class="sort-container">
                     <span class="sort-btn active" id="btn-sort-latest" onclick="sortGrid('latest', this)"><i class="fa-solid fa-clock"></i> Latest</span>
-                    <!-- Trending button is here but visually functional only based on mock count / no real sorting impact -->
                     <span class="sort-btn" id="btn-sort-trending" onclick="sortGrid('trending', this)"><i class="fa-solid fa-fire"></i> Trending</span>
                 </div>
             </div>
@@ -728,7 +721,8 @@
                     match = tags.includes(keyword);
                 }
 
-                item.style.display = match ? 'flex' : 'none';
+                // Masonry columns require inline-block instead of flex to render safely
+                item.style.display = match ? 'inline-block' : 'none'; 
                 if (match) hasResults = true;
             });
             document.getElementById('no-results-msg').style.display = hasResults ? 'none' : 'block';
@@ -748,7 +742,6 @@
 
             items.sort((a, b) => {
                 if (type === 'trending') {
-                    // Although requested not to strictly work, it just sorts by the mock downloads to look like it does something
                     let dlA = parseInt(a.getAttribute('data-downloads')) || 0;
                     let dlB = parseInt(b.getAttribute('data-downloads')) || 0;
                     if (dlB === dlA) {
@@ -758,7 +751,6 @@
                     }
                     return dlB - dlA;
                 } else {
-                    // Latest default behavior
                     let idxA = parseInt(a.getAttribute('data-index')) || 0;
                     let idxB = parseInt(b.getAttribute('data-index')) || 0;
                     return idxA - idxB;
@@ -791,7 +783,8 @@
                 let keywords = item.getAttribute('data-keywords') || "";
                 let creator = item.getAttribute('data-creator') || "";
                 let match = title.includes(query) || keywords.includes(query) || creator.includes(query) || category.includes(query);
-                item.style.display = match ? 'flex' : 'none';
+                
+                item.style.display = match ? 'inline-block' : 'none'; 
                 if(match) hasResults = true;
             });
             document.getElementById('no-results-msg').style.display = hasResults || query === "" ? 'none' : 'block';
